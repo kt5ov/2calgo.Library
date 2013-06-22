@@ -34,6 +34,7 @@ namespace cAlgo.Indicators
         
         protected override void Initialize()
         {
+            _closeExtremums = new DataSeriesExtremums(MarketSeries.Close);
 #Initialize_buffers_PLACE_HOLDER#
 
             Open = new InvertedDataSeries(MarketSeries.Open);
@@ -46,6 +47,7 @@ namespace cAlgo.Indicators
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
+            DebugPrint.Initialize(m => Print(m));
         }
 
         private int _currentIndex;
@@ -60,6 +62,7 @@ namespace cAlgo.Indicators
         private InvertedDataSeries Volume;
         private Mq4TimeSeries Time;
 
+        private DataSeriesExtremums _closeExtremums;
         private readonly List<Mq4DataSeries> _allBuffers = new List<Mq4DataSeries>();
 
         public override void Calculate(int index)
@@ -142,8 +145,6 @@ namespace cAlgo.Indicators
             return now.DayOfWeek == System.DayOfWeek.Sunday || now.DayOfWeek == System.DayOfWeek.Saturday;
         }
     }
-
-
 
     #region InitFunctions
     
@@ -1746,17 +1747,19 @@ namespace cAlgo.Indicators
         }
     }
 
-    internal class Mq4DataSeries
+    class Mq4DataSeries
     {
         public IndicatorDataSeries OutputDataSeries { get; private set; }
         private readonly NormalIndicatorDataSeries _originalValues = new NormalIndicatorDataSeries();
         private int _currentIndex;
         private int _shift;
         private double _emptyValue = double.NaN;
+        private readonly DataSeriesExtremums _closeExtremums;
 
-        public Mq4DataSeries(IndicatorDataSeries outputDataSeries)
+        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums)
         {
             OutputDataSeries = outputDataSeries;
+            _closeExtremums = closeExtremums;
         }
 
         public int Count
@@ -1798,10 +1801,20 @@ namespace cAlgo.Indicators
 
                 var valueToSet = value;
                 if (valueToSet == _emptyValue)
-                  valueToSet = double.NaN;        
+                  valueToSet = double.NaN;
 
                 if (indexToSet < 0)
                   return;
+
+                DebugPrint.Print("Max: " + _closeExtremums.Max + " Min: " + _closeExtremums.Min);
+
+                if (#IsDrawingOnChartWindow_PLACE_HOLDER#)
+                {
+                    var validRange = _closeExtremums.Max - _closeExtremums.Min;                
+                    if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
+                        return;
+                }
+
                 OutputDataSeries[indexToSet] = valueToSet; 
             }
         }
@@ -1997,7 +2010,7 @@ namespace cAlgo.Indicators
       }
     }
 
-  static class Mq4Colors
+    static class Mq4Colors
     {
         public static Colors GetColorByInteger(int integer)
         {
@@ -2007,6 +2020,64 @@ namespace cAlgo.Indicators
                 default:
                     return Colors.Black;
             }
+        }
+    }
+
+    class DataSeriesExtremums
+    {
+        private int? _lastCheckedIndex;
+        private readonly DataSeries _dataSeries;
+        private double _min = double.MaxValue;
+        private double _max = double.MinValue;
+
+        public DataSeriesExtremums(DataSeries dataSeries)
+        {
+            _dataSeries = dataSeries;
+        }
+
+        private void UpdateMinAndMax()
+        {
+            var indexFrom = _lastCheckedIndex != null ? _lastCheckedIndex.Value + 1 : 0;
+            for (var i = indexFrom; i < _dataSeries.Count - 1; i++)
+            {
+                if (_dataSeries[i] < _min)
+                    _min = _dataSeries[i];
+                if (_dataSeries[i] > _max)
+                    _max = _dataSeries[i];
+                _lastCheckedIndex = i;
+            }
+        }
+
+        public double Min
+        {
+            get 
+            {
+                UpdateMinAndMax();
+                return _min;
+            }
+        }
+
+        public double Max
+        {
+            get 
+            {
+                UpdateMinAndMax();
+                return _max;
+            }
+        }
+    }
+
+    static class DebugPrint
+    {
+        private static Action<string> _printAction;
+        public static void Initialize(Action<string> printAction)
+        {
+            _printAction = printAction;
+        }
+
+        public static void Print(string message)
+        {
+            _printAction(message);
         }
     }
 }
