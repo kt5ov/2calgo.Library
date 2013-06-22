@@ -39,7 +39,7 @@ namespace _2calgo.Presenter
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4DataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
                 template.InitialzeBuffers.AppendFormat("if ({0}_Converted == null) {0}_Converted = new NormalIndicatorDataSeries();\n", buffer);
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4DataSeries({0}_Converted, true);\n", buffer);
+                template.InitialzeBuffers.AppendFormat("{0} = new Mq4DataSeries({0}_Converted);\n", buffer);
                 template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
             }
 

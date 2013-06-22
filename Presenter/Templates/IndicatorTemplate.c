@@ -939,7 +939,7 @@ namespace cAlgo.Indicators
                 
         private double iMAOnArray(Mq4DataSeries invertedDataSeries, int total, int period, int ma_shift, int ma_method, int shift) 
         {
-          return CalculateiMA(invertedDataSeries.DataSeries, period, ma_method, shift);
+          return CalculateiMA(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
         }
         
         private double CalculateiMA(DataSeries dataSeries, int period, int ma_method, int shift)
@@ -975,7 +975,7 @@ namespace cAlgo.Indicators
                 
         private double iRSIOnArray(Mq4DataSeries invertedDataSeries, int total, int period, int shift) 
         {
-          return CalculateRsi(invertedDataSeries.DataSeries, period, shift);
+          return CalculateRsi(invertedDataSeries.OutputDataSeries, period, shift);
         }
         
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
@@ -1003,7 +1003,7 @@ namespace cAlgo.Indicators
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
-            return CalculateBands(invertedDataSeries.DataSeries, period, deviation, mode, shift);
+            return CalculateBands(invertedDataSeries.OutputDataSeries, period, deviation, mode, shift);
         }
         
         private double CalculateBands(DataSeries dataSeries, int period, int deviation, int mode, int shift)
@@ -1748,29 +1748,24 @@ namespace cAlgo.Indicators
 
     internal class Mq4DataSeries
     {
-        public IndicatorDataSeries DataSeries { get; private set; }
+        public IndicatorDataSeries OutputDataSeries { get; private set; }
+        private readonly NormalIndicatorDataSeries _originalValues = new NormalIndicatorDataSeries();
         private int _currentIndex;
         private int _shift;
-    private bool _inverted;
-    private double _emptyValue = double.NaN;
+        private double _emptyValue = double.NaN;
 
-        public Mq4DataSeries(IndicatorDataSeries dataSeries, bool inverted)
+        public Mq4DataSeries(IndicatorDataSeries outputDataSeries)
         {
-            DataSeries = dataSeries;
-      _inverted = inverted;
+            OutputDataSeries = outputDataSeries;
         }
-    
-    public Mq4DataSeries(bool inverted) : this (new NormalIndicatorDataSeries(), inverted)
-    {
-    }
 
-    public int Count
-    {
-      get 
-      {
-        return DataSeries.Count;
-      }
-    }
+        public int Count
+        {
+            get 
+            {
+                return OutputDataSeries.Count;
+            }
+        }
 
         public void SetCurrentIndex(int index)
         {
@@ -1790,43 +1785,29 @@ namespace cAlgo.Indicators
         public double this[int index]
         {
             get 
-      { 
-        if (index >= DataSeries.Count)
-          return 0;
-          
-        double value;
-        if (_inverted)
-          value = DataSeries[_currentIndex - index + _shift];
-        else
-          value = DataSeries[index + _shift];
-          
-        if (!double.IsNaN(_emptyValue) && double.IsNaN(value))
-          return _emptyValue;         
-
-        if (double.IsNaN(value))
-          return 0;
-          
-        return value; 
-      }
+            { 
+                if (index >= OutputDataSeries.Count)
+                  return 0;
+                        
+                return _originalValues[_currentIndex - index + _shift];
+            }
             set 
-      { 
-        var valueToSet = value;
-        if (value == _emptyValue)
-          valueToSet = double.NaN;        
-        
-        int indexToSet;
-        if (_inverted)
-          indexToSet = _currentIndex - index + _shift;
-        else
-          indexToSet = index + _shift;
-        if (indexToSet < 0)
-          return;
-        DataSeries[indexToSet] = valueToSet; 
-      }
+            { 
+                var indexToSet = _currentIndex - index + _shift;                
+                _originalValues[indexToSet] = value;
+
+                var valueToSet = value;
+                if (valueToSet == _emptyValue)
+                  valueToSet = double.NaN;        
+
+                if (indexToSet < 0)
+                  return;
+                OutputDataSeries[indexToSet] = valueToSet; 
+            }
         }
     }
 
-  internal class NormalIndicatorDataSeries : IndicatorDataSeries
+    internal class NormalIndicatorDataSeries : IndicatorDataSeries
     {
       private List<double> _data = new List<double>();
       
