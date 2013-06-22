@@ -42,15 +42,15 @@ namespace cAlgo.Indicators
             Close = new InvertedDataSeries(MarketSeries.Close);
             Volume = new InvertedDataSeries(MarketSeries.TickVolume);
             Median = new InvertedDataSeries(MarketSeries.Median);
-			Time = new Mq4TimeSeries(MarketSeries.OpenTime);
+            Time = new Mq4TimeSeries(MarketSeries.OpenTime);
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
-			_mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
+            _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
         }
 
         private int _currentIndex;
         private CashedStandardIndicators _cashedStandardIndicators;
-		private Mq4ChartObjects _mq4ChartObjects;
+        private Mq4ChartObjects _mq4ChartObjects;
 #Inverted_buffers_declarations_PLACE_HOLDER#
         private InvertedDataSeries Open;
         private InvertedDataSeries High;
@@ -58,9 +58,9 @@ namespace cAlgo.Indicators
         private InvertedDataSeries Close;
         private InvertedDataSeries Median;
         private InvertedDataSeries Volume;
-		private Mq4TimeSeries Time;
+        private Mq4TimeSeries Time;
 
-		private readonly List<Mq4DataSeries> _allBuffers = new List<Mq4DataSeries>();
+        private readonly List<Mq4DataSeries> _allBuffers = new List<Mq4DataSeries>();
 
         public override void Calculate(int index)
         {
@@ -73,16 +73,77 @@ namespace cAlgo.Indicators
             Close.SetCurrentIndex(index);
             Median.SetCurrentIndex(index);
             Volume.SetCurrentIndex(index);
-			Time.SetCurrentIndex(index);
+            Time.SetCurrentIndex(index);
 
-			if (index == 3)
-				Mq4Init();
-			if (IsRealTime) 
-			{       
-				Mq4Start();       
-				_indicatorCounted = index;
-			}
+            if (index == 100)
+                Mq4Init();
+            if (IsRealTime || index > 100 && IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
+            {       
+                Mq4Start();       
+                _indicatorCounted = index;
+            }
        }
+
+    DateTime LastBarOfWeekOpenTimeInEE
+    {
+        get
+        {
+            var now = ConvertUtcToEEuropeTime(DateTime.UtcNow);
+            var saturday = now.Date;
+            while (saturday.DayOfWeek != System.DayOfWeek.Saturday)
+                saturday.AddDays(-1);
+
+            var dailyPeriod = 24 * 60;
+            if (Period() <= dailyPeriod)
+                return saturday.AddMinutes(-Period());    
+            if (Period() == dailyPeriod * 7)        
+                return saturday.AddDays(-6);
+
+            return new DateTime(now.Year, now.Month, 1);
+        }
+    }
+
+    DateTime LastBarOfWeekOpenTimeInUtc
+    {
+        get
+        {
+            return ConvertEEuropeTimeToUtc(LastBarOfWeekOpenTimeInEE);
+        }
+    }
+
+    TimeZoneInfo _easternEuropeTimeZone;
+    TimeZoneInfo EasternEuropeTimeZone
+    {
+        get 
+        {
+            const string easternZoneId = "E. Europe Standard Time";
+            if (_easternEuropeTimeZone == null)
+                _easternEuropeTimeZone = TimeZoneInfo.FindSystemTimeZoneById(easternZoneId);
+            return _easternEuropeTimeZone;
+        }
+    }
+
+
+    DateTime ConvertUtcToEEuropeTime(DateTime dateTime)
+    {       
+        return TimeZoneInfo.ConvertTimeFromUtc(dateTime, EasternEuropeTimeZone);
+    }
+
+    DateTime ConvertEEuropeTimeToUtc(DateTime dateTime)
+    {       
+        return TimeZoneInfo.ConvertTimeToUtc(dateTime, EasternEuropeTimeZone);
+    }
+
+    bool IsWeekend
+    {
+        get 
+        {
+            var now = ConvertUtcToEEuropeTime(DateTime.UtcNow);                     
+            return now.DayOfWeek == System.DayOfWeek.Sunday || now.DayOfWeek == System.DayOfWeek.Saturday;
+        }
+    }
+
+
 
     #region InitFunctions
     
@@ -153,7 +214,7 @@ namespace cAlgo.Indicators
         }
         }
 
-		private int? _period;
+        private int? _period;
         private int Period()
         {         
         if (_period == null)
@@ -958,7 +1019,7 @@ namespace cAlgo.Indicators
               case MODE_LOWER:
                 return indicator.Bottom[_currentIndex - shift];
             }
-            
+
             return 0;
         }
 
