@@ -13,6 +13,8 @@ namespace _2calgo.Presenter.Extensions
                      return "Line";
                  case DrawingShapeStyle.Histogram:
                      return "Histogram";
+                 case DrawingShapeStyle.Arrow:
+                     return "Points";
                  default:
                      throw new ArgumentOutOfRangeException("drawingShapeStyle");
              }

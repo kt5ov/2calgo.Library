@@ -1363,12 +1363,12 @@ namespace cAlgo.Indicators
             protected Mq4Object(string name, int type)
             {
                 Name = name;
-        Type = type;
+                Type = type;
             }
       
-      public int Type { get; private set; }
+            public int Type { get; private set; }
 
-      public string Name { get; private set; }
+            public string Name { get; private set; }
 
             protected DateTime Time1
             {
@@ -1725,6 +1725,20 @@ namespace cAlgo.Indicators
       }
         }
     }
+    
+    static class DebugPrint
+    {
+        private static Action<string> _printAction;
+        public static void Initialize(Action<string> printAction)
+        {
+            _printAction = printAction;
+        }
+
+        public static void Print(string message)
+        {
+            _printAction(message);
+        }
+    }
 
     internal class InvertedDataSeries
     {
@@ -1755,11 +1769,14 @@ namespace cAlgo.Indicators
         private int _shift;
         private double _emptyValue = double.NaN;
         private readonly DataSeriesExtremums _closeExtremums;
+        private readonly ChartObjects _chartObjects;
+        private readonly List<int> _overlapLineStartIndexes = new List<int>();
 
-        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums)
+        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums, ChartObjects chartObjects)
         {
             OutputDataSeries = outputDataSeries;
             _closeExtremums = closeExtremums;
+            _chartObjects = chartObjects;
         }
 
         public int Count
@@ -1806,8 +1823,6 @@ namespace cAlgo.Indicators
                 if (indexToSet < 0)
                   return;
 
-                DebugPrint.Print("Max: " + _closeExtremums.Max + " Min: " + _closeExtremums.Min);
-
                 if (#IsDrawingOnChartWindow_PLACE_HOLDER#)
                 {
                     var validRange = _closeExtremums.Max - _closeExtremums.Min;                
@@ -1815,8 +1830,42 @@ namespace cAlgo.Indicators
                         return;
                 }
 
+                if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
+                {
+                    int startIndex;
+                    for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)
+                    {
+                        if (!double.IsNaN(OutputDataSeries[startIndex]))
+                            break;
+                    }
+                    if (startIndex > 0)
+                    {
+                        RemoveOverlapLinesSinceIndex(startIndex);
+
+                        _chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, OutputDataSeries[indexToSet], Colors.Black);
+                        _overlapLineStartIndexes.Add(startIndex);
+                    }                    
+                }
+
                 OutputDataSeries[indexToSet] = valueToSet; 
             }
+        }
+
+        private void RemoveOverlapLinesSinceIndex(int index)
+        {
+            foreach (var startIndex in _overlapLineStartIndexes.ToArray())                    
+            {
+                if (startIndex >= index)
+                {
+                    _overlapLineStartIndexes.Remove(startIndex);
+                    _chartObjects.RemoveObject(GetOverlapLineName(startIndex));
+                }
+            }
+        }
+
+        private string GetOverlapLineName(int startIndex)
+        {
+            return string.Format("Overlapline {0} {1}", GetHashCode(), startIndex);
         }
     }
 
@@ -2064,20 +2113,6 @@ namespace cAlgo.Indicators
                 UpdateMinAndMax();
                 return _max;
             }
-        }
-    }
-
-    static class DebugPrint
-    {
-        private static Action<string> _printAction;
-        public static void Initialize(Action<string> printAction)
-        {
-            _printAction = printAction;
-        }
-
-        public static void Print(string message)
-        {
-            _printAction(message);
         }
     }
 }
