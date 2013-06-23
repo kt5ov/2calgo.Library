@@ -1364,6 +1364,11 @@ namespace cAlgo.Indicators
     void Sleep(int milliseconds)
     {        
     }
+
+    void PlaySound(string fileName)
+    {
+        Notifications.PlaySound(fileName);
+    }
 #endregion //Common functions
 
 #region Array functions
