@@ -480,7 +480,9 @@ namespace cAlgo.Indicators
 
 #region MQ4 Constants
         const bool True = true;
-        const bool False = false;        
+        const bool False = false;
+        const bool TRUE = true;
+        const bool FALSE = false;                
         const string NULL = null;
         const int EMPTY = -1;
         const double EMPTY_VALUE = double.NaN;
@@ -1443,6 +1445,11 @@ namespace cAlgo.Indicators
       }
 
       public static implicit operator Mq4Double(double value)
+      {
+        return new Mq4Double(value);
+      }
+
+      public static implicit operator Mq4Double(int value)
       {
         return new Mq4Double(value);
       }
