@@ -47,7 +47,7 @@ namespace cAlgo.Indicators
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
-            DebugPrint.Initialize(m => Print(m));
+            Debug.Initialize(m => Print(m));
         }
 
         private int _currentIndex;
@@ -364,7 +364,7 @@ namespace cAlgo.Indicators
         {
             get 
             { 
-                if (index >= OutputDataSeries.Count)
+                if (index >= _originalValues.Count)
                   return 0;
                         
                 return _originalValues[_currentIndex - index + _shift];
@@ -400,7 +400,7 @@ namespace cAlgo.Indicators
                     {
                         RemoveOverlapLinesSinceIndex(startIndex);
 
-                        _chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, OutputDataSeries[indexToSet], Colors.Black);
+                        _chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
                         _overlapLineStartIndexes.Add(startIndex);
                     }                    
                 }

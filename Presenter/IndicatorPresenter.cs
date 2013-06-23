@@ -67,7 +67,7 @@ namespace _2calgo.Presenter
 
         private static void AddLineDeclaration(Indicator indicator, IndicatorBuilder template, int bufferIndex, string bufferName)
         {
-            if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None && bufferIndex < indicator.Colors.Length)
+            if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None && indicator.Colors[bufferIndex] != null)
             {
                 var colorPart = string.Empty;
                 if (indicator.Colors[bufferIndex] != null)
