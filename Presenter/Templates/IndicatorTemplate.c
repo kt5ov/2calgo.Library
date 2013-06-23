@@ -615,6 +615,7 @@ namespace cAlgo.Indicators
     const int MODE_MAIN = 0;
     const int MODE_PLUSDI = 1;
     const int MODE_MINUSDI = 2;
+    const int MODE_SIGNAL = 1;
 
     const int MODE_UPPER = 1;
     const int MODE_LOWER = 2;
@@ -1311,6 +1312,33 @@ namespace cAlgo.Indicators
         }
 
 #endregion //iATR   
+
+#region iMACD
+        private double iMACD(string symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);                                    
+            if (applied_price != PRICE_CLOSE)
+            {
+                throw new Exception("cTrader doesn't support source parameter for MACD");
+            }
+      
+            return CalculateMACD(fast_ema_period, slow_ema_period, signal_period, mode, shift);
+        }       
+        
+        private double CalculateMACD(int fast_ema_period, int slow_ema_period, int signal_period, int mode, int shift)
+        {     
+            var indicator = _cashedStandardIndicators.MACD(fast_ema_period, slow_ema_period, signal_period);
+
+            switch (mode)
+            {
+              case MODE_MAIN:
+                return indicator.Histogram[_currentIndex - shift];
+              default:
+                return indicator.Signal[_currentIndex - shift];
+            }
+        }
+
+#endregion //iMACD 
 
 #endregion //MQ4 Indicators
     
@@ -2086,6 +2114,29 @@ namespace cAlgo.Indicators
             return atrIndicator;
         }
 #endregion //iATR
+
+#region iMACD
+        private struct MacdParameters
+        {
+            public int LongPeriod;
+            public int ShortPeriod;
+            public int Periods;
+        }
+    
+        private Dictionary<MacdParameters, MacdHistogram> _macdIndicators = new Dictionary<MacdParameters, MacdHistogram>();
+        
+        public MacdHistogram MACD(int shortPeriod, int longPeriod, int periods)
+        {
+            var parameters = new MacdParameters { LongPeriod = longPeriod, ShortPeriod = shortPeriod, Periods = periods };
+            if (_macdIndicators.ContainsKey(parameters))
+                return _macdIndicators[parameters];
+
+            var indicator = _indicatorsAccessor.MacdHistogram(longPeriod, shortPeriod, periods);
+            _macdIndicators.Add(parameters, indicator);
+
+            return indicator;
+        }
+#endregion //iMACD
     }
 
     static class Mq4LineStyles
