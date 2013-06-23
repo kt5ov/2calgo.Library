@@ -1054,6 +1054,23 @@ namespace cAlgo.Indicators
 
 #endregion //iADX    
 
+#region iATR
+        private double iATR(string symbol, int timeframe, int period, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);                        
+                  
+            return CalculateATR(period, shift);
+        }       
+                
+        private double CalculateATR(int period, int shift)
+        {     
+            var indicator = _cashedStandardIndicators.ATR(period);
+
+            return indicator.Result[_currentIndex - shift];            
+        }
+
+#endregion //iATR   
+
 #endregion //MQ4 Indicators
     
 #region Common functions
@@ -1725,7 +1742,7 @@ namespace cAlgo.Indicators
       }
         }
     }
-    
+
     static class DebugPrint
     {
         private static Action<string> _printAction;
@@ -2038,6 +2055,28 @@ namespace cAlgo.Indicators
             return indicator;
         }
 #endregion //iADX
+
+#region iATR
+        private struct ATRParameters
+        {
+            public int Periods;
+        }
+    
+        private Dictionary<ATRParameters, SimpleMovingAverage> _atrIndicators = new Dictionary<ATRParameters, SimpleMovingAverage>();
+
+        public SimpleMovingAverage ATR(int periods)
+        {
+            var parameters = new ATRParameters { Periods = periods };
+            if (_atrIndicators.ContainsKey(parameters))
+                return _atrIndicators[parameters];
+
+            var trueRange = _indicatorsAccessor.TrueRange();
+            var atrIndicator = _indicatorsAccessor.SimpleMovingAverage(trueRange.Result, periods);
+            _atrIndicators.Add(parameters, atrIndicator);
+
+            return atrIndicator;
+        }
+#endregion //iATR
     }
 
     static class Mq4LineStyles
