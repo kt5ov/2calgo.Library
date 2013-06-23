@@ -94,7 +94,7 @@ namespace cAlgo.Indicators
             var now = ConvertUtcToEEuropeTime(DateTime.UtcNow);
             var saturday = now.Date;
             while (saturday.DayOfWeek != System.DayOfWeek.Saturday)
-                saturday.AddDays(-1);
+                saturday = saturday.AddDays(-1);
 
             var dailyPeriod = 24 * 60;
             if (Period() <= dailyPeriod)
