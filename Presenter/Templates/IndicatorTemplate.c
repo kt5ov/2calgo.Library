@@ -1278,7 +1278,7 @@ namespace cAlgo.Indicators
             if (applied_price != PRICE_CLOSE)            
               throw new NotImplementedException(AdxSupportsOnlyClosePrice);            
       
-      return CalculateAdx(period, mode, shift);
+            return CalculateAdx(period, mode, shift);
         }      
         
         private Mq4Double CalculateAdx(int period, int mode, int shift)
@@ -1341,6 +1341,30 @@ namespace cAlgo.Indicators
         }
 
 #endregion //iMACD 
+
+#region iCCI
+        private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);                        
+                        
+            var series = ToMarketSeries(applied_price);
+      
+            return CalculateCCI(series, period, shift);
+        }       
+                
+        private double iCCIOnArray(Mq4DataSeries invertedDataSeries, int period, int shift) 
+        {            
+            return CalculateCCI(invertedDataSeries.OutputDataSeries, period, shift);
+        }
+        
+        private double CalculateCCI(DataSeries dataSeries, int period, int shift)
+        {     
+            var indicator = _cashedStandardIndicators.CommodityChannelIndex(period);
+
+            return indicator.Result[_currentIndex - shift];
+        }
+
+#endregion //iCCI
 
 #endregion //MQ4 Indicators
     
@@ -2144,6 +2168,27 @@ namespace cAlgo.Indicators
             return indicator;
         }
 #endregion //iMACD
+
+#region iCCI
+        private struct CciParameters
+        {
+            public int Periods;
+        }
+    
+        private Dictionary<CciParameters, CommodityChannelIndex> _cciIndicators = new Dictionary<CciParameters, CommodityChannelIndex>();
+
+        public CommodityChannelIndex CommodityChannelIndex(int periods)
+        {
+            var cciParameters = new CciParameters { Periods = periods };
+            if (_cciIndicators.ContainsKey(cciParameters))
+                return _cciIndicators[cciParameters];
+
+            var indicator = _indicatorsAccessor.CommodityChannelIndex(periods);
+            _cciIndicators.Add(cciParameters, indicator);
+
+            return indicator;
+        }
+#endregion //iCCI
     }
 
     static class Mq4LineStyles
