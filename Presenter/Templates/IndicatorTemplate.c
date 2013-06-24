@@ -1366,6 +1366,32 @@ namespace cAlgo.Indicators
 
 #endregion //iCCI
 
+#region iStdDev
+        private double iStdDev( string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);            
+            if (ma_shift != 0)
+                throw new NotImplementedException(NotSupportedMaShift);
+
+            var series = ToMarketSeries(applied_price);
+      
+            return CalculateiStdDev(series, period, ma_method, shift);
+        }       
+                
+        private double iStdDevOnArray(Mq4DataSeries invertedDataSeries, int total, int ma_period, int ma_shift, int ma_method, int shift) 
+        {
+          return CalculateiStdDev(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
+        }
+        
+        private double CalculateiStdDev(DataSeries dataSeries, int ma_period, int ma_shift, int ma_method, int shift)
+        {     
+            var maType = ToMaType(ma_method);            
+            var indicator = _cashedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
+
+            return indicator.Result[_currentIndex - shift];
+        }        
+#endregion //iStdDev
+
 #endregion //MQ4 Indicators
     
 #region Common functions
@@ -2189,6 +2215,28 @@ namespace cAlgo.Indicators
             return indicator;
         }
 #endregion //iCCI
+
+
+#region iStdDev
+        private struct stdDevParameters
+        {
+            public int Periods;
+        }
+    
+        private Dictionary<stdDevParameters, StandardDeviation> _stdDevIndicators = new Dictionary<stdDevParameters, StandardDeviation>();
+
+        public StandardDeviation StandardDeviation(DataSeries source, int periods, MovingAverageType movingAverageType)
+        {
+            var stdDevParameters = new stdDevParameters { Source = source, Periods = periods, MovingAverageType = movingAverageType };
+            if (_stdDevIndicators.ContainsKey(stdDevParameters))
+                return _stdDevIndicators[stdDevParameters];
+
+            var indicator = _indicatorsAccessor.StandardDeviation(cource, periods, 1, movingAverageType);
+            _stdDevIndicators.Add(stdDevParameters, indicator);
+
+            return indicator;
+        }
+#endregion //iStdDev
     }
 
     static class Mq4LineStyles
