@@ -1375,16 +1375,19 @@ namespace cAlgo.Indicators
 
             var series = ToMarketSeries(applied_price);
       
-            return CalculateiStdDev(series, period, ma_method, shift);
+            return CalculateiStdDev(series, ma_period, ma_shift, ma_method, shift);
         }       
                 
         private double iStdDevOnArray(Mq4DataSeries invertedDataSeries, int total, int ma_period, int ma_shift, int ma_method, int shift) 
         {
-          return CalculateiStdDev(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
+          return CalculateiStdDev(invertedDataSeries.OutputDataSeries, ma_period, ma_shift, ma_method, shift);
         }
         
         private double CalculateiStdDev(DataSeries dataSeries, int ma_period, int ma_shift, int ma_method, int shift)
         {     
+            if (ma_shift != 0)
+                throw new Exception(NotSupportedMaShift);
+
             var maType = ToMaType(ma_method);            
             var indicator = _cashedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
 
@@ -2221,6 +2224,8 @@ namespace cAlgo.Indicators
         private struct stdDevParameters
         {
             public int Periods;
+            public DataSeries Source;
+            public MovingAverageType MovingAverageType;
         }
     
         private Dictionary<stdDevParameters, StandardDeviation> _stdDevIndicators = new Dictionary<stdDevParameters, StandardDeviation>();
@@ -2231,7 +2236,7 @@ namespace cAlgo.Indicators
             if (_stdDevIndicators.ContainsKey(stdDevParameters))
                 return _stdDevIndicators[stdDevParameters];
 
-            var indicator = _indicatorsAccessor.StandardDeviation(cource, periods, 1, movingAverageType);
+            var indicator = _indicatorsAccessor.StandardDeviation(source, periods, 1, movingAverageType);
             _stdDevIndicators.Add(stdDevParameters, indicator);
 
             return indicator;
