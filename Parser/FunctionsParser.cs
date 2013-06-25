@@ -42,7 +42,7 @@ namespace _2calgo.Parser
                 if (!match.Success)
                     break;
 
-                var bodyWithAroundingBrackets = Utils.GetBodyWithAroundingBrackets(code, match.Index);
+                var bodyWithAroundingBrackets = code.GetBodyWithAroundingBrackets(match.Index);
                 code = code.Replace(bodyWithAroundingBrackets, string.Empty);
                 code = code.Replace(match.Value, string.Empty);
             } while (true);

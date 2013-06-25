@@ -55,6 +55,7 @@
     <Compile Include="CodeAdapter\Declarations.cs" />
     <Compile Include="CodeAdapter\Names.cs" />
     <Compile Include="CodeAdapter\ReturnStatements.cs" />
+    <Compile Include="CodeAdapter\StaticVariables.cs" />
     <Compile Include="CodeAdapter\SupportedCSharpTypes.cs" />
     <Compile Include="CodeAdapter\Switch\SwitchOperator.cs" />
     <Compile Include="CodeAdapter\Symbol.cs" />

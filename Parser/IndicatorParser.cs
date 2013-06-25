@@ -32,7 +32,7 @@ namespace _2calgo.Parser
             HandleParameters(code, indicator);
             HandleFunctions(code, indicator, parsingErrors);
             HandleFields(code, indicator);
-
+            
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }
         
