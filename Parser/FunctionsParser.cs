@@ -24,7 +24,7 @@ namespace _2calgo.Parser
                 var declaration = match.Value;
                 var bodyWithAroundingBrackets = code.GetBodyWithAroundingBrackets(match.Index);
                 var body = bodyWithAroundingBrackets.Substring(1, bodyWithAroundingBrackets.Length - 2);
-                var adaptedBody = body.Adapt();
+                var adaptedBody = body.AdaptFunctionBody();
                 
                 previousFunctionEndIndex = match.Index + declaration.Length + bodyWithAroundingBrackets.Length;
                 var function = new Function(name, declaration, adaptedBody)

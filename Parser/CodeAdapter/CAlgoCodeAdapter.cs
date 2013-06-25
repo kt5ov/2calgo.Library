@@ -4,9 +4,9 @@ namespace _2calgo.Parser.CodeAdapter
 {
     public static class CAlgoCodeAdapter
     {
-        public static string Adapt(this string code)
+        public static string AdaptFunctionBody(this string functionBody)
         {
-            return code
+            return functionBody
                 .FixReturnStatements()
                 .SplitDeclarationsAndAssignments()
                 .FixArrayDeclarations()
