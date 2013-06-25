@@ -7,17 +7,17 @@ namespace _2calgo.Parser.CodeAdapter
 {
     internal static class Declarations
     {
-        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?<type>\w+)\s+\w+[^;]+;", RegexOptions.Compiled);
+        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?<typeWithStatic>(static\s+){0,1}(?<type>\w+))\s+\w+[^;]+;", RegexOptions.Compiled);
 
         public static string SplitDeclarationsAndAssignments(this string code)
         {
             foreach (var declarationsWithAssignments in DeclarationWithAssignmentRegex.Matches(code)
                 .OfType<Match>()
-                .Where(match => match.Groups["type"].Value.IsSupported())
-                .Select(match => match.Value))
+                .Where(match => match.Groups["type"].Value.IsSupported()))
             {
-                var @type = declarationsWithAssignments.FirstWord();
-                var declarationsWithoutType = declarationsWithAssignments.Substring(@type.Length, declarationsWithAssignments.Length - @type.Length - 1);
+                var @typeWithStatic = declarationsWithAssignments.Groups["typeWithStatic"].Value;
+                var @type = declarationsWithAssignments.Groups["type"].Value;
+                var declarationsWithoutType = declarationsWithAssignments.Value.Substring(@typeWithStatic.Length, declarationsWithAssignments.Length - @typeWithStatic.Length - 1);
                 var splittedDeclarations = declarationsWithoutType.SplitByComma();
 
                 var assignments = splittedDeclarations
@@ -27,14 +27,14 @@ namespace _2calgo.Parser.CodeAdapter
                 if (replacement != string.Empty)
                     replacement += ";";
 
-                code = code.Replace(declarationsWithAssignments, replacement);
+                code = code.Replace(declarationsWithAssignments.Value, replacement);
                 foreach (var declaration in splittedDeclarations)
                 {
                     var variable = GetVariable(declaration);
                     var defaultValue = string.Empty;
                     if (variable[variable.Length - 1] != ']')
-                        defaultValue = GetDefaultValue(type);
-                    code = code.Insert(0, String.Format("\n{0} {1} {2};", type, variable, defaultValue));
+                        defaultValue = GetDefaultValue(@type);
+                    code = code.Insert(0, String.Format("\n{0} {1} {2};", @typeWithStatic, variable, defaultValue));
                 }
             }
             return code;
