@@ -18,7 +18,7 @@ namespace _2calgo.Presenter
 
         public string BuildIndicator()
         {
-            var code = TemplatesReader.Read("IndicatorTemplate.c");
+            var code = IndicatorTemplateProvider.GetTemplate();
 
             code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());
