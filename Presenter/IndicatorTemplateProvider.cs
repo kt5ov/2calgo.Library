@@ -8,7 +8,9 @@ namespace _2calgo.Presenter
     {
         private static readonly IEnumerable<string> PartNames = new string[]
             {
-                "Predefined variables"
+                "Custom indicators",
+                "Debug",
+                "Predefined variables",
             };
 
         public static string GetTemplate()

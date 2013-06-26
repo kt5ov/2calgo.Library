@@ -1,112 +1,52 @@
-    #region InitFunctions
-    
-    void IndicatorBuffers(int count) {}
+	#region Predefined variables
 
-    void SetIndexStyle(int index, int type, int style=EMPTY, int width=EMPTY, int clr=CLR_NONE) { }
-
-    void IndicatorDigits(int digits) { }
-
-    void IndicatorDigits(double digits) { }
-
-    void SetIndexDrawBegin(int index, int begin) { }
-
-    bool SetIndexBuffer(int index, Mq4DataSeries dataSeries) 
+    private int Bars
     {
-      return true;
+        get { return MarketSeries.Close.Count; }
     }
-
-    void IndicatorShortName(string name) { }
-
-    void SetIndexLabel(int index, string text) { }
-
-    void SetIndexArrow(int index, int code) { }
-
-    void SetIndexShift(int index, int shift) 
-    {
-      _allBuffers[index].SetShift(shift);
-    }
-        
-    void SetIndexEmptyValue(int index, double value)
-    {
-      _allBuffers[index].SetEmptyValue(value);
-    }
-
-    #endregion
-
-#region Predefined variables
-
-    private int _indicatorCounted;
-        private int IndicatorCounted()
-        {
-            return _indicatorCounted;
-        }
-
-        private int Bars
-        {
-            get { return MarketSeries.Close.Count; }
-        }
 
     private int Digits
     {
-      get
-      {
-        if (Symbol == null)
-          return 0;
-        return Symbol.Digits;
-      }
+		get
+		{
+			if (Symbol == null)
+				return 0;
+			return Symbol.Digits;
+		}
     }
       
-        Mq4Double Point
-        {
-          get
-          {
-        if (Symbol == null)
-          return 0.00001;
+	Mq4Double Point
+	{
+		get
+		{
+			if (Symbol == null)
+				return 0.00001;
 
-            return Symbol.PointSize;
-        }
-        }
+			return Symbol.PointSize;
+		}
+	}
 
-        private int? _period;
-        private int Period()
-        {         
-        if (_period == null)
-        {
-          var counters = new Dictionary<int, int>();
-          for (var i = 1; i < MarketSeries.Close.Count - 1; i++)
-          {
-            var timeSpan = (int)(MarketSeries.OpenTime[i] - MarketSeries.OpenTime[i - 1]).TotalMinutes;
-            if (!counters.ContainsKey(timeSpan))
-              counters.Add(timeSpan, 0);
-            counters[timeSpan]++;
-          }
-          _period = counters.OrderByDescending(kvp => kvp.Value)
-                    .Select(kvp => kvp.Key)
-                    .First();
-          _period = Math.Min(_period.Value, 43200);
-        }
-        return _period.Value;
-        }
+	private int? _period;
+	private int Period()
+	{         
+		if (_period == null)
+		{
+			var counters = new Dictionary<int, int>();
+			for (var i = 1; i < MarketSeries.Close.Count - 1; i++)
+			{
+			var timeSpan = (int)(MarketSeries.OpenTime[i] - MarketSeries.OpenTime[i - 1]).TotalMinutes;
+			if (!counters.ContainsKey(timeSpan))
+				counters.Add(timeSpan, 0);
+			counters[timeSpan]++;
+			}
+			_period = counters.OrderByDescending(kvp => kvp.Value)
+					.Select(kvp => kvp.Key)
+					.First();
+			_period = Math.Min(_period.Value, 43200);
+		}
+		return _period.Value;
+	}
 #endregion
-
-    static class Debug
-    {
-        private static Action<string> _printAction;
-        public static void Initialize(Action<string> printAction)
-        {
-            _printAction = printAction;
-        }
-
-        public static void WriteLine(string message)
-        {
-            _printAction(message);
-        }
-
-        public static void WriteLine(string format, params object[] args)
-        {
-            _printAction(string.Format(format, args));
-        }
-    }
 
 #region DataSeries
 
