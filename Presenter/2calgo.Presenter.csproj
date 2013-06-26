@@ -73,6 +73,18 @@
   <ItemGroup>
     <Resource Include="Templates\Indicator\Debug.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Constants.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Math and Trig.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Conversion functions.c" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

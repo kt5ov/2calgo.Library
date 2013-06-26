@@ -11,6 +11,10 @@ namespace _2calgo.Presenter
                 "Custom indicators",
                 "Debug",
                 "Predefined variables",
+                "DataSeries",
+                "Constants",
+                "Math and Trig",
+                "Conversion functions",
             };
 
         public static string GetTemplate()
