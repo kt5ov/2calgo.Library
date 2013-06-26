@@ -15,6 +15,15 @@ namespace _2calgo.Presenter
                 "Constants",
                 "Math and Trig",
                 "Conversion functions",
+                "Window functions",
+                "String functions",
+                "Date and Time functions",
+                "Messages",
+                "Validation",
+                "Timeseries access",
+                "Indicators",
+                "Common functions",
+                "Array functions",
             };
 
         public static string GetTemplate()
