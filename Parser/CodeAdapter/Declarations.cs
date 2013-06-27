@@ -7,7 +7,7 @@ namespace _2calgo.Parser.CodeAdapter
 {
     internal static class Declarations
     {
-        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?<typeWithStatic>(static\s+){0,1}(?<type>\w+))\s+\w+[^;]+;", RegexOptions.Compiled);
+        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?<typeWithStatic>(static\s+){0,1}(?<type>\w+))\s+(?<declarations>\w+[^;]+);", RegexOptions.Compiled);
 
         public static string SplitDeclarationsAndAssignments(this string code)
         {
@@ -59,14 +59,13 @@ namespace _2calgo.Parser.CodeAdapter
         {
             foreach (var declarationsWithAssignments in DeclarationWithAssignmentRegex.Matches(code)
                 .OfType<Match>()
-                .Where(match => match.Groups["type"].Value.IsSupported())
-                .Select(match => match.Value))
+                .Where(match => match.Groups["type"].Value.IsSupported()))
             {
-                var type = declarationsWithAssignments.FirstWord();
-                var declarationsWithoutType = declarationsWithAssignments.Substring(type.Length, declarationsWithAssignments.Length - @type.Length - 1);
+                var type = declarationsWithAssignments.Groups["type"];
+                var declarationsWithoutType = declarationsWithAssignments.Groups["declarations"].Value;
                 var splittedDeclarations = declarationsWithoutType.SplitByComma();
                 
-                code = code.Replace(declarationsWithAssignments, string.Empty);
+                code = code.Replace(declarationsWithAssignments.Value, string.Empty);
                 foreach (var declaration in splittedDeclarations)
                 {
                     code = code.Insert(0, String.Format("\n{0} {1};", type, declaration));
