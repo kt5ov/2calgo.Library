@@ -7,12 +7,12 @@ namespace _2calgo.Presenter
     static class IndicatorTemplateProvider
     {
         private const string ChartObjects = "ChartObjects";
-        private static readonly IEnumerable<string> PartNames = new string[]
+        private const string DataSeries = "DataSeries";
+        private static readonly IEnumerable<string> PartNames = new[]
             {
                 "Custom indicators",
                 "Debug",
                 "Predefined variables",
-                "DataSeries",
                 "Constants",
                 "Math and Trig",
                 "Conversion functions",
@@ -36,7 +36,11 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4Rectangle",
                 ChartObjects + "/Main",
                 "CashedStandardIndicators",
-                "DataSeriesExtremums",
+                DataSeries + "/DataSeriesExtremums",
+                DataSeries + "/InvertedDataSeries",
+                DataSeries + "/Mq4DataSeries",
+                DataSeries + "/Mq4TimeSeries",
+                DataSeries + "/NormalIndicatorDataSeries",
             };
 
         public static string GetTemplate()

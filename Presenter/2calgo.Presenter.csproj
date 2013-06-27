@@ -74,7 +74,7 @@
     <Resource Include="Templates\Indicator\Debug.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries.c" />
+    <Resource Include="Templates\Indicator\DataSeries\Mq4TimeSeries.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Constants.c" />
@@ -146,7 +146,16 @@
     <Resource Include="Templates\Indicator\CashedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeriesExtremums.c" />
+    <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtremums.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\InvertedDataSeries.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\Mq4DataSeries.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\NormalIndicatorDataSeries.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
