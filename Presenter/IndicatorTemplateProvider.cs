@@ -35,6 +35,8 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4TrendLine",
                 ChartObjects + "/Mq4Rectangle",
                 ChartObjects + "/Main",
+                "CashedStandardIndicators",
+                "DataSeriesExtremums",
             };
 
         public static string GetTemplate()
