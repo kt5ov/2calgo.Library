@@ -2,9 +2,9 @@
 {
     public class Function
     {
-        public string Name { get; private set; }
-        public string Declaration { get; private set; }
-        public string Body { get; private set; }
+        public string Name { get; set; }
+        public string Declaration { get; set; }
+        public string Body { get; set; }
 
         public Function(string name, string declaration, string body)
         {

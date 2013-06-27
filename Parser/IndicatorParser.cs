@@ -32,6 +32,8 @@ namespace _2calgo.Parser
             HandleParameters(code, indicator);
             HandleFunctions(code, indicator, parsingErrors);
             HandleFields(code, indicator);
+
+            StaticVariables.ExtractStaticVariablesToFields(indicator.Code);
             
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }
