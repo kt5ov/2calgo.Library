@@ -112,6 +112,36 @@
   <ItemGroup>
     <Resource Include="Templates\Indicator\Array functions.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Mq4Double.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4Object.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4ChartObjects.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4VerticalLine.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4HorizontalLine.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4Text.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4Label.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4TrendLine.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4Rectangle.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Main.c" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

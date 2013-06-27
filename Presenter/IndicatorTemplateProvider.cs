@@ -6,6 +6,7 @@ namespace _2calgo.Presenter
 {
     static class IndicatorTemplateProvider
     {
+        private const string ChartObjects = "ChartObjects";
         private static readonly IEnumerable<string> PartNames = new string[]
             {
                 "Custom indicators",
@@ -24,6 +25,16 @@ namespace _2calgo.Presenter
                 "Indicators",
                 "Common functions",
                 "Array functions",
+                "Mq4Double",
+                ChartObjects + "/Mq4ChartObjects",
+                ChartObjects + "/Mq4Object",
+                ChartObjects + "/Mq4VerticalLine",
+                ChartObjects + "/Mq4HorizontalLine",
+                ChartObjects + "/Mq4Text",
+                ChartObjects + "/Mq4Label",
+                ChartObjects + "/Mq4TrendLine",
+                ChartObjects + "/Mq4Rectangle",
+                ChartObjects + "/Main",
             };
 
         public static string GetTemplate()
