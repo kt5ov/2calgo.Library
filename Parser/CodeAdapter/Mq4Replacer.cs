@@ -14,17 +14,15 @@ namespace _2calgo.Parser.CodeAdapter
              return ReplaceType(code, "color", "int");
          }
 
-         public static string ReplaceDoubleToMq4Double(this string code)
+         public static string ReplaceSimpleTypesToMq4Double(this string code)
          {
-             return ReplaceType(code, "double", "Mq4Double");
+             return code
+                 .ReplaceType("double", "Mq4Double")
+                 .ReplaceType("int", "Mq4Double")
+                 .ReplaceType("bool", "Mq4Double");
          }
 
-         public static string ReplaceIntToMq4Double(this string code)
-         {
-             return ReplaceType(code, "int", "Mq4Double");
-         }
-
-        private static string ReplaceType(string code, string from, string to)
+        private static string ReplaceType(this string code, string from, string to)
         {
             var regex = new Regex(@"[^\w](?<from>" + from + @")[^\w]");
             while (true)

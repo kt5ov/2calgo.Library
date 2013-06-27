@@ -25,8 +25,7 @@ namespace _2calgo.Parser
                 .RemoveDotsFromNames()
                 .ReplaceDateTimeToInt()
                 .ReplaceColorToInt()
-                .ReplaceDoubleToMq4Double()
-                .ReplaceIntToMq4Double();
+                .ReplaceSimpleTypesToMq4Double();
 
             HandleProperties(code, indicator);
             HandleParameters(code, indicator);
