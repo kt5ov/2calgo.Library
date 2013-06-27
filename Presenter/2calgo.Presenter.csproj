@@ -49,7 +49,7 @@
     <Compile Include="IndicatorPresenter.cs" />
     <Compile Include="IndicatorTemplateProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplatesReader.cs" />
+    <Compile Include="StringResourceReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\2calgo.Model.csproj">
