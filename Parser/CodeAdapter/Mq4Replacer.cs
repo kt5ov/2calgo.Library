@@ -30,13 +30,13 @@ namespace _2calgo.Parser.CodeAdapter
             foreach (var function in indicatorCode.Functions)
             {
                 function.Body = function.Body.ReplaceSimpleTypesToMq4Double();
-                var declarationParts = function.Declaration.SplitByComma();
-                for (var i = 0; i < declarationParts.Length; i++)
-                {
-                    if (!declarationParts[i].Contains("="))
-                        declarationParts[i] = declarationParts[i].ReplaceSimpleTypesToMq4Double();
-                }
-                function.Declaration = string.Join(",", declarationParts);
+//                var declarationParts = function.Declaration.SplitByComma();
+//                for (var i = 0; i < declarationParts.Length; i++)
+//                {
+//                    if (!declarationParts[i].Contains("="))
+//                        declarationParts[i] = declarationParts[i].ReplaceSimpleTypesToMq4Double();
+//                }
+//                function.Declaration = string.Join(",", declarationParts);
             }
         }
 

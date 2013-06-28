@@ -3,12 +3,13 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using _2calgo.Model;
 using _2calgo.Parser.CodeAdapter;
+using _2calgo.Parser.Extensions;
 
 namespace _2calgo.Parser
 {
     public static class FunctionsParser
     {
-        private static readonly Regex DeclarationRegex = new Regex(@"\w{1,}\s{1,}(?<name>\w{1,})\s*\([\w\,\s\=]*\)", RegexOptions.Compiled);
+        private static readonly Regex DeclarationRegex = new Regex(@"(?<type>\w{1,})\s{1,}(?<name>\w{1,})\s*\((?<parameters>[^\)]*)\)", RegexOptions.Compiled);
 
         public static IEnumerable<Function> Parse(string code)
         {
@@ -25,9 +26,14 @@ namespace _2calgo.Parser
                 var bodyWithAroundingBrackets = code.GetBodyWithAroundingBrackets(match.Index);
                 var body = bodyWithAroundingBrackets.Substring(1, bodyWithAroundingBrackets.Length - 2);
                 var adaptedBody = body.AdaptFunctionBody();
+
+                var type = match.Groups["type"].Value;
+                var parameters = match.Groups["parameters"].Value
+                    .SplitByComma();
+                
                 
                 previousFunctionEndIndex = match.Index + declaration.Length + bodyWithAroundingBrackets.Length;
-                var function = new Function(name, declaration, adaptedBody)
+                var function = new Function(type, name, parameters, adaptedBody)
                     .FixReturnValue();
 
                 yield return function;

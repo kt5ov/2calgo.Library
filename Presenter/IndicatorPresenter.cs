@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using _2calgo.Model;
@@ -57,7 +58,8 @@ namespace _2calgo.Presenter
             var result = new StringBuilder();
             foreach (var function in functions.Where(f => f.Name != "start" && f.Name != "init" && f.Name != "deinit"))
             {
-                result.AppendLine(function.Declaration);
+                var parameters = string.Join(", ", function.Parameters);
+                result.AppendFormat("{0} {1}({2}){3}", function.ReturnType, function.Name, parameters, Environment.NewLine);
                 result.AppendLine("{");
                 result.Append(function.Body);
                 result.AppendLine("}");
