@@ -32,7 +32,8 @@ namespace _2calgo.Parser
             HandleFunctions(code, indicator, parsingErrors);
             HandleFields(code, indicator);
 
-            StaticVariables.ExtractStaticVariablesToFields(indicator.Code);
+            indicator.Code.ExtractStaticVariablesToFields();
+//            indicator.Code.ReplaceSimpleTypesToMq4Double();
             
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }
