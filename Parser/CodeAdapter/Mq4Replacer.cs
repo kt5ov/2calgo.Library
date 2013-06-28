@@ -29,25 +29,25 @@ namespace _2calgo.Parser.CodeAdapter
             indicatorCode.FieldsDeclarations = indicatorCode.FieldsDeclarations.ReplaceSimpleTypesToMq4Double();
             foreach (var function in indicatorCode.Functions)
             {
+                function.ReturnType = function.ReturnType.ReplaceSimpleTypesToMq4Double();
                 function.Body = function.Body.ReplaceSimpleTypesToMq4Double();
-//                var declarationParts = function.Declaration.SplitByComma();
-//                for (var i = 0; i < declarationParts.Length; i++)
-//                {
-//                    if (!declarationParts[i].Contains("="))
-//                        declarationParts[i] = declarationParts[i].ReplaceSimpleTypesToMq4Double();
-//                }
-//                function.Declaration = string.Join(",", declarationParts);
+                for (var i = 0; i < function.Parameters.Length; i++)
+                {
+                    if (!function.Parameters[i].Contains("="))
+                        function.Parameters[i] = function.Parameters[i].ReplaceSimpleTypesToMq4Double();
+                }
             }
         }
 
         private static string ReplaceType(this string code, string from, string to)
         {
+            code = " " + code + " ";
             var regex = new Regex(@"[^\w](?<from>" + from + @")[^\w]");
             while (true)
             {
                 var match = regex.Match(code);
                 if (!match.Success)
-                    return code;
+                    return code.Trim();
 
                 var index = match.Groups["from"].Index;
                 code = code.Remove(index, from.Length);

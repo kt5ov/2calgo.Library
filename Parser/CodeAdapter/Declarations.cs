@@ -45,7 +45,7 @@ namespace _2calgo.Parser.CodeAdapter
             switch (type)
             {
                 case "int":
-                case "Mq4Double":
+                case "double":
                     return "= 0";
                 case "string":
                     return "= \"\"";

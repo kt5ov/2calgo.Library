@@ -7,7 +7,7 @@ namespace _2calgo.Parser.CodeAdapter
         private static readonly List<string> SupportedTypes = new List<string>
             {
                 "int",
-                "Mq4Double",
+                "double",
                 "string",
                 "bool"
             };

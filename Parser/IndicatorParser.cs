@@ -24,8 +24,7 @@ namespace _2calgo.Parser
                 .ReplaceCSharpKeyWords()
                 .RemoveDotsFromNames()
                 .ReplaceDateTimeToInt()
-                .ReplaceColorToInt()
-                .ReplaceSimpleTypesToMq4Double();
+                .ReplaceColorToInt();
 
             HandleProperties(code, indicator);
             HandleParameters(code, indicator);
@@ -33,7 +32,7 @@ namespace _2calgo.Parser
             HandleFields(code, indicator);
 
             indicator.Code.ExtractStaticVariablesToFields();
-//            indicator.Code.ReplaceSimpleTypesToMq4Double();
+            indicator.Code.ReplaceSimpleTypesToMq4Double();
             
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }
