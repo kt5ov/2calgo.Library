@@ -31,5 +31,10 @@ namespace _2calgo.Parser.CodeAdapter
             } while (matchCount > 0);
             return code;
         }
+
+        public static string RemoveDollars(this string code)
+        {
+            return code.Replace("$", string.Empty);
+        }
     }
 }

@@ -11,7 +11,8 @@ namespace _2calgo.Parser.CodeAdapter
                 .SplitDeclarationsAndAssignments()
                 .FixArrayDeclarations()
                 .ReplaceSymbolToEmptyString()
-                .FixSwitches();
+                .FixSwitches()
+                .FixArrayResize();
         }
     }
 }
