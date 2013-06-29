@@ -10,6 +10,8 @@ namespace _2calgo.Parser.CodeAdapter
              {
                  case "DRAW_LINE":
                      return DrawingShapeStyle.Line;
+                 case "DRAW_SECTION":
+                     return DrawingShapeStyle.Section;
                  case "DRAW_HISTOGRAM":
                      return DrawingShapeStyle.Histogram;
                  case "DRAW_NONE":

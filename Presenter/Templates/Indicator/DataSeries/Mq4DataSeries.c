@@ -8,12 +8,14 @@
         private readonly DataSeriesExtremums _closeExtremums;
         private readonly ChartObjects _chartObjects;
         private readonly List<int> _overlapLineStartIndexes = new List<int>();
+		private readonly int _style;
 
-        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums, ChartObjects chartObjects)
+        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums, ChartObjects chartObjects, int style)
         {
             OutputDataSeries = outputDataSeries;
             _closeExtremums = closeExtremums;
             _chartObjects = chartObjects;
+			_style = style;
         }
 
         public int Count
@@ -66,8 +68,8 @@
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
                         return;
                 }
-				
-                if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
+								
+                if (_style == DRAW_LINE && !double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
                 {
                     int startIndex;
                     for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)

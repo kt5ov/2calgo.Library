@@ -11,6 +11,8 @@ namespace _2calgo.Presenter.Extensions
              {
                  case DrawingShapeStyle.Line:
                      return "Line";
+                 case DrawingShapeStyle.Section:
+                     return "Line";
                  case DrawingShapeStyle.Histogram:
                      return "Histogram";
                  case DrawingShapeStyle.Arrow:

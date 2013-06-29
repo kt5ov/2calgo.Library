@@ -40,7 +40,9 @@ namespace _2calgo.Presenter
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4DataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
                 template.InitialzeBuffers.AppendFormat("if ({0}_Converted == null) {0}_Converted = new NormalIndicatorDataSeries();\n", buffer);
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4DataSeries({0}_Converted, _closeExtremums, ChartObjects);\n", buffer);
+                
+                var style = IsLineVisible(indicator, index) ? (int) indicator.Styles[index] : (int)DrawingShapeStyle.None;
+                template.InitialzeBuffers.AppendFormat("{0} = new Mq4DataSeries({0}_Converted, _closeExtremums, ChartObjects, {1});\n", buffer, style);
                 template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
             }
 
@@ -69,7 +71,7 @@ namespace _2calgo.Presenter
 
         private static void AddLineDeclaration(Indicator indicator, IndicatorBuilder template, int bufferIndex, string bufferName)
         {
-            if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None && indicator.Colors[bufferIndex] != null)
+            if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None && IsLineVisible(indicator, bufferIndex))
             {
                 var colorPart = string.Empty;
                 if (indicator.Colors[bufferIndex] != null)
@@ -83,6 +85,11 @@ namespace _2calgo.Presenter
             }
             template.LinesDeclarations.AppendFormat("public IndicatorDataSeries {0}_Converted {1}\n", bufferName,
                                                     "{ get; set; }");
+        }
+
+        private static bool IsLineVisible(Indicator indicator, int bufferIndex)
+        {
+            return indicator.Colors[bufferIndex] != null;
         }
 
         private static string GenerateInitFunction(IndicatorCode code)
