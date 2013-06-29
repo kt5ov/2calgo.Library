@@ -9,13 +9,26 @@
         private readonly ChartObjects _chartObjects;
         private readonly List<int> _overlapLineStartIndexes = new List<int>();
 		private readonly int _style;
+		private readonly int _bufferIndex;
+		private readonly ConvertedIndicator _indicator;
+		private readonly Colors? _color;
 
-        public Mq4DataSeries(IndicatorDataSeries outputDataSeries, DataSeriesExtremums closeExtremums, ChartObjects chartObjects, int style)
+        public Mq4DataSeries(
+			ConvertedIndicator indicator, 
+			IndicatorDataSeries outputDataSeries, 
+			DataSeriesExtremums closeExtremums, 
+			ChartObjects chartObjects, 
+			int style, 
+			int bufferIndex,
+			Colors? color = null)
         {
             OutputDataSeries = outputDataSeries;
             _closeExtremums = closeExtremums;
             _chartObjects = chartObjects;
 			_style = style;
+			_bufferIndex = bufferIndex;
+			_indicator = indicator;
+			_color = color;
         }
 
         public int Count
@@ -68,23 +81,38 @@
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
                         return;
                 }
-								
-                if (_style == DRAW_LINE && !double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
-                {
-                    int startIndex;
-                    for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)
-                    {
-                        if (!double.IsNaN(OutputDataSeries[startIndex]))
-                            break;
-                    }
-                    if (startIndex > 0)
-                    {
-                        RemoveOverlapLinesSinceIndex(startIndex);
+					
+				switch (_style)
+				{
+					case DRAW_LINE:
+						if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
+						{
+							int startIndex;
+							for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)
+							{
+								if (!double.IsNaN(OutputDataSeries[startIndex]))
+									break;
+							}
+							if (startIndex > 0)
+							{
+								RemoveOverlapLinesSinceIndex(startIndex);
 
-                        _chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
-                        _overlapLineStartIndexes.Add(startIndex);
-                    }                    
-                }
+								_chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
+								_overlapLineStartIndexes.Add(startIndex);
+							}                    
+						}
+						break;
+					case DRAW_ARROW:
+						var arrowName = GetArrowName(indexToSet);
+						if (double.IsNaN(valueToSet))
+							_chartObjects.RemoveObject(arrowName);
+						else
+						{
+							var color = _color.HasValue ? _color.Value : Colors.Red;
+							_chartObjects.DrawText(arrowName , _indicator.ArrowByIndex[_bufferIndex], indexToSet, valueToSet, VerticalAlignment.Center, HorizontalAlignment.Center, color);
+						}
+						break;
+				}
 
                 OutputDataSeries[indexToSet] = valueToSet; 
             }
@@ -105,5 +133,10 @@
         private string GetOverlapLineName(int startIndex)
         {
             return string.Format("Overlapline {0} {1}", GetHashCode(), startIndex);
+        }
+		
+        private string GetArrowName(int index)
+        {
+            return string.Format("Arrow {0} {1}", GetHashCode(), index);
         }
     }

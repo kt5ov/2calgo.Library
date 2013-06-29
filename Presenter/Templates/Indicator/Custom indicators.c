@@ -19,7 +19,25 @@
 
     void SetIndexLabel(int index, string text) { }
 
-    void SetIndexArrow(int index, int code) { }
+	const string xArrow = "\u2716";
+	public Dictionary<int, string> ArrowByIndex = new Dictionary<int, string>{ {0, xArrow},  {1, xArrow},  {2, xArrow},  {3, xArrow},  {4, xArrow},  {5, xArrow},  {6, xArrow},  {7, xArrow}};
+	void SetIndexArrow(int index, int code) 
+	{
+		ArrowByIndex[index] = GetArrowByCode(code);
+	}
+
+	string GetArrowByCode(int code)
+	{
+		switch(code)
+		{
+			case 233:
+				return "\u25B2";
+			case 234:
+				return "\u25BC";
+			default:
+				return xArrow;
+		}
+	}
 
     void SetIndexShift(int index, int shift) 
     {
