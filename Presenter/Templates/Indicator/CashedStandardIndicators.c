@@ -205,4 +205,25 @@
             return indicator;
         }
 #endregion //iStdDev
+
+#region iWPR
+        private struct WprParameters
+        {
+            public int Periods;
+        }
+    
+        private Dictionary<WprParameters, WilliamsPctR> _wprIndicators = new Dictionary<WprParameters, WilliamsPctR>();
+
+        public WilliamsPctR WilliamsPctR(int periods)
+        {
+            var wprParameters = new WprParameters { Periods = periods };
+            if (_wprIndicators.ContainsKey(wprParameters))
+                return _wprIndicators[wprParameters];
+
+            var indicator = _indicatorsAccessor.WilliamsPctR(periods);
+            _wprIndicators.Add(wprParameters, indicator);
+
+            return indicator;
+        }
+#endregion //iWPR
     }

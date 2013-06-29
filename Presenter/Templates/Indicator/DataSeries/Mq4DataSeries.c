@@ -66,7 +66,7 @@
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
                         return;
                 }
-
+				
                 if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
                 {
                     int startIndex;

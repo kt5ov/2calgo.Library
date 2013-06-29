@@ -19,7 +19,7 @@
                 case PRICE_WEIGHTED:
                     return MarketSeries.Weighted;
             }
-            throw new NotImplementedException("Sorry, the Converter doesn't support working with this type of AppliedPrice");
+            throw new NotImplementedException("Converter doesn't support working with this type of AppliedPrice");
         }   
 
         private static MovingAverageType ToMaType(int constant)
@@ -261,5 +261,17 @@
             return indicator.Result[_currentIndex - shift];
         }        
 #endregion //iStdDev
+
+#region iWPR
+        private double iWPR(string symbol, int timeframe, int period, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);
+                   
+            var indicator = _cashedStandardIndicators.WilliamsPctR(period);
+
+            return indicator.Result[_currentIndex - shift];
+        }        
+#endregion //iWPR
+
 
 #endregion //MQ4 Indicators   
