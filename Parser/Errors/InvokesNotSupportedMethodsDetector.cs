@@ -7,7 +7,6 @@ namespace _2calgo.Parser.Errors
     {
         private static readonly List<MethodError> MethodErrors = new List<MethodError>
             {
-                new MethodError("SetIndexArrow", ErrorType.NotSupportedWarning),
                 new MethodError("IndicatorDigits", ErrorType.NotSupportedWarning),
                 new MethodError("IndicatorShortName", ErrorType.NotSupportedWarning),
                 new MethodError("SetIndexLabel", ErrorType.NotSupportedWarning),

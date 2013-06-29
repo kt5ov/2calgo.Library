@@ -29,8 +29,6 @@ namespace _2calgo.Parser.Errors
                 new ContainsStringErrorDetector("AccountEquity", ErrorType.NotSupportedError),
 
                 new ContainsStringErrorDetector("OBJPROP_ANGLE", ErrorType.NotSupportedWarning),
-                new ContainsStringErrorDetector("DRAW_SECTION", ErrorType.NotSupportedWarning),
-                new ContainsStringErrorDetector("DRAW_ARROW", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("DRAW_ZIGZAG", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_BACK", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_RAY", ErrorType.NotSupportedWarning),
