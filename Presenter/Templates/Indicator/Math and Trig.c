@@ -54,4 +54,24 @@
     {
       return Math.Log(x);
     }
+    
+    Mq4Double MathCos(double x)
+    {
+      return Math.Cos(x);
+    }
+
+    Mq4Double MathSin(double x)
+    {
+      return Math.Sin(x);
+    }
+
+    Mq4Double MathMod(double value, double value2)
+    {
+      return value % value2;
+    }
+
+    Mq4Double MathExp(double x)
+    {
+      return Math.Exp(x);
+    }
     #endregion
