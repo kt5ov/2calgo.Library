@@ -37,3 +37,13 @@
       _mq4ChartObjects.Move(name, point, time, price);
       return true;
     }    
+
+	int ObjectsTotal(int type = EMPTY)
+	{
+		return _mq4ChartObjects.ObjectsTotal(type);
+	}
+
+	public string ObjectName(int index)
+	{
+		return _mq4ChartObjects.ObjectName(index);
+	}
