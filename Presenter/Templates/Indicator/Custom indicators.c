@@ -26,7 +26,7 @@
         ArrowByIndex[index] = GetArrowByCode(code);
     }
 
-    string GetArrowByCode(int code)
+    public static string GetArrowByCode(int code)
     {
         switch(code)
         {

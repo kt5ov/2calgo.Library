@@ -88,7 +88,7 @@
         const int OBJ_PITCHFORK = 19;
         const int OBJ_CYCLES = 20;*/
         const int OBJ_TEXT = 21;
-        //const int OBJ_ARROW = 22;
+        const int OBJ_ARROW = 22;
         const int OBJ_LABEL = 23;
         
         const int OBJPROP_TIME1 = 0;

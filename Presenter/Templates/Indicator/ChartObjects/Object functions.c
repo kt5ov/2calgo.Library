@@ -9,7 +9,7 @@
         return _mq4ChartObjects.Get(name, index);
     }
                 
-    bool ObjectSetText(string name, string text, int font_size, string font = null, int color = CLR_NONE)
+    bool ObjectSetText(string name, string text, int font_size = 11, string font = null, int color = CLR_NONE)
     {
 		_mq4ChartObjects.SetText(name, text, font_size, font, color);
 		return true;

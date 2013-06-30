@@ -35,6 +35,7 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4Label",
                 ChartObjects + "/Mq4TrendLine",
                 ChartObjects + "/Mq4Rectangle",
+                ChartObjects + "/Mq4Arrow",
                 ChartObjects + "/Object functions",
                 "CashedStandardIndicators",
                 DataSeries + "/DataSeriesExtremums",
