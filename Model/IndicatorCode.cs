@@ -6,11 +6,11 @@ namespace _2calgo.Model
     {
         public string FieldsDeclarations { get; set; }
 
-        public IEnumerable<Function> Functions { get; set; }
+        public List<Function> Functions { get; set; }
 
         public IndicatorCode()
         {
-            Functions = new Function[0];
+            Functions = new List<Function>();
         }
     }
 }

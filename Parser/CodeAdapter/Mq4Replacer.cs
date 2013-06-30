@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using _2calgo.Model;
 using _2calgo.Parser.Extensions;
+using System.Linq;
 
 namespace _2calgo.Parser.CodeAdapter
 {
@@ -52,6 +53,14 @@ namespace _2calgo.Parser.CodeAdapter
                 var index = match.Groups["from"].Index;
                 code = code.Remove(index, from.Length);
                 code = code.Insert(index, to);
+            }
+        }
+
+        public static void AddMq4InitFunctionIfDoesNotExist(this IndicatorCode indicatorCode)
+        {
+            if (!indicatorCode.Functions.Any(f => f.Name == "Mq4Init"))
+            {
+                indicatorCode.Functions.Add(new Function("void", "Mq4Init", new string[0], string.Empty));
             }
         }
     }

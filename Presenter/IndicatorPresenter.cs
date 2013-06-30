@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using _2calgo.Model;
-using _2calgo.Parser.CodeAdapter;
 using _2calgo.Presenter.Extensions;
 
 namespace _2calgo.Presenter
@@ -51,8 +50,6 @@ namespace _2calgo.Presenter
                 template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
             }
 
-            template.StartFunction = GetStartFunction(indicator.Code);
-            template.InitFunction = GenerateInitFunction(indicator.Code);
             template.Fields = indicator.Code.FieldsDeclarations;
             template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
@@ -63,7 +60,7 @@ namespace _2calgo.Presenter
         private static string GetFunctions(IEnumerable<Function> functions)
         {
             var result = new StringBuilder();
-            foreach (var function in functions.Where(f => f.Name != "start" && f.Name != "init" && f.Name != "deinit"))
+            foreach (var function in functions.Where(f => f.Name != "deinit"))
             {
                 var parameters = string.Join(", ", function.Parameters);
                 result.AppendFormat("{0} {1}({2}){3}", function.ReturnType, function.Name, parameters, Environment.NewLine);
@@ -95,25 +92,6 @@ namespace _2calgo.Presenter
         private static bool IsLineVisible(Indicator indicator, int bufferIndex)
         {
             return indicator.Colors[bufferIndex] != null && indicator.Styles[bufferIndex] != DrawingShapeStyle.Arrow;
-        }
-
-        private static string GenerateInitFunction(IndicatorCode code)
-        {
-            var initFunction = code.Functions.FirstOrDefault(function => function.Name == "init");
-            if (initFunction == null)
-                return string.Empty;
-
-            return initFunction.Body
-                .RemoveReturnStatements();
-        }
-
-        private static string GetStartFunction(IndicatorCode code)
-        {
-            var startFunction = code.Functions.FirstOrDefault(function => function.Name == "start");
-            if (startFunction == null)
-                return string.Empty;
-
-            return startFunction.Body;
         }
     }
 }

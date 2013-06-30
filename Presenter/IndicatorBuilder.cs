@@ -4,8 +4,6 @@ namespace _2calgo.Presenter
 {
     public class IndicatorBuilder
     {
-        public string StartFunction { get; set; }
-        public string InitFunction { get; set; }
         public string Fields { get; set; }
         public string Mq4Functions { get; set; }
 
@@ -27,8 +25,6 @@ namespace _2calgo.Presenter
             code = code.Replace("#Buffers_SetCurrentIndex_PLACE_HOLDER#", BuffersSetCurrentIndex.ToString());
             code = code.Replace("#Mq4Functions_PLACE_HOLDER#", Mq4Functions);
 
-            code = code.Replace("#Start_function_PLACE_HOLDER#", StartFunction);
-            code = code.Replace("#Init_function_PLACE_HOLDER#", InitFunction);
             code = code.Replace("#IsDrawingOnChartWindow_PLACE_HOLDER#", IsDrawingOnChartWindow);
             code = code.Replace("#Mq4Fields_PLACE_HOLDER#", Fields);
 

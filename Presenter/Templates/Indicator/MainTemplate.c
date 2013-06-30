@@ -17,17 +17,7 @@ namespace cAlgo.Indicators
 #Parameters_PLACE_HOLDER#
 
 #Lines_declarations_PLACE_HOLDER#
-
-        private int Mq4Start()
-        {         
-#Start_function_PLACE_HOLDER#
-        }    
-
-        private void Mq4Init()
-        {         
-#Init_function_PLACE_HOLDER#
-        }    
-
+     
 #Mq4Fields_PLACE_HOLDER#
 
 #Mq4Functions_PLACE_HOLDER#

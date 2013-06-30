@@ -26,26 +26,45 @@ namespace _2calgo.Parser.CodeAdapter
                         body = body.Insert(match.Groups["value"].Index, " 0");
                         break;
                     }
+                    if (value != string.Empty && function.ReturnType == "void")
+                    {
+                        body = body.Replace(match.Value, "return;");
+                    }
                 }
             } while (wasFixed);
 
-            if (!ReturnRegex.IsMatch(body))
+            switch (function.ReturnType)
             {
-                switch (function.ReturnType)
-                {
-                    case "void":
-                        body += "return;";
-                        break;
-                    case "bool":
-                        body += "return true;";
-                        break;
-                    default:
-                        body += "return 0;";
-                        break;
-                }
+                case "void":
+                    body += "return;";
+                    break;
+                case "bool":
+                    body += "return true;";
+                    break;
+                case "string":
+                    body += "return string.Empty;";
+                    break;
+                default:
+                    body += "return 0;";
+                    break;
             }
 
             return new Function(function.ReturnType, function.Name, function.Parameters, body);
+        }
+
+        public static Function RenameStandardFunctions(this Function function)
+        {
+            var name = function.Name;
+            switch (name)
+            {
+                case "start":
+                    name = "Mq4Start";
+                    break;
+                case "init":
+                    name = "Mq4Init";
+                    break;
+            }
+            return new Function(function.ReturnType, name, function.Parameters, function.Body);
         }
     }
 }

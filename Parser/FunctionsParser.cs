@@ -34,7 +34,8 @@ namespace _2calgo.Parser
                 
                 previousFunctionEndIndex = match.Index + declaration.Length + bodyWithAroundingBrackets.Length;
                 var function = new Function(type, name, parameters, adaptedBody)
-                    .FixReturnValue();
+                    .FixReturnValue()
+                    .RenameStandardFunctions();
 
                 yield return function;
             }
