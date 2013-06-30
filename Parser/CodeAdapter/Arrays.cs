@@ -32,12 +32,5 @@ namespace _2calgo.Parser.CodeAdapter
             }
             return code;
         }
-
-        private static readonly Regex ArrayResizeRegex = new Regex(@"(?<arrayResize>ArrayResize)\s*\(\s*(?<name>\w+)\s*,(?<size>[^\)]+)\)");
-        public static string FixArrayResize(this string code)
-        {
-            var result = ArrayResizeRegex.Replace(code, "Array.Resize(ref ${name}, ${size} + 1)");
-            return result;
-        }
     }
 }
