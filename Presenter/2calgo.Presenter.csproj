@@ -68,7 +68,7 @@
     <Resource Include="Templates\Indicator\MainTemplate.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Custom indicators.c" />
+    <Resource Include="Templates\Indicator\Indicators\Custom indicators.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Debug.c" />
@@ -104,7 +104,7 @@
     <Resource Include="Templates\Indicator\Timeseries access.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Indicators.c" />
+    <Resource Include="Templates\Indicator\Indicators\iIndicators.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Common functions.c" />
@@ -143,7 +143,7 @@
     <Resource Include="Templates\Indicator\ChartObjects\Object functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\CashedStandardIndicators.c" />
+    <Resource Include="Templates\Indicator\Indicators\CashedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtremums.c" />

@@ -9,9 +9,10 @@ namespace _2calgo.Presenter
         private const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/Indicator/";
         private const string ChartObjects = "ChartObjects";
         private const string DataSeries = "DataSeries";
+        private const string Indicators = "Indicators";
+
         private static readonly IEnumerable<string> PartNames = new[]
             {
-                "Custom indicators",
                 "Debug",
                 "Predefined variables",
                 "Constants",
@@ -23,10 +24,14 @@ namespace _2calgo.Presenter
                 "Messages",
                 "Validation",
                 "Timeseries access",
-                "Indicators",
                 "Common functions",
                 "Array functions",
                 "Mq4Double",
+
+                Indicators + "/iIndicators",
+                Indicators + "/CashedStandardIndicators",
+                Indicators + "/Custom indicators",
+                
                 ChartObjects + "/Mq4ChartObjects",
                 ChartObjects + "/Mq4Object",
                 ChartObjects + "/Mq4VerticalLine",
@@ -37,7 +42,7 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4Rectangle",
                 ChartObjects + "/Mq4Arrow",
                 ChartObjects + "/Object functions",
-                "CashedStandardIndicators",
+                
                 DataSeries + "/DataSeriesExtremums",
                 DataSeries + "/InvertedDataSeries",
                 DataSeries + "/Mq4DataSeries",
