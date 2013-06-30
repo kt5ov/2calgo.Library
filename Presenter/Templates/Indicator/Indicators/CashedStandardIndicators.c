@@ -226,4 +226,26 @@
             return indicator;
         }
 #endregion //iWPR
+
+#region iSAR
+        private struct SarParameters
+        {
+            public double Step;
+			public double Maximum;
+        }
+    
+        private Dictionary<SarParameters, ParabolicSAR> _sarIndicators = new Dictionary<SarParameters, ParabolicSAR>();
+
+        public ParabolicSAR ParabolicSAR(double step, double maximum)
+        {
+            var sarParameters = new SarParameters { Step = step, Maximum = maximum };
+            if (_sarIndicators.ContainsKey(sarParameters))
+                return _sarIndicators[sarParameters];
+
+            var indicator = _indicatorsAccessor.ParabolicSAR(step, maximum);
+            _sarIndicators.Add(sarParameters, indicator);
+
+            return indicator;
+        }
+#endregion //iSAR
     }

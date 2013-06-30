@@ -273,5 +273,15 @@
         }        
 #endregion //iWPR
 
+#region iSAR
+        private double iSAR(string symbol, int timeframe, double step, double maximum, int shift)
+        {
+            ValidateSymbolAndTimeFrame(symbol, timeframe);
+                   
+            var indicator = _cashedStandardIndicators.ParabolicSAR(step, maximum);
+
+            return indicator.Result[_currentIndex - shift];
+        }        
+#endregion //iSAR
 
 #endregion //MQ4 Indicators   
