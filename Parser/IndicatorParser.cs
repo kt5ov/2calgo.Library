@@ -65,6 +65,7 @@ namespace _2calgo.Parser
                 .RemoveFunctions()
                 .SplitDeclarations()
                 .RemoveMq4Buffers(indicator.Buffers)
+                .RemoveReturnStatements()
                 .FixArrayDeclarations();
 
             indicator.Code.FieldsDeclarations = onlyFields;
