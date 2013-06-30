@@ -5,6 +5,9 @@ using System.Threading;
 using _2calgo.Model;
 using _2calgo.Parser.CodeAdapter;
 using _2calgo.Parser.Errors;
+using cAlgo.API;
+using Indicator = _2calgo.Model.Indicator;
+using System;
 
 namespace _2calgo.Parser
 {
@@ -131,8 +134,17 @@ namespace _2calgo.Parser
             foreach (var property in colorProperties)
             {
                 var index = int.Parse(property.Name["indicator_color".Length].ToString());
-                result.Colors[index - 1] = property.Value;
+                result.Colors[index - 1] = GetKnownColor(property.Value);
             }
+        }
+        
+        private static string GetKnownColor(string mq4Color)
+        {
+            Colors color;
+            if (!Enum.TryParse(mq4Color, out color))
+                return "Green";
+
+            return color.ToString();
         }
     }
 }
