@@ -3,6 +3,11 @@
         _mq4ChartObjects.Set(name, index, value);
 		return true;
     }
+
+    Mq4Double ObjectGet(string name, int index)
+    {
+        return _mq4ChartObjects.Get(name, index);
+    }
                 
     bool ObjectSetText(string name, string text, int font_size, string font = null, int color = CLR_NONE)
     {

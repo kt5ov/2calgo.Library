@@ -47,13 +47,12 @@
             protected Colors Color
             {
                 get
-                {
-                    
-          int intColor = Get(OBJPROP_COLOR);
-          if (intColor != CLR_NONE)
-            return Mq4Colors.GetColorByInteger(intColor);
+                {                    
+					int intColor = Get(OBJPROP_COLOR);
+					if (intColor != CLR_NONE)
+						return Mq4Colors.GetColorByInteger(intColor);
 
-                return Colors.Blue;      
+					return Colors.Blue;      
                 }
             }
 

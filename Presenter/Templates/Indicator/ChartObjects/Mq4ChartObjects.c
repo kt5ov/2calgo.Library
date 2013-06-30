@@ -87,6 +87,14 @@
 			_mq4ObjectByName[name].Set(index, value);
 			_mq4ObjectByName[name].Draw();
 		}
+
+		public Mq4Double Get(string name, int index)
+		{
+			if (!_mq4ObjectByName.ContainsKey(name))
+				return 0;
+
+			return _mq4ObjectByName[name].Get(index);
+		}
             
 		public void SetText(string name, string text, int font_size, string font, int color)
 		{
