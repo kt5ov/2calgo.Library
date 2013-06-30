@@ -61,7 +61,7 @@ namespace _2calgo.Parser
         {
             var onlyFields = code
                 .RemoveMq4Properies()
-                .RemoveMq4Parameters()
+                .RemoveParameters()
                 .RemoveFunctions()
                 .SplitDeclarations()
                 .RemoveMq4Buffers(indicator.Buffers)

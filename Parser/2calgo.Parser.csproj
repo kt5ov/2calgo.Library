@@ -69,7 +69,6 @@
     <Compile Include="CodeAdapter\Functions.cs" />
     <Compile Include="InnerStructures\InnerStructuresHandler.cs" />
     <Compile Include="CodeAdapter\Mq4Buffers.cs" />
-    <Compile Include="CodeAdapter\Mq4Parameters.cs" />
     <Compile Include="CodeAdapter\Mq4Properties.cs" />
     <Compile Include="Errors\ParsingErrorsScaner.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
