@@ -1,4 +1,4 @@
-	class Mq4DataSeries
+	class Mq4OutputDataSeries
     {
         public IndicatorDataSeries OutputDataSeries { get; private set; }
         private readonly NormalIndicatorDataSeries _originalValues = new NormalIndicatorDataSeries();
@@ -13,7 +13,7 @@
 		private readonly ConvertedIndicator _indicator;
 		private readonly Colors? _color;
 
-        public Mq4DataSeries(
+        public Mq4OutputDataSeries(
 			ConvertedIndicator indicator, 
 			IndicatorDataSeries outputDataSeries, 
 			DataSeriesExtremums closeExtremums, 

@@ -10,7 +10,7 @@
 
     void SetIndexDrawBegin(int index, int begin) { }
 
-    bool SetIndexBuffer(int index, Mq4DataSeries dataSeries) 
+    bool SetIndexBuffer(int index, Mq4OutputDataSeries dataSeries) 
     {
       return true;
     }

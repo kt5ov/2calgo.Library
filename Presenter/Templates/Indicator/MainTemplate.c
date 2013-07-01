@@ -53,7 +53,7 @@ namespace cAlgo.Indicators
         private Mq4TimeSeries Time;
 
         private DataSeriesExtremums _closeExtremums;
-        private readonly List<Mq4DataSeries> _allBuffers = new List<Mq4DataSeries>();
+        private readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
 
         public override void Calculate(int index)
         {

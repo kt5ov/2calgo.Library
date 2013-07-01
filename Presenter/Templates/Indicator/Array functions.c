@@ -7,7 +7,7 @@
       return array.Length;
     }
 
-    int ArrayInitialize(Mq4DataSeries array, double value)
+    int ArrayInitialize(Mq4OutputDataSeries array, double value)
     {
       for(var i = 0; i < array.Count; i++)
         array[i] = value;

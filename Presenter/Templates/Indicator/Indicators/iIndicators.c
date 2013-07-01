@@ -49,7 +49,7 @@
             return CalculateiMA(series, period, ma_method, shift);
         }       
                 
-        private double iMAOnArray(Mq4DataSeries invertedDataSeries, int total, int period, int ma_shift, int ma_method, int shift) 
+        private double iMAOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int ma_shift, int ma_method, int shift) 
         {
           return CalculateiMA(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
         }
@@ -85,7 +85,7 @@
             return CalculateRsi(series, period, shift);
         }       
                 
-        private double iRSIOnArray(Mq4DataSeries invertedDataSeries, int total, int period, int shift) 
+        private double iRSIOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int shift) 
         {
           return CalculateRsi(invertedDataSeries.OutputDataSeries, period, shift);
         }
@@ -110,7 +110,7 @@
             return CalculateBands(series, period, deviation, mode, shift);
         }       
                 
-        private double iBandsOnArray(Mq4DataSeries invertedDataSeries, int total, int period, int deviation, int bands_shift, int mode, int shift) 
+        private double iBandsOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int deviation, int bands_shift, int mode, int shift) 
         {
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
@@ -219,7 +219,7 @@
             return CalculateCCI(series, period, shift);
         }       
                 
-        private double iCCIOnArray(Mq4DataSeries invertedDataSeries, int period, int shift) 
+        private double iCCIOnArray(Mq4OutputDataSeries invertedDataSeries, int period, int shift) 
         {            
             return CalculateCCI(invertedDataSeries.OutputDataSeries, period, shift);
         }
@@ -245,7 +245,7 @@
             return CalculateiStdDev(series, ma_period, ma_shift, ma_method, shift);
         }       
                 
-        private double iStdDevOnArray(Mq4DataSeries invertedDataSeries, int total, int ma_period, int ma_shift, int ma_method, int shift) 
+        private double iStdDevOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int ma_period, int ma_shift, int ma_method, int shift) 
         {
           return CalculateiStdDev(invertedDataSeries.OutputDataSeries, ma_period, ma_shift, ma_method, shift);
         }
