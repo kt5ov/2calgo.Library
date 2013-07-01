@@ -1,4 +1,4 @@
-	class Mq4OutputDataSeries : IMq4Array
+	class Mq4OutputDataSeries : IMq4Array<Mq4Double>
     {
         public IndicatorDataSeries OutputDataSeries { get; private set; }
         private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();

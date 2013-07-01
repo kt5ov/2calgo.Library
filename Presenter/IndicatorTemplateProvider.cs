@@ -50,6 +50,7 @@ namespace _2calgo.Presenter
                 DataSeries + "/IndicatorDataSeries",
                 DataSeries + "/IMq4Array",
                 DataSeries + "/Mq4Array",
+                DataSeries + "/DefaultValues",
             };
 
         public static string GetTemplate()

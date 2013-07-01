@@ -1,19 +1,25 @@
-	class Mq4Array : IMq4Array
+	class Mq4Array<T> : IMq4Array<T>
 	{
-		private List<double> _data = new List<double>();
+		private List<T> _data = new List<T>();
+		private readonly T _defaultValue;
       
+		public Mq4Array()
+		{
+			_defaultValue = (T)DefaultValues.GetDefaultValue<T>();
+		}
+
 		private void EnsureCountIsEnough(int index)
 		{
 			while (_data.Count <= index)
-				_data.Add(double.NaN);
+				_data.Add(_defaultValue);
 		}
-      
-		public Mq4Double this[int index]
+				     
+		public T this[int index]
 		{       
 			get
 			{
 				if (index < 0)
-					return double.NaN;    
+					return _defaultValue;    
             
 				EnsureCountIsEnough(index);         
           

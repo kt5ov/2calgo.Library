@@ -1,4 +1,4 @@
-	interface IMq4Array
+	interface IMq4Array<T>
 	{
-		Mq4Double this[int index] { get; set; }
+		T this[int index] { get; set; }
 	}
