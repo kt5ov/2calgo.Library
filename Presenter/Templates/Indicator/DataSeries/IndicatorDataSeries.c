@@ -1,4 +1,4 @@
-    internal class NormalIndicatorDataSeries : IndicatorDataSeries
+    internal class IndicatorDataSeries : cAlgo.API.IndicatorDataSeries
     {
       private List<double> _data = new List<double>();
       

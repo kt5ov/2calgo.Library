@@ -47,7 +47,7 @@ namespace _2calgo.Presenter
                 DataSeries + "/InvertedDataSeries",
                 DataSeries + "/Mq4OutputDataSeries",
                 DataSeries + "/Mq4TimeSeries",
-                DataSeries + "/NormalIndicatorDataSeries",
+                DataSeries + "/IndicatorDataSeries",
             };
 
         public static string GetTemplate()

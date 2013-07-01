@@ -38,7 +38,7 @@ namespace _2calgo.Presenter
                 
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
-                template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = new NormalIndicatorDataSeries();\n", buffer);
+                template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = new IndicatorDataSeries();\n", buffer);
 
                 var style = indicator.Styles[index];
                 if (style != DrawingShapeStyle.Arrow && !IsLineVisible(indicator, index))

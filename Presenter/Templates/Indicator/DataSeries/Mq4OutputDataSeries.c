@@ -1,7 +1,7 @@
 	class Mq4OutputDataSeries
     {
         public IndicatorDataSeries OutputDataSeries { get; private set; }
-        private readonly NormalIndicatorDataSeries _originalValues = new NormalIndicatorDataSeries();
+        private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();
         private int _currentIndex;
         private int _shift;
         private double _emptyValue = double.NaN;
