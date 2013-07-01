@@ -1,4 +1,4 @@
-	class Mq4OutputDataSeries
+	class Mq4OutputDataSeries : IMq4Array
     {
         public IndicatorDataSeries OutputDataSeries { get; private set; }
         private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();
@@ -54,7 +54,7 @@
           _emptyValue = emptyValue;
         }
 
-        public double this[int index]
+        public Mq4Double this[int index]
         {
             get 
             { 

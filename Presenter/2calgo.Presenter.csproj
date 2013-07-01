@@ -160,6 +160,12 @@
   <ItemGroup>
     <Resource Include="Templates\Indicator\ChartObjects\Mq4Arrow.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\IMq4Array.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\Mq4Array.c" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
