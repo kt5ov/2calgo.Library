@@ -38,7 +38,7 @@ namespace _2calgo.Presenter
                 
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
-                template.InitialzeBuffers.AppendFormat("if ({0}_Converted == null) {0}_Converted = new NormalIndicatorDataSeries();\n", buffer);
+                template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = new NormalIndicatorDataSeries();\n", buffer);
 
                 var style = indicator.Styles[index];
                 if (style != DrawingShapeStyle.Arrow && !IsLineVisible(indicator, index))
@@ -46,7 +46,7 @@ namespace _2calgo.Presenter
                 
                 var color = indicator.Colors[index] != null ? "Colors." + indicator.Colors[index] : "null";
 
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_Converted, _closeExtremums, ChartObjects, {1}, {2}, {3});\n", buffer, (int)style, index, color);
+                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, {3});\n", buffer, (int)style, index, color);
                 template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
             }
 
@@ -85,7 +85,7 @@ namespace _2calgo.Presenter
 
                 template.LinesDeclarations.AppendFormat("[Output(\"{0}\"{1}{2})]\n", bufferName, colorPart, plotTypePart);
             }
-            template.LinesDeclarations.AppendFormat("public IndicatorDataSeries {0}_Converted {1}\n", bufferName,
+            template.LinesDeclarations.AppendFormat("public IndicatorDataSeries {0}_AlgoOutputDataSeries {1}\n", bufferName,
                                                     "{ get; set; }");
         }
 
