@@ -27,12 +27,12 @@ namespace cAlgo.Indicators
             _closeExtremums = new DataSeriesExtremums(MarketSeries.Close);
 #Initialize_buffers_PLACE_HOLDER#
 
-            Open = new InvertedDataSeries(MarketSeries.Open);
-            High = new InvertedDataSeries(MarketSeries.High);
-            Low = new InvertedDataSeries(MarketSeries.Low);
-            Close = new InvertedDataSeries(MarketSeries.Close);
-            Volume = new InvertedDataSeries(MarketSeries.TickVolume);
-            Median = new InvertedDataSeries(MarketSeries.Median);
+            Open = new Mq4MarketDataSeries(MarketSeries.Open);
+            High = new Mq4MarketDataSeries(MarketSeries.High);
+            Low = new Mq4MarketDataSeries(MarketSeries.Low);
+            Close = new Mq4MarketDataSeries(MarketSeries.Close);
+            Volume = new Mq4MarketDataSeries(MarketSeries.TickVolume);
+            Median = new Mq4MarketDataSeries(MarketSeries.Median);
             Time = new Mq4TimeSeries(MarketSeries.OpenTime);
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
@@ -44,12 +44,12 @@ namespace cAlgo.Indicators
         private CashedStandardIndicators _cashedStandardIndicators;
         private Mq4ChartObjects _mq4ChartObjects;
 #Inverted_buffers_declarations_PLACE_HOLDER#
-        private InvertedDataSeries Open;
-        private InvertedDataSeries High;
-        private InvertedDataSeries Low;
-        private InvertedDataSeries Close;
-        private InvertedDataSeries Median;
-        private InvertedDataSeries Volume;
+        private Mq4MarketDataSeries Open;
+        private Mq4MarketDataSeries High;
+        private Mq4MarketDataSeries Low;
+        private Mq4MarketDataSeries Close;
+        private Mq4MarketDataSeries Median;
+        private Mq4MarketDataSeries Volume;
         private Mq4TimeSeries Time;
 
         private DataSeriesExtremums _closeExtremums;

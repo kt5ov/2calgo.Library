@@ -1,9 +1,9 @@
-	internal class InvertedDataSeries
+	internal class Mq4MarketDataSeries
     {
         private DataSeries _dataSeries;
         private int _currentIndex;
 
-        public InvertedDataSeries(DataSeries dataSeries)
+        public Mq4MarketDataSeries(DataSeries dataSeries)
         {
             _dataSeries = dataSeries;
         }

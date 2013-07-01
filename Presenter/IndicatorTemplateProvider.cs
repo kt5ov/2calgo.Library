@@ -44,7 +44,7 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Object functions",
                 
                 DataSeries + "/DataSeriesExtremums",
-                DataSeries + "/InvertedDataSeries",
+                DataSeries + "/Mq4MarketDataSeries",
                 DataSeries + "/Mq4OutputDataSeries",
                 DataSeries + "/Mq4TimeSeries",
                 DataSeries + "/IndicatorDataSeries",

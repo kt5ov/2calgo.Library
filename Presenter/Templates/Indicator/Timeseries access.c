@@ -1,6 +1,6 @@
 #region Timeseries access
 
-    int GetHighestIndex(InvertedDataSeries invertedDataSeries, int count, int start)
+    int GetHighestIndex(Mq4MarketDataSeries invertedDataSeries, int count, int start)
     {
       var maxIndex = start;
       var endIndex = count == WHOLE_ARRAY ? Bars - 1 : count + start - 1;
@@ -12,7 +12,7 @@
       return maxIndex;
     }
 
-    int GetLowestIndex(InvertedDataSeries invertedDataSeries, int count, int start)
+    int GetLowestIndex(Mq4MarketDataSeries invertedDataSeries, int count, int start)
     {
       var minIndex = start;
       var endIndex = count == WHOLE_ARRAY ? Bars - 1 : count + start - 1;
@@ -24,7 +24,7 @@
       return minIndex;
     }
 
-    int GetExtremeIndex(Func<InvertedDataSeries, int, int, int> extremeFunc, int type, int count, int start)
+    int GetExtremeIndex(Func<Mq4MarketDataSeries, int, int, int> extremeFunc, int type, int count, int start)
     {
       switch (type)
       {
