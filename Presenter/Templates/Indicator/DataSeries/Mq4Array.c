@@ -3,9 +3,11 @@
 		private List<T> _data = new List<T>();
 		private readonly T _defaultValue;
       
-		public Mq4Array()
+		public Mq4Array(params T[] values)
 		{
 			_defaultValue = (T)DefaultValues.GetDefaultValue<T>();
+			for (var i = 0; i < values.Length; i++)
+				this[i] = values[i];
 		}
 
 		private void EnsureCountIsEnough(int index)
