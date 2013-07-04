@@ -9,7 +9,7 @@ namespace _2calgo.Parser.CodeAdapter
             return functionBody
                 .FixReturnStatements()
                 .SplitDeclarationsAndAssignments()
-                .FixArrayDeclarations()
+                .ReplaceArraysToMq4Arrays()
                 .ReplaceSymbolToEmptyString()
                 .FixSwitches();
         }

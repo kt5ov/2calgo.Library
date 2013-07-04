@@ -9,7 +9,8 @@ namespace _2calgo.Parser.CodeAdapter
                 "int",
                 "double",
                 "string",
-                "bool"
+                "bool",
+                "Mq4Double",
             };
 
          public static bool IsSupported(this string type)

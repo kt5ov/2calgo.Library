@@ -1,17 +1,10 @@
 #region Array functions
-    
-    int ArrayInitialize(Mq4Double[] array, double value)
+
+    int ArrayInitialize<T>(IMq4Array<T> array, T value)
     {
       for(var i = 0; i < array.Length; i++)
         array[i] = value;
       return array.Length;
-    }
-
-    int ArrayInitialize(Mq4OutputDataSeries array, double value)
-    {
-      for(var i = 0; i < array.Count; i++)
-        array[i] = value;
-      return array.Count;
     }
 
 

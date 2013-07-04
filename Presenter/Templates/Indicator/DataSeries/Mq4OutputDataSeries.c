@@ -31,7 +31,7 @@
 			_color = color;
         }
 
-        public int Count
+        public int Length
         {
             get 
             {

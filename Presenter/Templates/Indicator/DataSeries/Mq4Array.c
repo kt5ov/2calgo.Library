@@ -1,19 +1,32 @@
-	class Mq4Array<T> : IMq4Array<T>
+	class Mq4Array<T> : IMq4Array<T>,  IEnumerable
 	{
 		private List<T> _data = new List<T>();
 		private readonly T _defaultValue;
       
-		public Mq4Array(params T[] values)
+		public Mq4Array(int size = 0)
 		{
 			_defaultValue = (T)DefaultValues.GetDefaultValue<T>();
-			for (var i = 0; i < values.Length; i++)
-				this[i] = values[i];
 		}
+
+		public IEnumerator GetEnumerator()
+		{
+            return _data.GetEnumerator();
+        }
+
+        public void Add(T value)
+        {
+			_data.Add(value);
+        }
 
 		private void EnsureCountIsEnough(int index)
 		{
 			while (_data.Count <= index)
 				_data.Add(_defaultValue);
+		}
+
+		public int Length 
+		{
+			get { return _data.Count; }
 		}
 				     
 		public T this[int index]
