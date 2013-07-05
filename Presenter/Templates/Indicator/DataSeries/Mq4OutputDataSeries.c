@@ -1,6 +1,6 @@
 	class Mq4OutputDataSeries : IMq4Array<Mq4Double>
     {
-        public IndicatorDataSeries OutputDataSeries { get; private set; }
+        public cAlgo.API.IndicatorDataSeries OutputDataSeries { get; private set; }
         private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();
         private int _currentIndex;
         private int _shift;
@@ -15,7 +15,7 @@
 
         public Mq4OutputDataSeries(
 			ConvertedIndicator indicator, 
-			IndicatorDataSeries outputDataSeries, 
+			cAlgo.API.IndicatorDataSeries outputDataSeries, 
 			DataSeriesExtremums closeExtremums, 
 			ChartObjects chartObjects, 
 			int style, 

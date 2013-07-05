@@ -3,7 +3,7 @@
 		public static object GetDefaultValue<T>()
 		{
 			if (typeof(T) == typeof(Mq4Double))
-				return double.NaN;
+				return new Mq4Double(double.NaN);
 
 			return default(T);
 		}
