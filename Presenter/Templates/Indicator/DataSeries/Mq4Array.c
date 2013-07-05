@@ -28,6 +28,15 @@
 		{
 			get { return _data.Count; }
 		}
+
+		public void Resize(int newSize)
+		{
+			while (newSize < _data.Count)
+				_data.RemoveAt(_data.Count - 1);
+
+			while (newSize > _data.Count)
+				_data.Add(_defaultValue);
+		}
 				     
 		public T this[int index]
 		{       
