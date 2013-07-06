@@ -16,7 +16,7 @@ namespace _2calgo.Parser.Extensions
                    && code.AreBracketsSimmetric(bracketOpen, bracketClose);
         }
 
-        private static bool AreBracketsSimmetric(this string code, char bracketOpen, char bracketClose)
+        public static bool AreBracketsSimmetric(this string code, char bracketOpen, char bracketClose)
         {
             var opened = 0;
             foreach (var c in code)

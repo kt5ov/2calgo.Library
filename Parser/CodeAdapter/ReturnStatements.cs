@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 using _2calgo.Parser.Extensions;
 
 namespace _2calgo.Parser.CodeAdapter
@@ -16,31 +16,31 @@ namespace _2calgo.Parser.CodeAdapter
             return String.Format("return {0};", expression);
         }
 
+        private static readonly Regex ReturnRegex = new Regex(@"return\s*\([^;]*\;");
         public static string FixReturnStatements(this string code)
         {
-            const string returnString = "return";
-
-            var result = new StringBuilder();
-            var i = 0;
-            while (i < code.Length)
+            bool changed;
+            do
             {
-                if (code.SafeSubstring(i, returnString.Length) == returnString)
+                changed = false;
+                foreach (var match in ReturnRegex.Matches(code).OfType<Match>())
                 {
-                    var semicolonPosition = code.IndexOf(';', i);
-                    var returnStatement = code.Substring(i, semicolonPosition - i + 1);
-                    if (returnStatement.Contains("("))
-                        result.Append(FixReturnStatement(returnStatement));
-                    else
-                        result.Append(returnStatement);
-                    i += returnStatement.Length;
+                    var returnStatement = match.Value;
+                    var fixedReturnStatement = FixReturnStatement(returnStatement);
+
+                    if (!fixedReturnStatement.AreBracketsSimmetric('(', ')'))
+                        continue;
+
+                    code = code
+                        .Remove(match.Index, match.Length)
+                        .Insert(match.Index, fixedReturnStatement);
+
+                    changed = true;
+                    break;
                 }
-                else
-                {
-                    result.Append(code[i]);
-                    i++;
-                }
-            }
-            return result.ToString();
+            } while (changed);
+
+            return code;
         }
 
         private static readonly Regex CSharpReturnRegex = new Regex(@"return[^;]*;", RegexOptions.Compiled);
