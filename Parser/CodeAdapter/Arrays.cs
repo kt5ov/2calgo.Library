@@ -35,5 +35,31 @@ namespace _2calgo.Parser.CodeAdapter
 
             return code;
         }
+
+        public static string ReplaceArraysToIMq4Arrays(this string code)
+        {
+            bool changed;
+            do
+            {
+                changed = false;
+                foreach (var match in ArrayDeclarationRegex.Matches(code).OfType<Match>())
+                {
+                    var type = match.Groups["type"].Value;
+                    if (!type.IsSupported())
+                        continue;
+
+                    var name = match.Groups["name"].Value;
+
+                    var replacement = string.Format("IMq4Array<{0}> {1}", type, name);
+                    code = code
+                        .Remove(match.Index, match.Value.Length)
+                        .Insert(match.Index, replacement);
+                    changed = true;
+                    break;
+                }
+            } while (changed);
+
+            return code;
+        }
 }
 }

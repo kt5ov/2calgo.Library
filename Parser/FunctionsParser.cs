@@ -29,6 +29,7 @@ namespace _2calgo.Parser
 
                 var type = match.Groups["type"].Value;
                 var parameters = match.Groups["parameters"].Value
+                    .ReplaceArraysToIMq4Arrays()
                     .SplitByComma();
                 
                 
