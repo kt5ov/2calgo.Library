@@ -77,7 +77,7 @@
     <Resource Include="Templates\Indicator\DataSeries\Mq4TimeSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Constants.c" />
+    <Resource Include="Templates\Indicator\Standard constants\Constants.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Math and Trig.c" />
@@ -168,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\DataSeries\DefaultValues.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Standard constants\Trade operations.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

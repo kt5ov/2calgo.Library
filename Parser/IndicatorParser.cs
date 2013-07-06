@@ -26,7 +26,9 @@ namespace _2calgo.Parser
                 .ReplaceDefines()
                 .ReplaceCSharpKeyWords()
                 .RemoveDotsFromNames()
-                .RemoveDollars()
+                .Replace("$", string.Empty)
+                .RemoveIncludes()
+                .Replace("Debug", "Debug_")
                 .ReplaceDateTimeToInt()
                 .ReplaceColorToInt();
 

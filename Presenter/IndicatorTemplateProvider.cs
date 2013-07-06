@@ -10,12 +10,12 @@ namespace _2calgo.Presenter
         private const string ChartObjects = "ChartObjects";
         private const string DataSeries = "DataSeries";
         private const string Indicators = "Indicators";
+        private const string StandardConstants = "Standard constants";
 
         private static readonly IEnumerable<string> PartNames = new[]
             {
                 "Debug",
                 "Predefined variables",
-                "Constants",
                 "Math and Trig",
                 "Conversion functions",
                 "Window functions",
@@ -31,6 +31,9 @@ namespace _2calgo.Presenter
                 Indicators + "/iIndicators",
                 Indicators + "/CashedStandardIndicators",
                 Indicators + "/Custom indicators",
+
+                StandardConstants + "/Constants",
+                StandardConstants + "/Trade operations",
                 
                 ChartObjects + "/Mq4ChartObjects",
                 ChartObjects + "/Mq4Object",

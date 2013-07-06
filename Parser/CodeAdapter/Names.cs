@@ -32,9 +32,10 @@ namespace _2calgo.Parser.CodeAdapter
             return code;
         }
 
-        public static string RemoveDollars(this string code)
+        private static readonly Regex IncludeRegex = new Regex(@"#include.*");
+        public static string RemoveIncludes(this string code)
         {
-            return code.Replace("$", string.Empty);
+            return IncludeRegex.Replace(code, string.Empty);
         }
     }
 }

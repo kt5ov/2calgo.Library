@@ -5,4 +5,8 @@
         return 0;
     }
 
+    void WindowRedraw()
+    {
+    }
+
 #endregion //Window functions
