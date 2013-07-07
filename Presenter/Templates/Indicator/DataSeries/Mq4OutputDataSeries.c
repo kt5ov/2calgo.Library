@@ -1,6 +1,6 @@
 	class Mq4OutputDataSeries : IMq4Array<Mq4Double>
     {
-        public cAlgo.API.IndicatorDataSeries OutputDataSeries { get; private set; }
+        public cAlgo.API.IndicatorDataSeries NotInvertedDataSeries { get; private set; }
         private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();
         private int _currentIndex;
         private int _shift;
@@ -22,7 +22,7 @@
 			int bufferIndex,
 			Colors? color = null)
         {
-            OutputDataSeries = outputDataSeries;
+            NotInvertedDataSeries = outputDataSeries;
             _closeExtremums = closeExtremums;
             _chartObjects = chartObjects;
 			_style = style;
@@ -35,7 +35,7 @@
         {
             get 
             {
-                return OutputDataSeries.Count;
+                return NotInvertedDataSeries.Count;
             }
         }
 
@@ -85,19 +85,19 @@
 				switch (_style)
 				{
 					case DRAW_LINE:
-						if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
+						if (!double.IsNaN(valueToSet) && double.IsNaN(NotInvertedDataSeries[indexToSet - 1]))
 						{
 							int startIndex;
 							for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)
 							{
-								if (!double.IsNaN(OutputDataSeries[startIndex]))
+								if (!double.IsNaN(NotInvertedDataSeries[startIndex]))
 									break;
 							}
 							if (startIndex > 0)
 							{
 								RemoveOverlapLinesSinceIndex(startIndex);
 
-								_chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
+								_chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, NotInvertedDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
 								_overlapLineStartIndexes.Add(startIndex);
 							}                    
 						}
@@ -114,7 +114,7 @@
 						break;
 				}
 
-                OutputDataSeries[indexToSet] = valueToSet; 
+                NotInvertedDataSeries[indexToSet] = valueToSet; 
             }
         }
 
