@@ -2,7 +2,7 @@
 	{
 		private List<T> _data = new List<T>();
 		private readonly T _defaultValue;
-      
+		      
 		public Mq4Array(int size = 0)
 		{
 			_defaultValue = (T)DefaultValues.GetDefaultValue<T>();
@@ -12,6 +12,10 @@
 		{
             return _data.GetEnumerator();
         }
+
+		public bool IsInverted { get; private set; }
+
+		public event Action<int, T> Changed;
 
         public void Add(T value)
         {
@@ -57,6 +61,7 @@
 				EnsureCountIsEnough(index);
           
 				_data[index] = value;
+				Changed.Raise(index, value);
 			}
 		}
 	}

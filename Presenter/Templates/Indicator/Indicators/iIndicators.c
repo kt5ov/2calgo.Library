@@ -51,7 +51,13 @@
                 
         private double iMAOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int ma_shift, int ma_method, int shift) 
         {
-          return CalculateiMA(invertedDataSeries.NotInvertedDataSeries, period, ma_method, shift);
+          return CalculateiMA(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
+        } 
+                
+        private double iMAOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
+        {
+			var dataSeries = _mq4ArrayToDataSeriesAdapterFactory.Create(mq4Array);
+			return CalculateiMA(dataSeries, period, ma_method, shift);
         }
         
         private double CalculateiMA(DataSeries dataSeries, int period, int ma_method, int shift)
@@ -87,7 +93,13 @@
                 
         private double iRSIOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int shift) 
         {
-          return CalculateRsi(invertedDataSeries.NotInvertedDataSeries, period, shift);
+          return CalculateRsi(invertedDataSeries.OutputDataSeries, period, shift);
+        } 
+                
+        private double iRSIOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int shift) 
+        {
+			var dataSeries = _mq4ArrayToDataSeriesAdapterFactory.Create(mq4Array);
+			return CalculateRsi(dataSeries, period, shift);
         }
         
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
@@ -115,7 +127,7 @@
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
-            return CalculateBands(invertedDataSeries.NotInvertedDataSeries, period, deviation, mode, shift);
+            return CalculateBands(invertedDataSeries.OutputDataSeries, period, deviation, mode, shift);
         }
         
         private double CalculateBands(DataSeries dataSeries, int period, int deviation, int mode, int shift)
@@ -221,7 +233,7 @@
                 
         private double iCCIOnArray(Mq4OutputDataSeries invertedDataSeries, int period, int shift) 
         {            
-            return CalculateCCI(invertedDataSeries.NotInvertedDataSeries, period, shift);
+            return CalculateCCI(invertedDataSeries.OutputDataSeries, period, shift);
         }
         
         private double CalculateCCI(DataSeries dataSeries, int period, int shift)
@@ -247,7 +259,7 @@
                 
         private double iStdDevOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int ma_period, int ma_shift, int ma_method, int shift) 
         {
-          return CalculateiStdDev(invertedDataSeries.NotInvertedDataSeries, ma_period, ma_shift, ma_method, shift);
+          return CalculateiStdDev(invertedDataSeries.OutputDataSeries, ma_period, ma_shift, ma_method, shift);
         }
         
         private double CalculateiStdDev(DataSeries dataSeries, int ma_period, int ma_shift, int ma_method, int shift)

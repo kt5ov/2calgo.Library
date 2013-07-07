@@ -38,23 +38,24 @@ namespace cAlgo.Indicators
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
-            Debug.Initialize(m => Print(m));
+            //Debug.Initialize(m => Print(m)); 
         }
 
-        private int _currentIndex;
-        private CashedStandardIndicators _cashedStandardIndicators;
-        private Mq4ChartObjects _mq4ChartObjects;
+        int _currentIndex;
+        CashedStandardIndicators _cashedStandardIndicators;
+        Mq4ChartObjects _mq4ChartObjects;
 #Inverted_buffers_declarations_PLACE_HOLDER#
-        private Mq4MarketDataSeries Open;
-        private Mq4MarketDataSeries High;
-        private Mq4MarketDataSeries Low;
-        private Mq4MarketDataSeries Close;
-        private Mq4MarketDataSeries Median;
-        private Mq4MarketDataSeries Volume;
-        private Mq4TimeSeries Time;
+        Mq4MarketDataSeries Open;
+        Mq4MarketDataSeries High;
+        Mq4MarketDataSeries Low;
+        Mq4MarketDataSeries Close;
+        Mq4MarketDataSeries Median;
+        Mq4MarketDataSeries Volume;
+        Mq4TimeSeries Time;
 
-        private DataSeriesExtremums _closeExtremums;
-        private readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
+        DataSeriesExtremums _closeExtremums;
+        readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
+		readonly Mq4ArrayToDataSeriesAdapterFactory _mq4ArrayToDataSeriesAdapterFactory = new Mq4ArrayToDataSeriesAdapterFactory();
 
         public override void Calculate(int index)
         {
@@ -171,4 +172,13 @@ namespace cAlgo.Indicators
             }
         }
     }
+
+	static class EventExtensions
+	{
+		public static void Raise<T1, T2>(this Action<T1, T2> action, T1 arg1, T2 arg2)
+		{
+			if (action != null)
+				action(arg1, arg2);
+		}
+	}
 }

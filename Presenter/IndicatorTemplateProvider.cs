@@ -14,7 +14,7 @@ namespace _2calgo.Presenter
 
         private static readonly IEnumerable<string> PartNames = new[]
             {
-                "Debug",
+//                "Debug",
                 "Predefined variables",
                 "Math and Trig",
                 "Conversion functions",
@@ -54,6 +54,8 @@ namespace _2calgo.Presenter
                 DataSeries + "/IMq4Array",
                 DataSeries + "/Mq4Array",
                 DataSeries + "/DefaultValues",
+                DataSeries + "/Mq4ArrayToDataSeriesAdapter",
+                DataSeries + "/Mq4ArrayToDataSeriesAdapterFactory",
             };
 
         public static string GetTemplate()

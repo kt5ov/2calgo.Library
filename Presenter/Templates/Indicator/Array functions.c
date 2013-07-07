@@ -50,5 +50,5 @@
 	{
 		return array.Length;
 	}
-
+	
 #endregion //Array functions
