@@ -7,7 +7,6 @@
         private double _emptyValue = double.NaN;
         private readonly DataSeriesExtremums _closeExtremums;
         private readonly ChartObjects _chartObjects;
-        private readonly List<int> _overlapLineStartIndexes = new List<int>();
 		private readonly int _style;
 		private readonly int _bufferIndex;
 		private readonly ConvertedIndicator _indicator;
@@ -84,24 +83,6 @@
 					
 				switch (_style)
 				{
-					case DRAW_LINE:
-						if (!double.IsNaN(valueToSet) && double.IsNaN(OutputDataSeries[indexToSet - 1]))
-						{
-							int startIndex;
-							for (startIndex = indexToSet - 1; startIndex >= 0; startIndex--)
-							{
-								if (!double.IsNaN(OutputDataSeries[startIndex]))
-									break;
-							}
-							if (startIndex > 0)
-							{
-								RemoveOverlapLinesSinceIndex(startIndex);
-
-								_chartObjects.DrawLine(GetOverlapLineName(startIndex), startIndex, OutputDataSeries[startIndex], indexToSet, valueToSet, Colors.Black, 3);
-								_overlapLineStartIndexes.Add(startIndex);
-							}                    
-						}
-						break;
 					case DRAW_ARROW:
 						var arrowName = GetArrowName(indexToSet);
 						if (double.IsNaN(valueToSet))
@@ -117,19 +98,7 @@
                 OutputDataSeries[indexToSet] = valueToSet; 
             }
         }
-
-        private void RemoveOverlapLinesSinceIndex(int index)
-        {
-            foreach (var startIndex in _overlapLineStartIndexes.ToArray())                    
-            {
-                if (startIndex >= index)
-                {
-                    _overlapLineStartIndexes.Remove(startIndex);
-                    _chartObjects.RemoveObject(GetOverlapLineName(startIndex));
-                }
-            }
-        }
-
+		
         private string GetOverlapLineName(int startIndex)
         {
             return string.Format("Overlapline {0} {1}", GetHashCode(), startIndex);

@@ -10,7 +10,7 @@ namespace _2calgo.Presenter.Extensions
              switch (drawingShapeStyle)
              {
                  case DrawingShapeStyle.Line:
-                     return "Line";
+                     return "DiscontinuousLine";
                  case DrawingShapeStyle.Section:
                      return "Line";
                  case DrawingShapeStyle.Histogram:
