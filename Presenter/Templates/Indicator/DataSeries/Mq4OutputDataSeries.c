@@ -31,13 +31,6 @@
 			_color = color;
         }
 
-		public bool IsInverted 
-		{ 
-			get { return true; }
-		}
-
-		public event Action<int, Mq4Double> Changed;
-
         public int Length
         {
             get 
@@ -74,7 +67,6 @@
             { 
                 var indexToSet = _currentIndex - index + _shift;                
                 _originalValues[indexToSet] = value;
-				Changed.Raise(index, value);
 
                 var valueToSet = value;
                 if (valueToSet == _emptyValue)

@@ -13,9 +13,12 @@
             return _data.GetEnumerator();
         }
 
-		public bool IsInverted { get; private set; }
-
-		public event Action<int, T> Changed;
+		private bool _isInverted;
+		public bool IsInverted
+		{
+			get { return _isInverted; }
+			set { _isInverted = value; }
+		}
 
         public void Add(T value)
         {
@@ -61,7 +64,6 @@
 				EnsureCountIsEnough(index);
           
 				_data[index] = value;
-				Changed.Raise(index, value);
 			}
 		}
 	}

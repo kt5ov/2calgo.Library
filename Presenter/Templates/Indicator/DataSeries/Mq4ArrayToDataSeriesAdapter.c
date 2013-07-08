@@ -2,8 +2,8 @@
 
 	class Mq4ArrayToDataSeriesAdapter : DataSeries
 	{
-		private readonly IMq4Array<Mq4Double> _mq4Array;
-		public Mq4ArrayToDataSeriesAdapter(IMq4Array<Mq4Double> mq4Array)
+		private readonly Mq4Array<Mq4Double> _mq4Array;
+		public Mq4ArrayToDataSeriesAdapter(Mq4Array<Mq4Double> mq4Array)
 		{
 			_mq4Array = mq4Array;
 		}

@@ -1,4 +1,4 @@
-	internal class Mq4MarketDataSeries
+	class Mq4MarketDataSeries : IMq4Array<Mq4Double>
     {
         private DataSeries _dataSeries;
         private int _currentIndex;
@@ -13,8 +13,14 @@
             _currentIndex = index;
         }
 
-        public double this[int index]
+        public Mq4Double this[int index]
         {
             get { return _dataSeries[_currentIndex - index]; }
+			set { }
         }
+
+		public int Length 
+		{
+			get { return _dataSeries.Count; }
+		}
     }

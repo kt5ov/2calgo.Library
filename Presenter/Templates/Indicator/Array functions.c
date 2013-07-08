@@ -50,5 +50,12 @@
 	{
 		return array.Length;
 	}
+
+	bool ArraySetAsSeries<T>(Mq4Array<T> mq4Array, bool value)
+	{
+		var result = mq4Array.IsInverted;
+		mq4Array.IsInverted = value;
+		return result;
+	}
 	
 #endregion //Array functions
