@@ -10,6 +10,8 @@ namespace _2calgo.Model
 
         public string[] Buffers = new string[0];
 
+        public double[] Levels = new double[0];
+
         public IEnumerable<Parameter> Parameters { get; set; } 
 
         public readonly string[] Colors = new string[8];

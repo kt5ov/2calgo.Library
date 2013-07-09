@@ -83,6 +83,7 @@ namespace _2calgo.Parser
             var methodCalls = MethodCallsParser.Parse(initFunction.Body).ToArray();
 
             HandleBufferIndexes(methodCalls, indicator);
+            HandleLevels(methodCalls, indicator);
             HandleIndexStyles(methodCalls, indicator, parsingErrors);
         }
 
@@ -121,6 +122,22 @@ namespace _2calgo.Parser
             }
 
             indicator.Buffers = indexesBuffers.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
+        }
+
+        private void HandleLevels(IEnumerable<MethodCall> methodCalls, Indicator indicator)
+        {
+            var setLevelCalls = methodCalls.Where(call => call.MethodName == "SetLevelValue");
+
+            var levels = new Dictionary<int, double>();
+            foreach (var methodCall in setLevelCalls)
+            {
+                var levelIndex = int.Parse(methodCall.Parameters[0]);
+                double value;
+                if (double.TryParse(methodCall.Parameters[1], out value))
+                    levels[levelIndex] = value;
+            }
+
+            indicator.Levels = levels.Select(pair => pair.Value).ToArray();
         }
 
         private static void HandleProperties(string code, Indicator result)

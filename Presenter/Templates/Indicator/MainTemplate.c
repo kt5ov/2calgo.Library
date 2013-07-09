@@ -13,6 +13,7 @@ using System.Collections;
 namespace cAlgo.Indicators
 {
     [Indicator(ScalePrecision = 5, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
+	[Levels(#Levels_PLACE_HOLDER#)]
     public class ConvertedIndicator : Indicator
     {
 #Parameters_PLACE_HOLDER#

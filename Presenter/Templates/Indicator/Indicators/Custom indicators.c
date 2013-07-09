@@ -7,8 +7,10 @@
     void IndicatorDigits(int digits) { }
 
     void IndicatorDigits(double digits) { }
-
+	
     void SetIndexDrawBegin(int index, int begin) { }
+
+	void SetLevelValue(int level, double value) { }
 
     bool SetIndexBuffer(int index, Mq4OutputDataSeries dataSeries) 
     {

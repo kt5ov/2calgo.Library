@@ -6,12 +6,13 @@ namespace _2calgo.Presenter
     {
         public string Fields { get; set; }
         public string Mq4Functions { get; set; }
+        public string Levels { get; set; }
 
         public readonly StringBuilder Parameters = new StringBuilder();
         public readonly StringBuilder LinesDeclarations = new StringBuilder();
         public readonly StringBuilder InitialzeBuffers = new StringBuilder();
         public readonly StringBuilder InvertedBuffersDeclarations = new StringBuilder();
-        public readonly StringBuilder BuffersSetCurrentIndex = new StringBuilder();
+        public readonly StringBuilder BuffersSetCurrentIndex = new StringBuilder();        
         public string IsDrawingOnChartWindow { get; set; }
 
         public string BuildIndicator()
@@ -27,6 +28,7 @@ namespace _2calgo.Presenter
 
             code = code.Replace("#IsDrawingOnChartWindow_PLACE_HOLDER#", IsDrawingOnChartWindow);
             code = code.Replace("#Mq4Fields_PLACE_HOLDER#", Fields);
+            code = code.Replace("#Levels_PLACE_HOLDER#", Levels);
 
             return code;
         }   
