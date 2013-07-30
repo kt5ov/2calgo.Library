@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="cAlgo.API">
-      <HintPath>..\..\..\Mql4 to cAlgo converter\cAlgoConverter\cAlgoConverter.Library\packages\cAlgo.API.dll</HintPath>
+      <HintPath>..\packages\cAlgo.API.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
