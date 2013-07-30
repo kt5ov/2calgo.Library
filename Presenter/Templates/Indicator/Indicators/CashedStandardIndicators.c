@@ -199,7 +199,7 @@
             if (_stdDevIndicators.ContainsKey(stdDevParameters))
                 return _stdDevIndicators[stdDevParameters];
 
-            var indicator = _indicatorsAccessor.StandardDeviation(source, periods, 1, movingAverageType);
+            var indicator = _indicatorsAccessor.StandardDeviation(source, periods, movingAverageType);
             _stdDevIndicators.Add(stdDevParameters, indicator);
 
             return indicator;
