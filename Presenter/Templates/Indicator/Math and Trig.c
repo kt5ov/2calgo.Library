@@ -74,4 +74,9 @@
     {
       return Math.Exp(x);
     }
+
+    Mq4Double MathArctan(double x)
+    {
+      return Math.Atan(x);
+    }
     #endregion
