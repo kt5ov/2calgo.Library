@@ -89,4 +89,9 @@
     {
       return DateTime.Now.Year;
     }
+
+    int Day()
+    {
+      return DateTime.Now.Day;
+    }
 #endregion
