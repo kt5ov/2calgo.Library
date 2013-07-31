@@ -170,6 +170,9 @@
 
 		public string ObjectName(int index)
 		{
+			if (index <= 0 || index >= _mq4ObjectNameByIndex.Count)
+				return string.Empty;
+
 			return _mq4ObjectNameByIndex[index];
 		}
 	}

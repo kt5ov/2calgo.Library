@@ -50,5 +50,5 @@
 
 	public string ObjectName(int index)
 	{
-		return _mq4ChartObjects.ObjectName(index);
+		return _mq4ChartObjects.ObjectName(index);		
 	}

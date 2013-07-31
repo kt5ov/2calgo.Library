@@ -39,7 +39,7 @@ namespace cAlgo.Indicators
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
-            //Debug.Initialize(m => Print(m)); 
+            Debug.Initialize(m => Print(m)); 
         }
 
         int _currentIndex;

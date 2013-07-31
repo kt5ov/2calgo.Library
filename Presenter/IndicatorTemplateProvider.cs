@@ -14,7 +14,7 @@ namespace _2calgo.Presenter
 
         private static readonly IEnumerable<string> PartNames = new[]
             {
-//                "Debug",
+                "Debug",
                 "Predefined variables",
                 "Math and Trig",
                 "Conversion functions",
