@@ -9,4 +9,8 @@
     {
     }
 
+    void ObjectsRedraw()
+    {
+    }
+
 #endregion //Window functions
