@@ -61,7 +61,7 @@ namespace _2calgo.Presenter
         private static string GetFunctions(IEnumerable<Function> functions)
         {
             var result = new StringBuilder();
-            foreach (var function in functions.Where(f => f.Name != "deinit"))
+            foreach (var function in functions)
             {
                 var parameters = string.Join(", ", function.Parameters);
                 result.AppendFormat("{0} {1}({2}){3}", function.ReturnType, function.Name, parameters, Environment.NewLine);
