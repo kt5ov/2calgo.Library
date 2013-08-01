@@ -58,27 +58,64 @@ namespace cAlgo.Indicators
         readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
 		readonly Mq4ArrayToDataSeriesAdapterFactory _mq4ArrayToDataSeriesAdapterFactory = new Mq4ArrayToDataSeriesAdapterFactory();
 
-        public override void Calculate(int index)
-        {
-            _currentIndex = index;
+    public override void Calculate(int index)
+    {
+        _currentIndex = index;
 #Buffers_SetCurrentIndex_PLACE_HOLDER#
 
-            Open.SetCurrentIndex(index);
-            High.SetCurrentIndex(index);
-            Low.SetCurrentIndex(index);
-            Close.SetCurrentIndex(index);
-            Median.SetCurrentIndex(index);
-            Volume.SetCurrentIndex(index);
-            Time.SetCurrentIndex(index);
+        Open.SetCurrentIndex(index);
+        High.SetCurrentIndex(index);
+        Low.SetCurrentIndex(index);
+        Close.SetCurrentIndex(index);
+        Median.SetCurrentIndex(index);
+        Volume.SetCurrentIndex(index);
+        Time.SetCurrentIndex(index);
 
-            if (index == 100)
-                Mq4Init();
-            if (IsRealTime || index > 100 && IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
-            {       
-                Mq4Start();       
-                _indicatorCounted = index;
-            }
-       }
+        if (index == 100)
+            Mq4Init();
+        if (/*IsRealTime || */MarketSeries.OpenTime[index] == LastBarOpenTimeInUtc || IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
+        {       
+            Mq4Start();       
+            _indicatorCounted = index;
+        }
+    }
+
+	DateTime LastBarOpenTimeInUtc
+	{
+		get
+		{
+			var date = Server.Time;
+			if (TimeFrame == TimeFrame.Minute)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute2)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 2, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute3)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 3, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute4)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 4, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute5)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 5, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute10)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 10, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute15)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 15, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Minute30)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute - date.Minute % 30, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Hour)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Hour4)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour - date.Hour % 4, 0, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Hour12)
+				return new DateTime(date.Year, date.Month, date.Day, date.Hour - date.Hour % 12, 0, 0, date.Kind);
+
+			if (TimeFrame == TimeFrame.Daily)
+				return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, date.Kind);
+			if (TimeFrame == TimeFrame.Weekly)
+				return date.Date.AddDays((double) System.DayOfWeek.Sunday - (double) date.Date.DayOfWeek);
+			
+			return new DateTime(date.Year, date.Month, 1, 0, 0, 0, date.Kind);
+		}
+	}
 
     DateTime LastBarOfWeekOpenTimeInEE
     {
