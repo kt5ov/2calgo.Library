@@ -88,11 +88,10 @@ namespace cAlgo.Indicators
             var saturday = now.Date;
             while (saturday.DayOfWeek != System.DayOfWeek.Saturday)
                 saturday = saturday.AddDays(-1);
-
-            var dailyPeriod = 24 * 60;
-            if (Period() <= dailyPeriod)
+			            
+            if (TimeFrame <= TimeFrame.Daily)
                 return saturday.AddMinutes(-Period());    
-            if (Period() == dailyPeriod * 7)        
+            if (TimeFrame == TimeFrame.Weekly)        
                 return saturday.AddDays(-6);
 
             return new DateTime(now.Year, now.Month, 1);

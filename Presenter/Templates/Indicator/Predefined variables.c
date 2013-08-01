@@ -26,24 +26,29 @@
 		}
 	}
 
-	private int? _period;
 	private int Period()
 	{         
-		if (_period == null)
-		{
-			var counters = new Dictionary<int, int>();
-			for (var i = 1; i < MarketSeries.Close.Count - 1; i++)
-			{
-			var timeSpan = (int)(MarketSeries.OpenTime[i] - MarketSeries.OpenTime[i - 1]).TotalMinutes;
-			if (!counters.ContainsKey(timeSpan))
-				counters.Add(timeSpan, 0);
-			counters[timeSpan]++;
-			}
-			_period = counters.OrderByDescending(kvp => kvp.Value)
-					.Select(kvp => kvp.Key)
-					.First();
-			_period = Math.Min(_period.Value, 43200);
-		}
-		return _period.Value;
+		if (TimeFrame == TimeFrame.Minute)
+			return 1;
+		if (TimeFrame == TimeFrame.Minute2)
+			return 2;
+		if (TimeFrame == TimeFrame.Minute3)
+			return 3;
+		if (TimeFrame == TimeFrame.Minute4)
+			return 4;
+		if (TimeFrame == TimeFrame.Minute5)
+			return 5;
+		if (TimeFrame == TimeFrame.Hour)
+			return 60;
+		if (TimeFrame == TimeFrame.Hour4)
+			return 240;
+		if (TimeFrame == TimeFrame.Hour12)
+			return 720;                    
+		if (TimeFrame == TimeFrame.Daily)
+			return 1440;
+		if (TimeFrame == TimeFrame.Weekly)
+			return 10080;
+		
+		return 43200;
 	}
 #endregion
