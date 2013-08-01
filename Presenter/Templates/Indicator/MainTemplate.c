@@ -84,7 +84,7 @@ namespace cAlgo.Indicators
     {
         get
         {
-            var now = ConvertUtcToEEuropeTime(DateTime.UtcNow);
+            var now = ConvertUtcToEEuropeTime(Server.Time);
             var saturday = now.Date;
             while (saturday.DayOfWeek != System.DayOfWeek.Saturday)
                 saturday = saturday.AddDays(-1);
@@ -134,7 +134,7 @@ namespace cAlgo.Indicators
     {
         get 
         {
-            var now = ConvertUtcToEEuropeTime(DateTime.UtcNow);                     
+            var now = ConvertUtcToEEuropeTime(Server.Time);                     
             return now.DayOfWeek == System.DayOfWeek.Sunday || now.DayOfWeek == System.DayOfWeek.Saturday;
         }
     }
