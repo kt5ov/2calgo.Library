@@ -2,37 +2,37 @@
     
     int DayOfWeek()
     {
-      return (int)DateTime.Now.DayOfWeek;
+      return (int)Server.Time.DayOfWeek;
     }
 
     int DayOfYear()
     {
-      return DateTime.Now.DayOfYear;
+      return Server.Time.DayOfYear;
     }
 
     int Hour()
     {
-      return DateTime.Now.Hour;
+      return Server.Time.Hour;
     }
 
     int Minute()
     {
-      return DateTime.Now.Minute;
+      return Server.Time.Minute;
     }
         
     int Month()
     {
-      return DateTime.Now.Month;
+      return Server.Time.Month;
     }
             
     int Seconds()
     {
-      return DateTime.Now.Second;
+      return Server.Time.Second;
     }
 
     int TimeCurrent()
     {
-      return Mq4TimeSeries.ToInteger(DateTime.Now);
+      return Mq4TimeSeries.ToInteger(Server.Time);
     }
 
     int CurTime()
@@ -62,7 +62,7 @@
 
     int TimeLocal()
     {
-      return Mq4TimeSeries.ToInteger(DateTime.Now);
+      return Mq4TimeSeries.ToInteger(Server.Time);
     }
         
     int TimeMinute(int time)
@@ -87,11 +87,11 @@
 
     int Year()
     {
-      return DateTime.Now.Year;
+      return Server.Time.Year;
     }
 
     int Day()
     {
-      return DateTime.Now.Day;
+      return Server.Time.Day;
     }
 #endregion
