@@ -73,7 +73,7 @@ namespace cAlgo.Indicators
 
         if (index == 100)
             Mq4Init();
-        if (/*IsRealTime || */MarketSeries.OpenTime[index] == LastBarOpenTimeInUtc || IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
+        if (IsRealTime || MarketSeries.OpenTime[index] == LastBarOpenTimeInUtc || IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
         {       
             Mq4Start();       
             _indicatorCounted = index;
