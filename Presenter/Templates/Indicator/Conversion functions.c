@@ -33,5 +33,32 @@
 
       return Mq4TimeSeries.ToDateTime(value).ToString(formatString);
     }
+		
+	int StrToTime(string value)
+	{
+		var dateTime = StrToDateTime(value);
+		return Mq4TimeSeries.ToInteger(dateTime);
+	}
+
+	private static readonly Regex TimeRegex = new Regex(@"((?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}\s*((?<hour>\d+)\:(?<minute>\d+)){0,1}", RegexOptions.Compiled);
+	DateTime StrToDateTime(string value)
+	{
+		var dateTime = Server.Time.Date;
+
+		var match = TimeRegex.Match(value);
+		if (!match.Success)
+			return dateTime;		
+				
+		if (match.Groups["year"].Value != string.Empty)
+		{
+			dateTime = new DateTime(int.Parse(match.Groups["year"].Value), int.Parse(match.Groups["month"].Value), int.Parse(match.Groups["day"].Value));
+		}		
+		if (match.Groups["hour"].Value != string.Empty)
+			dateTime = dateTime.AddHours(int.Parse(match.Groups["hour"].Value));
+		if (match.Groups["minute"].Value != string.Empty)
+			dateTime = dateTime.AddMinutes(int.Parse(match.Groups["minute"].Value));
+
+		retrun dateTime;
+	}
 
 	#endregion

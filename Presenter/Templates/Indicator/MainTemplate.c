@@ -8,6 +8,7 @@ using cAlgo.API.Indicators;
 using cAlgo.API.Internals;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections;
 
 namespace cAlgo.Indicators
