@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using _2calgo.Model;
-using _2calgo.Parser.Extensions;
 using System.Linq;
 
 namespace _2calgo.Parser.CodeAdapter

@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeAdapter\Arrays.cs" />
+    <Compile Include="CodeAdapter\Colors.cs" />
     <Compile Include="CodeAdapter\Comments.cs" />
     <Compile Include="CodeAdapter\CAlgoCodeAdapter.cs" />
     <Compile Include="CodeAdapter\KeyWords.cs" />

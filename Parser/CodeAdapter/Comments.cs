@@ -8,8 +8,8 @@ namespace _2calgo.Parser.CodeAdapter
         public static string RemoveComments(this string code)
         {
             return code
-                .RemoveSingleLineComments()
-                .RemoveMultiLineComments();
+                .RemoveMultiLineComments()
+                .RemoveSingleLineComments();
         }
 
         private static string RemoveSingleLineComments(this string code)
