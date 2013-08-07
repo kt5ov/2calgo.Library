@@ -58,7 +58,7 @@
 		if (match.Groups["minute"].Value != string.Empty)
 			dateTime = dateTime.AddMinutes(int.Parse(match.Groups["minute"].Value));
 
-		retrun dateTime;
+		return dateTime;
 	}
 
 	#endregion

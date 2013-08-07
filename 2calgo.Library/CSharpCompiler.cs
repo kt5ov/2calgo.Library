@@ -36,7 +36,8 @@ namespace _2calgo.Library
         private static readonly IList<string> StandardAssemblyList = new List<string>
             {
                 "mscorlib",
-                "System.Core"
+                "System.Core",
+                "System",
             };
 
         private List<string> _filePaths;

@@ -52,9 +52,14 @@ namespace _2calgo.Parser.CodeAdapter
             var result = new StringBuilder();
             var isComment = false;
             var i = 0;
+            var isInsideSingleLineComment = false;
             while (i < code.Length)
             {
-                if (code.SafeSubstring(i, 2) == "/*")
+                if (code.SafeSubstring(i, 2) == "//")
+                    isInsideSingleLineComment = true;
+                if (code[i] == '\n')
+                    isInsideSingleLineComment = false;
+                if (code.SafeSubstring(i, 2) == "/*" && !isInsideSingleLineComment)
                 {
                     isComment = true;
                     i += 2;
