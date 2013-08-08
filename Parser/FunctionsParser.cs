@@ -10,6 +10,7 @@ namespace _2calgo.Parser
     public static class FunctionsParser
     {
         private static readonly Regex DeclarationRegex = new Regex(@"(?<type>\w{1,})\s{1,}(?<name>\w{1,})\s*\((?<parameters>[^\)]*)\)", RegexOptions.Compiled);
+        private static readonly Regex ParameterRegex = new Regex(@"(?<type>[^\s]+) (?<name>[^=]+)(=(?<defaultValue>\s*.+)){0,1}", RegexOptions.Compiled);
 
         public static IEnumerable<Function> Parse(string code)
         {
@@ -30,7 +31,10 @@ namespace _2calgo.Parser
                 var type = match.Groups["type"].Value;
                 var parameters = match.Groups["parameters"].Value
                     .ReplaceArraysToIMq4Arrays()
-                    .SplitByComma();
+                    .SplitByComma()
+                    .Where(s => s != string.Empty)
+                    .Select(CreateParameter)
+                    .ToArray();
                 
                 
                 previousFunctionEndIndex = match.Index + declaration.Length + bodyWithAroundingBrackets.Length;
@@ -40,6 +44,18 @@ namespace _2calgo.Parser
 
                 yield return function;
             }
+        }
+
+        private static FunctionParameter CreateParameter(string parameterAsString)
+        {
+            var match = ParameterRegex.Match(parameterAsString);
+            return new FunctionParameter
+                {
+                    ByReference = parameterAsString.Contains("&"),
+                    DefaultValue = match.Groups["defaultValue"].Value,
+                    Name = match.Groups["name"].Value,
+                    Type = match.Groups["type"].Value
+                };
         }
 
         public static string RemoveFunctions(this string code)

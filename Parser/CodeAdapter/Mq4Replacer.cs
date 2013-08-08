@@ -33,8 +33,8 @@ namespace _2calgo.Parser.CodeAdapter
                 function.Body = function.Body.ReplaceSimpleTypesToMq4Double();
                 for (var i = 0; i < function.Parameters.Length; i++)
                 {
-                    if (!function.Parameters[i].Contains("="))
-                        function.Parameters[i] = function.Parameters[i].ReplaceSimpleTypesToMq4Double();
+                    if (function.Parameters[i].DefaultValue == string.Empty)
+                        function.Parameters[i].Type = function.Parameters[i].Type.ReplaceSimpleTypesToMq4Double();
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace _2calgo.Parser.CodeAdapter
         {
             if (!indicatorCode.Functions.Any(f => f.Name == "Mq4Init"))
             {
-                indicatorCode.Functions.Add(new Function("void", "Mq4Init", new string[0], string.Empty));
+                indicatorCode.Functions.Add(new Function("void", "Mq4Init", new FunctionParameter[0], string.Empty));
             }
         }
     }

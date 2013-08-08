@@ -63,13 +63,22 @@ namespace _2calgo.Presenter
             var result = new StringBuilder();
             foreach (var function in functions)
             {
-                var parameters = string.Join(", ", function.Parameters);
+                var parameters = string.Join(", ", function.Parameters.Select(PresentParameter));
                 result.AppendFormat("{0} {1}({2}){3}", function.ReturnType, function.Name, parameters, Environment.NewLine);
                 result.AppendLine("{");
                 result.Append(function.Body);
                 result.AppendLine("}");
             }
             return result.ToString();
+        }
+
+        private static string PresentParameter(FunctionParameter functionParameter)
+        {
+            var parameter = string.Format("{0} {1}", functionParameter.Type, functionParameter.Name);
+            if (functionParameter.DefaultValue != string.Empty)
+                parameter = string.Format("{0} = {1}", parameter, functionParameter.DefaultValue);
+
+            return parameter;
         }
 
         private static void AddLineDeclaration(Indicator indicator, IndicatorBuilder template, int bufferIndex, string bufferName)
