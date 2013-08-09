@@ -75,6 +75,8 @@ namespace _2calgo.Presenter
         private static string PresentParameter(FunctionParameter functionParameter)
         {
             var parameter = string.Format("{0} {1}", functionParameter.Type, functionParameter.Name);
+            if (functionParameter.ByReference)
+                parameter = "ref " + parameter;
             if (functionParameter.DefaultValue != string.Empty)
                 parameter = string.Format("{0} = {1}", parameter, functionParameter.DefaultValue);
 

@@ -35,7 +35,7 @@ namespace _2calgo.Parser
                 var parametersCollection = parametersStringWithoutSurroundingBrackets.SplitByComma().ToArray();
 
                 var methodName = match.Groups["name"].Value;
-                var originalText = code.Substring(match.Index, j - match.Index + 1);
+                var originalText = code.SafeSubstring(match.Index, j - match.Index + 1);
                 var methodCall = new MethodCall(methodName, parametersCollection, originalText);
 
                 yield return methodCall;

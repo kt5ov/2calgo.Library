@@ -30,6 +30,7 @@ namespace _2calgo.Parser
 
                 var type = match.Groups["type"].Value;
                 var parameters = match.Groups["parameters"].Value
+                    .RemoveRefModifiers()
                     .ReplaceArraysToIMq4Arrays()
                     .SplitByComma()
                     .Where(s => s != string.Empty)
@@ -44,6 +45,11 @@ namespace _2calgo.Parser
 
                 yield return function;
             }
+        }
+
+        private static string RemoveRefModifiers(this string parameters)
+        {
+            return parameters.Replace("ref ", string.Empty);
         }
 
         private static FunctionParameter CreateParameter(string parameterAsString, int index)

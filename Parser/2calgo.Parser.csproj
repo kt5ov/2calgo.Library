@@ -50,6 +50,7 @@
     <Compile Include="CodeAdapter\Comments.cs" />
     <Compile Include="CodeAdapter\CAlgoCodeAdapter.cs" />
     <Compile Include="CodeAdapter\KeyWords.cs" />
+    <Compile Include="CodeAdapter\MethodCallsPresenter.cs" />
     <Compile Include="CodeAdapter\Mq4Replacer.cs" />
     <Compile Include="CodeAdapter\Declarations.cs" />
     <Compile Include="CodeAdapter\Names.cs" />
