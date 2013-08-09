@@ -31,7 +31,8 @@ namespace _2calgo.Parser
                 .Replace("Debug", "Debug_")
                 .ReplaceDateTimeToInt()
                 .ReplaceMq4RgbColorsToKnownColors()
-                .ReplaceColorToInt();
+                .ReplaceColorToInt()
+                .AddRefModifiers();
 
             HandleProperties(code, indicator);
             HandleParameters(code, indicator);

@@ -45,6 +45,11 @@
 		array.Resize(new_size);
 		return new_size;
 	}
+
+	int ArrayResize(Mq4OutputDataSeries array, int new_size)
+	{
+		return array.Length;
+	}
 		
 	int ArraySize<T>(IMq4Array<T> array)
 	{

@@ -18,7 +18,8 @@ namespace _2calgo.Parser
                 var openBracketIndex = match.Groups["open"].Index;
                 var parameters = new StringBuilder();
                 var openedBracketsCount = 0;
-                for (var j = openBracketIndex; j < code.Length; j++)
+                int j;
+                for (j = openBracketIndex; j < code.Length; j++)
                 {
                     parameters.Append(code[j]);
                     if (code[j] == '(')
@@ -34,7 +35,8 @@ namespace _2calgo.Parser
                 var parametersCollection = parametersStringWithoutSurroundingBrackets.SplitByComma().ToArray();
 
                 var methodName = match.Groups["name"].Value;
-                var methodCall = new MethodCall(methodName, parametersCollection);
+                var originalText = code.Substring(match.Index, j - match.Index + 1);
+                var methodCall = new MethodCall(methodName, parametersCollection, originalText);
 
                 yield return methodCall;
             }

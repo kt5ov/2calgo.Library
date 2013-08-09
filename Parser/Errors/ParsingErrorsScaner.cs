@@ -25,7 +25,6 @@ namespace _2calgo.Parser.Errors
                 new InvokesNotSupportedMethodsDetector(),
 
                 new ContainsStringErrorDetector("#import", ErrorType.NotSupportedError),
-                new ContainsStringErrorDetector("double&", ErrorType.NotSupportedError),
                 new ContainsStringErrorDetector("AccountEquity", ErrorType.NotSupportedError),
 
                 new ContainsStringErrorDetector("OBJPROP_ANGLE", ErrorType.NotSupportedWarning),

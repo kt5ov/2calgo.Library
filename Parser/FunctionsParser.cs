@@ -46,15 +46,17 @@ namespace _2calgo.Parser
             }
         }
 
-        private static FunctionParameter CreateParameter(string parameterAsString)
+        private static FunctionParameter CreateParameter(string parameterAsString, int index)
         {
-            var match = ParameterRegex.Match(parameterAsString);
+            var parameterWithoutAmpersand = parameterAsString.Replace("&", string.Empty);
+            var match = ParameterRegex.Match(parameterWithoutAmpersand);
             return new FunctionParameter
                 {
                     ByReference = parameterAsString.Contains("&"),
                     DefaultValue = match.Groups["defaultValue"].Value,
                     Name = match.Groups["name"].Value,
-                    Type = match.Groups["type"].Value
+                    Type = match.Groups["type"].Value,
+                    Index = index
                 };
         }
 
