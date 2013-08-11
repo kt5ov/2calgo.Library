@@ -12,5 +12,10 @@
     void ObjectsRedraw()
     {
     }
+		
+	bool RefreshRates()
+	{
+		return true;
+	}
 
 #endregion //Window functions
