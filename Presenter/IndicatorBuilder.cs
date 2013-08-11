@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using RazorEngine;
 
 namespace _2calgo.Presenter
 {
@@ -17,18 +18,8 @@ namespace _2calgo.Presenter
 
         public string BuildIndicator()
         {
-            var code = IndicatorTemplateProvider.GetTemplate();
-
-            code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
-            code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());
-            code = code.Replace("#Initialize_buffers_PLACE_HOLDER#", InitialzeBuffers.ToString());
-            code = code.Replace("#Inverted_buffers_declarations_PLACE_HOLDER#", InvertedBuffersDeclarations.ToString());
-            code = code.Replace("#Buffers_SetCurrentIndex_PLACE_HOLDER#", BuffersSetCurrentIndex.ToString());
-            code = code.Replace("#Mq4Functions_PLACE_HOLDER#", Mq4Functions);
-
-            code = code.Replace("#IsDrawingOnChartWindow_PLACE_HOLDER#", IsDrawingOnChartWindow);
-            code = code.Replace("#Mq4Fields_PLACE_HOLDER#", Fields);
-            code = code.Replace("#Levels_PLACE_HOLDER#", Levels);
+            var template = IndicatorTemplateProvider.GetTemplate();
+            var code = Razor.Parse(template, this);
 
             return code;
         }   

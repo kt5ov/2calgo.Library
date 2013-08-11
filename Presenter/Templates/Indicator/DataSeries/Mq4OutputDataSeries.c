@@ -74,7 +74,7 @@
                 if (indexToSet < 0)
                   return;
 
-                if (#IsDrawingOnChartWindow_PLACE_HOLDER#)
+                if (@Model.IsDrawingOnChartWindow)
                 {
                     var validRange = _closeExtremums.Max - _closeExtremums.Min;                
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
