@@ -14,7 +14,7 @@ namespace _2calgo.Presenter
         public readonly StringBuilder InitialzeBuffers = new StringBuilder();
         public readonly StringBuilder InvertedBuffersDeclarations = new StringBuilder();
         public readonly StringBuilder BuffersSetCurrentIndex = new StringBuilder();        
-        public string IsDrawingOnChartWindow { get; set; }
+        public bool IsDrawingOnChartWindow { get; set; }
 
         public string BuildIndicator()
         {
