@@ -37,7 +37,6 @@ namespace _2calgo.Parser
                     .Select(CreateParameter)
                     .ToArray();
                 
-                
                 previousFunctionEndIndex = match.Index + declaration.Length + bodyWithAroundingBrackets.Length;
                 var function = new Function(type, name, parameters, adaptedBody)
                     .FixReturnValue()
@@ -56,12 +55,22 @@ namespace _2calgo.Parser
         {
             var parameterWithoutAmpersand = parameterAsString.Replace("&", string.Empty);
             var match = ParameterRegex.Match(parameterWithoutAmpersand);
+            var name = match.Groups["name"].Value;
+            var type = match.Groups["type"].Value;
+            var defaultValue = match.Groups["defaultValue"].Value;
+
+            if (name.Contains("[]"))
+            {
+                name = name.Replace("[]", string.Empty);
+                type = string.Format("Mq4Array<{0}>", type);
+            }
+
             return new FunctionParameter
                 {
                     ByReference = parameterAsString.Contains("&"),
-                    DefaultValue = match.Groups["defaultValue"].Value,
-                    Name = match.Groups["name"].Value,
-                    Type = match.Groups["type"].Value,
+                    DefaultValue = defaultValue,
+                    Name = name,
+                    Type = type,
                     Index = index
                 };
         }
