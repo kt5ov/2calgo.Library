@@ -1,9 +1,14 @@
 	#region Math & Trig 
 
+@if (@Model.Words.Contains("MathArccos"))
+{
+	<text>
     Mq4Double MathArccos(double x)
     {
       return Math.Acos(x);
     }
+	</text>
+}
 
     Mq4Double MathArcsin(double x)
     {

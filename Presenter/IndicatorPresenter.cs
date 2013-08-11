@@ -11,34 +11,34 @@ namespace _2calgo.Presenter
     {
         public string GenerateCodeFrom(Indicator indicator)
         {
-            var template = new IndicatorBuilder();
+            var indicatorBuilder = new IndicatorBuilder();
 
             foreach (var parameter in indicator.Parameters)
             {
                 if (parameter.Type != "color")
                 {
                     if (parameter.DefaultValue != null)
-                        template.Parameters.AppendLine(string.Format("[Parameter(\"{0}\", DefaultValue = {1})]", parameter.Name, parameter.DefaultValue));
+                        indicatorBuilder.Parameters.AppendLine(string.Format("[Parameter(\"{0}\", DefaultValue = {1})]", parameter.Name, parameter.DefaultValue));
                     else
-                        template.Parameters.AppendLine(string.Format("[Parameter(\"{0}\")]", parameter.Name));
+                        indicatorBuilder.Parameters.AppendLine(string.Format("[Parameter(\"{0}\")]", parameter.Name));
                 }
-                template.Parameters.AppendLine(string.Format("public {0} {1} {2}", parameter.Type, parameter.Name + "_parameter", "{ get; set; }"));
-                template.Parameters.AppendLine(string.Format("bool _{0}Got;", parameter.Name));
-                template.Parameters.AppendLine(string.Format("{0} {1}_backfield;", parameter.BackfieldType, parameter.Name));
-                template.Parameters.AppendLine(parameter.BackfieldType + " " + parameter.Name + " { get { if (!_" + parameter.Name + "Got) " + parameter.Name
+                indicatorBuilder.Parameters.AppendLine(string.Format("public {0} {1} {2}", parameter.Type, parameter.Name + "_parameter", "{ get; set; }"));
+                indicatorBuilder.Parameters.AppendLine(string.Format("bool _{0}Got;", parameter.Name));
+                indicatorBuilder.Parameters.AppendLine(string.Format("{0} {1}_backfield;", parameter.BackfieldType, parameter.Name));
+                indicatorBuilder.Parameters.AppendLine(parameter.BackfieldType + " " + parameter.Name + " { get { if (!_" + parameter.Name + "Got) " + parameter.Name
                     + "_backfield = " + parameter.Name + "_parameter; return " + parameter.Name + "_backfield;	} set { " + parameter.Name + "_backfield = value; } }");
-                template.Parameters.AppendLine();
+                indicatorBuilder.Parameters.AppendLine();
             }
 
             for (var index = 0; index < indicator.Buffers.Length; index++)
             {
                 var buffer = indicator.Buffers[index];
 
-                AddLineDeclaration(indicator, template, index, buffer);
+                AddLineDeclaration(indicator, indicatorBuilder, index, buffer);
                 
-                template.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
-                template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
-                template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = new IndicatorDataSeries();\n", buffer);
+                indicatorBuilder.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
+                indicatorBuilder.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
+                indicatorBuilder.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = new IndicatorDataSeries();\n", buffer);
 
                 var style = indicator.Styles[index];
                 if (style != DrawingShapeStyle.Arrow && !IsLineVisible(indicator, index))
@@ -46,16 +46,17 @@ namespace _2calgo.Presenter
                 
                 var color = indicator.Colors[index] != null ? "Colors." + indicator.Colors[index] : "null";
 
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, {3});\n", buffer, (int)style, index, color);
-                template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
+                indicatorBuilder.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, {3});\n", buffer, (int)style, index, color);
+                indicatorBuilder.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
             }
 
-            template.Fields = indicator.Code.FieldsDeclarations;
-            template.Levels = string.Join(", ", indicator.Levels);
-            template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow;
-            template.Mq4Functions = GetFunctions(indicator.Code.Functions);
+            indicatorBuilder.Fields = indicator.Code.FieldsDeclarations;
+            indicatorBuilder.Levels = string.Join(", ", indicator.Levels);
+            indicatorBuilder.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow;
+            indicatorBuilder.Mq4Functions = GetFunctions(indicator.Code.Functions);
+            indicatorBuilder.Words = new Words(indicator.Mq4Code);
 
-            return template.BuildIndicator();
+            return indicatorBuilder.BuildIndicator();
         }
 
         private static string GetFunctions(IEnumerable<Function> functions)
