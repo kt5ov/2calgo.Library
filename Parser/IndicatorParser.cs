@@ -18,7 +18,7 @@ namespace _2calgo.Parser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var parsingErrors = new ParsingErrors();
 
-            var indicator = new Indicator {Mq4Code = code};
+            var indicator = new Indicator();
 
             code = code
                 .RemoveComments()
