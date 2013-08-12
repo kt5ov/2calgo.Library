@@ -52,7 +52,7 @@ namespace _2calgo.Presenter
 
             template.Fields = indicator.Code.FieldsDeclarations;
             template.Levels = string.Join(", ", indicator.Levels);
-            template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow;
+            template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
 
             return template.BuildIndicator();

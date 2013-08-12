@@ -74,13 +74,11 @@
                 if (indexToSet < 0)
                   return;
 
-                @if (@Model.IsDrawingOnChartWindow)
+                if (@Model.IsDrawingOnChartWindow)
                 {
-					<text>
                     var validRange = _closeExtremums.Max - _closeExtremums.Min;                
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
                         return;
-					</text>
                 }
 					
 				switch (_style)
