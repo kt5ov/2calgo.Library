@@ -13,22 +13,22 @@ using System.Collections;
 
 namespace cAlgo.Indicators
 {
-    [Indicator(ScalePrecision = 5, IsOverlay = @Model.IsDrawingOnChartWindow)]
-	[Levels(@Model.Levels)]
+    [Indicator(ScalePrecision = 5, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
+	[Levels(#Levels_PLACE_HOLDER#)]
     public class ConvertedIndicator : Indicator
     {
-@Raw(@Model.Parameters.ToString())
+#Parameters_PLACE_HOLDER#
 
-@Raw(@Model.LinesDeclarations.ToString())
+#Lines_declarations_PLACE_HOLDER#
      
-@Raw(@Model.Fields)
+#Mq4Fields_PLACE_HOLDER#
 
-@Raw(@Model.Mq4Functions)
+#Mq4Functions_PLACE_HOLDER#
         
         protected override void Initialize()
         {
             _closeExtremums = new DataSeriesExtremums(MarketSeries.Close);
-@Raw(@Model.InitialzeBuffers.ToString())
+#Initialize_buffers_PLACE_HOLDER#
 
             Open = new Mq4MarketDataSeries(MarketSeries.Open);
             High = new Mq4MarketDataSeries(MarketSeries.High);
@@ -46,7 +46,7 @@ namespace cAlgo.Indicators
         int _currentIndex;
         CashedStandardIndicators _cashedStandardIndicators;
         Mq4ChartObjects _mq4ChartObjects;
-@Raw(@Model.InvertedBuffersDeclarations.ToString())
+#Inverted_buffers_declarations_PLACE_HOLDER#
         Mq4MarketDataSeries Open;
         Mq4MarketDataSeries High;
         Mq4MarketDataSeries Low;
@@ -62,7 +62,7 @@ namespace cAlgo.Indicators
     public override void Calculate(int index)
     {
         _currentIndex = index;
-@Raw(@Model.BuffersSetCurrentIndex.ToString())
+#Buffers_SetCurrentIndex_PLACE_HOLDER#
 
         Open.SetCurrentIndex(index);
         High.SetCurrentIndex(index);
@@ -176,7 +176,7 @@ namespace cAlgo.Indicators
         }
     }
 
-#Parts_PLACE_HOLDER#
+#Conditional_Part_PLACE_HOLDER#
 	}
 
 	static class Mq4LineStyles

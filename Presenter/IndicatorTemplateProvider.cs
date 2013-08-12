@@ -64,7 +64,7 @@ namespace _2calgo.Presenter
             var parts = PartNames.Select(part => StringResourceReader.Read(FolderPath + part + ".c"));
             var allParts = string.Join(Environment.NewLine, parts);
 
-            return mainTemplate.Replace("#Parts_PLACE_HOLDER#", allParts);
+            return mainTemplate.Replace("#Conditional_Part_PLACE_HOLDER#", allParts);
         }
     }
 }

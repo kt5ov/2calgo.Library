@@ -35,9 +35,9 @@
       return Math.Round(x);
     }
         
-    Mq4Double MathPow(double @@base, double exponent)
+    Mq4Double MathPow(double @base, double exponent)
     {
-      return Math.Pow(@@base, exponent);
+      return Math.Pow(@base, exponent);
     }
 
     Mq4Double MathCeil(double x)

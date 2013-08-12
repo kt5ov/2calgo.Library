@@ -40,7 +40,7 @@
 		return Mq4TimeSeries.ToInteger(dateTime);
 	}
 
-	private static readonly Regex TimeRegex = new Regex(@@"((?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}\s*((?<hour>\d+)\:(?<minute>\d+)){0,1}", RegexOptions.Compiled);
+	private static readonly Regex TimeRegex = new Regex(@"((?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}\s*((?<hour>\d+)\:(?<minute>\d+)){0,1}", RegexOptions.Compiled);
 	DateTime StrToDateTime(string value)
 	{
 		var dateTime = Server.Time.Date;
