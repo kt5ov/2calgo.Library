@@ -4,6 +4,8 @@ namespace _2calgo.Model
 {
     public class Indicator
     {
+        public string Mq4Code { get; set; }
+
         public bool IsDrawingOnChartWindow { get; set; }
 
         public int BuffersCount { get; set; }
