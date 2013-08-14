@@ -8,7 +8,7 @@ namespace _2calgo.Presenter
 {
     public static class TemplateOptimizer
     {
-        private static readonly Regex ConditionalRegex = new Regex(@"\[Conditional\(""(?<word>\w+)""\)\]", RegexOptions.Compiled);
+        private static readonly Regex ConditionalRegex = new Regex(@"\[Conditional\((?<words>[^\)]+)\)\]", RegexOptions.Compiled);
 
         public static string RemoveUnusedCode(string template, Words words)
         {
@@ -26,8 +26,17 @@ namespace _2calgo.Presenter
                     innerStructures.Handle(template[currentIndex]);
                 }
                 result.Append(template.SubstringFromTo(lastIndex, match.Index - 1));
-                var word = match.Groups["word"].Value;
-                if (words.Contains(word))
+                var wordsGroup = match.Groups["words"].Value;
+                var conditionalWords = wordsGroup
+                    .SplitByComma()
+                    .Select(s => s.Replace("\"", string.Empty))
+                    .ToArray();
+                if (conditionalWords.Length > 1)
+                {
+                    
+                }
+
+                if (conditionalWords.Any(words.Contains))
                 {
                     var partToCopy = template.SubstringFromTo(match.Index + match.Length, currentIndex);
                     result.Append(partToCopy);

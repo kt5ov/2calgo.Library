@@ -1,5 +1,5 @@
-#region Common functions
-    Mq4Double MarketInfo(string symbol, int type)
+    [Conditional("MarketInfo")]
+	Mq4Double MarketInfo(string symbol, int type)
     {
       switch (type)
       {
@@ -13,6 +13,7 @@
       return 0;
     }
 
+	[Conditional("Bid", "MarketInfo")]
     Mq4Double Bid
     {
       get 
@@ -23,6 +24,7 @@
       }
     }
 
+	[Conditional("Ask", "MarketInfo")]
     Mq4Double Ask
     {
       get 
@@ -33,24 +35,27 @@
       }
     }
 
+	[Conditional("Comment")]
     void Comment(params object[] objects)
-        {
-          var text = string.Join("", objects.Select(o => o.ToString()));
-          ChartObjects.DrawText("top left comment", text, StaticPosition.TopLeft);
-        }
+    {
+        var text = string.Join("", objects.Select(o => o.ToString()));
+        ChartObjects.DrawText("top left comment", text, StaticPosition.TopLeft);
+    }
 
+	[Conditional("Alert")]
     void Alert(params object[] objects)
     {
         var text = string.Join("", objects.Select(o => o.ToString()));      
         Print("Alert: " + text);
     }
 
+	[Conditional("Sleep")]
     void Sleep(int milliseconds)
     {        
     }
 
+	[Conditional("PlaySound")]
     void PlaySound(string fileName)
     {
         Notifications.PlaySound(fileName);
     }
-#endregion //Common functions

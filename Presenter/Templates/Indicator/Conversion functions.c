@@ -1,25 +1,28 @@
-	#region Conversion functions
-        
+	[Conditional("DoubleToStr")]        
     string DoubleToStr(double value, int digits)
     {
       return value.ToString("F" + digits);
     }
 
+	[Conditional("NormalizeDouble")]
     Mq4Double NormalizeDouble(double value, int digits)
     {
       return Math.Round(value, digits);
     }
 
+	[Conditional("StrToDouble")]
     Mq4Double StrToDouble(string value)
     {
       return double.Parse(value);
     }
 
+	[Conditional("StrToInteger")]
     Mq4Double StrToInteger(string value)
     {
       return int.Parse(value);
     }
 
+	[Conditional("TimeToStr")]
     string TimeToStr(int value, int mode = TIME_DATE|TIME_MINUTES)
     {
       var formatString = "";
@@ -34,12 +37,15 @@
       return Mq4TimeSeries.ToDateTime(value).ToString(formatString);
     }
 		
+	[Conditional("StrToTime")]
 	int StrToTime(string value)
 	{
 		var dateTime = StrToDateTime(value);
 		return Mq4TimeSeries.ToInteger(dateTime);
 	}
 
+	[Conditional("StrToDateTime", "StrToTime")]
+	//{
 	private static readonly Regex TimeRegex = new Regex(@"((?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}\s*((?<hour>\d+)\:(?<minute>\d+)){0,1}", RegexOptions.Compiled);
 	DateTime StrToDateTime(string value)
 	{
@@ -60,5 +66,4 @@
 
 		return dateTime;
 	}
-
-	#endregion
+	//}

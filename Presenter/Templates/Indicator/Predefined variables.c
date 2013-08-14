@@ -1,10 +1,9 @@
-	#region Predefined variables
-
     private int Bars
     {
         get { return MarketSeries.Close.Count; }
     }
 
+	[Conditional("Digits", "MarketInfo")]
     private int Digits
     {
 		get
@@ -14,7 +13,8 @@
 			return Symbol.Digits;
 		}
     }
-      
+    
+	[Conditional("Point")]
 	Mq4Double Point
 	{
 		get
@@ -51,4 +51,3 @@
 		
 		return 43200;
 	}
-#endregion

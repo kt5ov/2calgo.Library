@@ -1,5 +1,4 @@
-#region Timeseries access
-
+	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
     int GetHighestIndex(Mq4MarketDataSeries invertedDataSeries, int count, int start)
     {
       var maxIndex = start;
@@ -12,6 +11,7 @@
       return maxIndex;
     }
 
+	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
     int GetLowestIndex(Mq4MarketDataSeries invertedDataSeries, int count, int start)
     {
       var minIndex = start;
@@ -24,6 +24,7 @@
       return minIndex;
     }
 
+	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
     int GetExtremeIndex(Func<Mq4MarketDataSeries, int, int, int> extremeFunc, int type, int count, int start)
     {
       switch (type)
@@ -45,65 +46,75 @@
       }
     }
 
+	[Conditional("iHighest", "Highest")]
     int iHighest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return GetExtremeIndex(GetHighestIndex, type, count, start);
     }
 
+	[Conditional("iLowest", "Lowest")]
     int iLowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return GetExtremeIndex(GetLowestIndex, type, count, start);
     }
 
+	[Conditional("iHighest", "Highest")]
     int Highest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return iHighest(symbol, timeframe, type, count, start);
     }
 
+	[Conditional("iLowest", "Lowest")]
     int Lowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return iLowest(symbol, timeframe, type, count, start);
     }
 
+	[Conditional("iClose")]
     double iClose(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return Close[shift];
     }
 
+	[Conditional("iHigh")]
     double iHigh(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return High[shift];
     }
 
+	[Conditional("iLow")]
     double iLow(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return Low[shift];
     }
 
+	[Conditional("iOpen")]
     double iOpen(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return Open[shift];
     }
 
+	[Conditional("iVolume")]
     double iVolume(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return Volume[shift];
     }
 
+	[Conditional("iTime")]
     int iTime(string symbol, int timeframe, int shift)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
       return Time[shift];
     }
 
-
+	[Conditional("iBarShift")]
     int iBarShift(string symbol, int timeframe, int time, bool exact = false)
     {
       ValidateSymbolAndTimeFrame(symbol, timeframe);
@@ -116,4 +127,3 @@
       }
       return -1;
     }
-#endregion
