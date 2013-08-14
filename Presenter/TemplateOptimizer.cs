@@ -34,6 +34,7 @@ namespace _2calgo.Presenter
                 }
                 lastIndex = currentIndex + 1;
             }
+            result.Append(template.SubstringFromTo(lastIndex, template.Length - 1));
             return result.ToString();
         }
     }
