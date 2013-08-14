@@ -1,6 +1,6 @@
 namespace _2calgo.Parser.InnerStructures
 {
-    public class InnerStructuresHandler
+    public class InnerStructures
     {
         public bool IsInsideSomeStructure { get; private set; }
 

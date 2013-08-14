@@ -7,6 +7,7 @@ namespace _2calgo.Presenter
         public string Fields { get; set; }
         public string Mq4Functions { get; set; }
         public string Levels { get; set; }
+        public string Mq4Code { get; set; }
 
         public readonly StringBuilder Parameters = new StringBuilder();
         public readonly StringBuilder LinesDeclarations = new StringBuilder();
@@ -18,6 +19,7 @@ namespace _2calgo.Presenter
         public string BuildIndicator()
         {
             var code = IndicatorTemplateProvider.GetTemplate();
+            code = TemplateOptimizer.RemoveUnusedCode(code, new Words(Mq4Code));
 
             code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());

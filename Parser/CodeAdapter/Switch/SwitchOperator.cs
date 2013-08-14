@@ -44,7 +44,7 @@ namespace _2calgo.Parser.CodeAdapter.Switch
             const string breakString = "break";
             const string defaultString = "default";
             
-            var innerStructures = new InnerStructuresHandler();
+            var innerStructures = new InnerStructures.InnerStructures();
             int? caseStartIndex = null;
             int? caseBodyStartIndex = null;
             for (var i = 0; i < switchBody.Length; i++)

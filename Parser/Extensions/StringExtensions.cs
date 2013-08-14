@@ -37,6 +37,11 @@ namespace _2calgo.Parser.Extensions
             return str.Substring(startIndex, Math.Min(length, maxLength));
         }
 
+        public static string SubstringFromTo(this string str, int fromIndex, int toIndex)
+        {
+            return str.SafeSubstring(fromIndex, toIndex - fromIndex + 1);
+        }
+
         private static readonly Regex WordsRegex = new Regex(@"\w{1,}", RegexOptions.Compiled);
         public static string FirstWord(this string str)
         {
@@ -48,7 +53,7 @@ namespace _2calgo.Parser.Extensions
             var result = new List<string>();
 
             var currentVariable = new StringBuilder();
-            var innerStructures = new InnerStructuresHandler();
+            var innerStructures = new InnerStructures.InnerStructures();
             foreach (var @char in code)
             {
                 innerStructures.Handle(@char);

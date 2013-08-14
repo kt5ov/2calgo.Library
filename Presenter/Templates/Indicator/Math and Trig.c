@@ -1,5 +1,6 @@
 	#region Math & Trig 
 
+	[Conditional("MathArccos")]
     Mq4Double MathArccos(double x)
     {
       return Math.Acos(x);

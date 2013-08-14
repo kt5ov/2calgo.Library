@@ -42,7 +42,7 @@ namespace _2calgo.Parser
         {
             var result = new StringBuilder();
 
-            var innerStructuresHandler = new InnerStructuresHandler();
+            var innerStructuresHandler = new InnerStructures.InnerStructures();
             for (var i = startIndex; i < code.Length; i++)
             {
                 innerStructuresHandler.Handle(code[i]);

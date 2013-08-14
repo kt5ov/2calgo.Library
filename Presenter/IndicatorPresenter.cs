@@ -12,6 +12,7 @@ namespace _2calgo.Presenter
         public string GenerateCodeFrom(Indicator indicator)
         {
             var template = new IndicatorBuilder();
+            template.Mq4Code = indicator.Mq4Code;
 
             foreach (var parameter in indicator.Parameters)
             {
