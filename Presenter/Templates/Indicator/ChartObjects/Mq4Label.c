@@ -1,3 +1,4 @@
+	[Conditional("OBJ_LABEL")] 
 	class Mq4Label : Mq4Object
     {
         private readonly ChartObjects _chartObjects;

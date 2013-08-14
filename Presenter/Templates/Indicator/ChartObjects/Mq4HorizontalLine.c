@@ -1,4 +1,5 @@
-    class Mq4HorizontalLine : Mq4Object
+	[Conditional("OBJ_HLINE")]    
+	class Mq4HorizontalLine : Mq4Object
     {
         private readonly ChartObjects _chartObjects;
 

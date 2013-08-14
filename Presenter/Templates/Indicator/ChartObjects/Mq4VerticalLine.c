@@ -1,3 +1,4 @@
+	[Conditional("OBJ_VLINE")] 
 	class Mq4VerticalLine : Mq4Object
 	{
 		private readonly ChartObjects _chartObjects;

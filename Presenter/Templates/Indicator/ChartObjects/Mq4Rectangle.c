@@ -1,3 +1,4 @@
+	[Conditional("OBJ_RECTANGLE")] 
 	class Mq4Rectangle : Mq4Object
     {
         private readonly ChartObjects _chartObjects;

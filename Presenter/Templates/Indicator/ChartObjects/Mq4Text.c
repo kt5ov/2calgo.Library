@@ -1,4 +1,5 @@
-    class Mq4Text : Mq4Object
+    [Conditional("OBJ_TEXT")] 
+	class Mq4Text : Mq4Object
     {
         private readonly ChartObjects _chartObjects;
         private readonly TimeSeries _timeSeries;

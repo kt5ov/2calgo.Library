@@ -1,4 +1,5 @@
-    class Mq4TrendLine : Mq4Object
+    [Conditional("OBJ_TREND")] 
+	class Mq4TrendLine : Mq4Object
     {
         private readonly ChartObjects _chartObjects;
 
