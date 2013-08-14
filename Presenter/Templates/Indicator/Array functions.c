@@ -1,5 +1,4 @@
-#region Array functions
-
+	[Conditional("ArrayInitialize")]
     int ArrayInitialize<T>(IMq4Array<T> array, T value)
     {
 		for(var i = 0; i < array.Length; i++)
@@ -7,6 +6,7 @@
 		return array.Length;
     }
 
+	[Conditional("ArrayCopy")]
 	int ArrayCopy<T>(IMq4Array<T> dest, IMq4Array<T> source, int start_dest = 0, int start_source = 0, int count = WHOLE_ARRAY)
 	{
 		if (count == WHOLE_ARRAY)
@@ -18,6 +18,7 @@
 		return count;
 	}
 
+	[Conditional("ArrayMaximum")]
 	int ArrayMaximum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start = 0)
 	{
 		var result = start;
@@ -29,6 +30,7 @@
 		return result;
 	}
 
+	[Conditional("ArrayMinimum")]
 	int ArrayMinimum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start = 0)
 	{
 		var result = start;
@@ -40,27 +42,29 @@
 		return result;
 	}
 
+	[Conditional("ArrayResize")]
 	int ArrayResize<T>(Mq4Array<T> array, int new_size)
 	{
 		array.Resize(new_size);
 		return new_size;
 	}
 
+	[Conditional("ArrayResize")]
 	int ArrayResize(Mq4OutputDataSeries array, int new_size)
 	{
 		return array.Length;
 	}
 		
+	[Conditional("ArraySize")]
 	int ArraySize<T>(IMq4Array<T> array)
 	{
 		return array.Length;
 	}
 
+	[Conditional("ArraySetAsSeries")]
 	bool ArraySetAsSeries<T>(Mq4Array<T> mq4Array, bool value)
 	{
 		var result = mq4Array.IsInverted;
 		mq4Array.IsInverted = value;
 		return result;
 	}
-	
-#endregion //Array functions
