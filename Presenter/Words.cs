@@ -13,7 +13,7 @@ namespace _2calgo.Presenter
             var currentWord = new StringBuilder();
             for (var i = 0; i < text.Length; i++)
             {
-                if (char.IsLetterOrDigit(text[i]))
+                if (char.IsLetterOrDigit(text[i]) || text[i] == '_')
                     currentWord.Append(text[i]);
                 else if (currentWord.Length > 0)
                 {

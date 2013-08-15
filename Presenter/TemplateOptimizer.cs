@@ -17,6 +17,9 @@ namespace _2calgo.Presenter
             var lastIndex = 0;
             foreach (var match in ConditionalRegex.Matches(template).OfType<Match>().ToArray())
             {
+                if (match.Index < lastIndex)
+                    continue;
+                
                 var innerStructures = new InnerStructures();
                 var currentIndex = template.IndexOf('{', match.Index);
                 innerStructures.Handle(template[currentIndex]);
@@ -25,13 +28,14 @@ namespace _2calgo.Presenter
                     currentIndex++;
                     innerStructures.Handle(template[currentIndex]);
                 }
-                result.Append(template.SubstringFromTo(lastIndex, match.Index - 1));
+                result.AppendLine(template.SubstringFromTo(lastIndex, match.Index - 1).Trim());
                 var wordsGroup = match.Groups["words"].Value;
                 var conditionalWords = wordsGroup
                     .SplitByComma()
                     .Select(s => s.Replace("\"", string.Empty))
                     .ToArray();
-                if (conditionalWords.Length > 1)
+                
+                if (conditionalWords.Any() && conditionalWords.First() == "OBJ_LABEL")
                 {
                     
                 }
@@ -39,11 +43,12 @@ namespace _2calgo.Presenter
                 if (conditionalWords.Any(words.Contains))
                 {
                     var partToCopy = template.SubstringFromTo(match.Index + match.Length, currentIndex);
-                    result.Append(partToCopy);
+                    partToCopy = RemoveUnusedCode(partToCopy, words);
+                    result.AppendLine(partToCopy.Trim());
                 }
                 lastIndex = currentIndex + 1;
             }
-            result.Append(template.SubstringFromTo(lastIndex, template.Length - 1));
+            result.AppendLine(template.SubstringFromTo(lastIndex, template.Length - 1).Trim());
             return result.ToString();
         }
     }

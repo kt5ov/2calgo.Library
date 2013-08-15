@@ -1,4 +1,3 @@
-#region MQ4 Constants
     const bool True = true;
     const bool False = false;
     const bool TRUE = true;
@@ -138,9 +137,7 @@
 
     const int MODE_UPPER = 1;
     const int MODE_LOWER = 2;
-#endregion //MQ4 Constants
 
-#region Colors
     const int CLR_NONE = 32768; 
 
     const int White = 16777215;
@@ -275,4 +272,3 @@
     const int DarkSlateGray = 5197615;
     const int DarkGreen = 25600;
     const int Black = 0;  
-#endregion   

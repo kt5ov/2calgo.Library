@@ -1,5 +1,3 @@
-#region Mq4ArrayToDataSeriesAdapterFactory
-
 	class Mq4ArrayToDataSeriesAdapterFactory
 	{
 		private readonly Dictionary<Mq4Array<Mq4Double>, DataSeries> _cachedAdapters = new Dictionary<Mq4Array<Mq4Double>, DataSeries>();
@@ -16,5 +14,3 @@
 			return result;
 		}
 	}
-
-#endregion //Mq4ArrayToDataSeriesAdapterFactory

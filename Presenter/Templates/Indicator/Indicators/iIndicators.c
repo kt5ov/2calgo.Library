@@ -1,4 +1,3 @@
-#region MQ4 Indicators
 
         private DataSeries ToMarketSeries(int constant)
         {
@@ -295,5 +294,3 @@
             return indicator.Result[_currentIndex - shift];
         }        
 #endregion //iSAR
-
-#endregion //MQ4 Indicators   

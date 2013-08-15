@@ -12,6 +12,7 @@
 			_timeSeries = timeSeries;
 		}
 
+		[Conditional("ObjectsTotal")] 
 		public int ObjectsTotal(int type)
 		{
 			switch (type)
@@ -55,6 +56,7 @@
 			return 0;
 		}
 
+		[Conditional("ObjectCreate")] 
 		public void Create(string name, int type, int window, int time1, double price1, int time2,
 									double price2, int time3, double price3)
 		{
@@ -156,7 +158,7 @@
 			Set(name, OBJPROP_COLOR, color);
 		}
 
-		[Conditional("ObjectDelete")] 
+		[Conditional("ObjectDelete", "ObjectsDeleteAll")] 
 		public void Delete(string name)
 		{
 			_mq4ObjectByName.Remove(name);
@@ -164,7 +166,7 @@
 			_algoChartObjects.RemoveObject(name);
 		}
 
-		[Conditional("ObjectsDeleteAll", "ObjectDelete")] 
+		[Conditional("ObjectsDeleteAll")] 
 		public int DeleteAll(int type)
 		{
 			if (type == EMPTY)

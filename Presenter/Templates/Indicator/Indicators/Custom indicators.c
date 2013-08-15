@@ -1,5 +1,3 @@
-    #region Custom indicators
-    
     void IndicatorBuffers(int count) {}
 
     void SetIndexStyle(int index, int type, int style=EMPTY, int width=EMPTY, int clr=CLR_NONE) { }
@@ -54,5 +52,3 @@
     {
         return _indicatorCounted;
     }
-
-    #endregion

@@ -1,5 +1,3 @@
-#region Mq4ArrayToDataSeriesAdapter
-
 	class Mq4ArrayToDataSeriesAdapter : DataSeries
 	{
 		private readonly Mq4Array<Mq4Double> _mq4Array;
@@ -36,5 +34,3 @@
 			}
 		}
 	}
-
-#endregion //Mq4ArrayToDataSeriesAdapter
