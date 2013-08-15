@@ -36,6 +36,8 @@
             }
         }
 
+		[Conditional("iMA", "iMAOnArray")]
+		//{
 #region iMA
         private double iMA(string symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
         {
@@ -79,7 +81,10 @@
             return indicator.Result[_currentIndex - shift];
         }
 #endregion //iMA
+		//}
 
+		[Conditional("iRSI", "iRSIOnArray")]
+		//{
 #region iRSI
         private double iRSI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
@@ -107,8 +112,11 @@
             return indicator.Result[_currentIndex - shift];
         }
 
-#endregion //iRSI     
+#endregion //iRSI    
+		//}
 
+		[Conditional("iBands", "iBandsOnArray")]
+		//{
 #region iBands
         private double iBands(string symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
         {
@@ -146,8 +154,11 @@
             return 0;
         }
 
-#endregion //iBands   
+#endregion //iBands   		
+		//}
 
+		[Conditional("iADX")]
+		//{
 #region iADX
         private Mq4Double iADX(string symbol, int timeframe, int period, int applied_price, int mode, int shift)
         {
@@ -175,7 +186,10 @@
         }
 
 #endregion //iADX    
+		//}
 
+		[Conditional("iATR")]
+		//{
 #region iATR
         private double iATR(string symbol, int timeframe, int period, int shift)
         {
@@ -192,7 +206,10 @@
         }
 
 #endregion //iATR   
+		//}
 
+		[Conditional("iMACD")]
+		//{
 #region iMACD
         private double iMACD(string symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
         {
@@ -219,7 +236,10 @@
         }
 
 #endregion //iMACD 
+		//}
 
+		[Conditional("iCCI", "iCCIOnArray")]
+		//{
 #region iCCI
         private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
@@ -241,9 +261,11 @@
 
             return indicator.Result[_currentIndex - shift];
         }
+#endregion //iCCI		
+		//}
 
-#endregion //iCCI
-
+		[Conditional("iStdDev", "iStdDevOnArray")]
+		//{
 #region iStdDev
         private double iStdDev( string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
         {
@@ -271,8 +293,11 @@
 
             return indicator.Result[_currentIndex - shift];
         }        
-#endregion //iStdDev
+#endregion //iStdDev		
+		//}
 
+		[Conditional("iWPR")]
+		//{
 #region iWPR
         private double iWPR(string symbol, int timeframe, int period, int shift)
         {
@@ -282,8 +307,11 @@
 
             return indicator.Result[_currentIndex - shift];
         }        
-#endregion //iWPR
+#endregion //iWPR		
+		//}
 
+		[Conditional("iSAR")]
+		//{
 #region iSAR
         private double iSAR(string symbol, int timeframe, double step, double maximum, int shift)
         {
@@ -294,3 +322,4 @@
             return indicator.Result[_currentIndex - shift];
         }        
 #endregion //iSAR
+		//}

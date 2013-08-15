@@ -7,6 +7,8 @@
             _indicatorsAccessor = indicatorsAccessor;
         }
 
+		[Conditional("iMA", "iMAOnArray")]
+		//{
 #region iMA
         private struct MAParameters
         {
@@ -48,7 +50,10 @@
             return indicator;
         }
 #endregion //iMA
+		//}
 
+		[Conditional("iRSI", "iRSIOnArray")]
+		//{
 #region iRSI
         private struct RsiParameters
         {
@@ -70,7 +75,10 @@
             return indicator;
         }
 #endregion //iRSI
+		//}
 
+		[Conditional("iBands", "iBandsOnArray")]
+		//{
 #region iBands
         private struct BandsParameters
         {
@@ -94,7 +102,10 @@
             return indicator;
         }
 #endregion //iBands
+		//}
 
+		[Conditional("iADX")]
+		//{
 #region iADX
         private struct AdxParameters
         {
@@ -115,7 +126,10 @@
             return indicator;
         }
 #endregion //iADX
+		//}
 
+		[Conditional("iATR")]
+		//{
 #region iATR
         private struct ATRParameters
         {
@@ -137,7 +151,10 @@
             return atrIndicator;
         }
 #endregion //iATR
+		//}
 
+		[Conditional("iMACD")]
+		//{
 #region iMACD
         private struct MacdParameters
         {
@@ -160,7 +177,10 @@
             return indicator;
         }
 #endregion //iMACD
+		//}
 
+		[Conditional("iCCI", "iCCIOnArray")]
+		//{
 #region iCCI
         private struct CciParameters
         {
@@ -181,8 +201,10 @@
             return indicator;
         }
 #endregion //iCCI
+		//}
 
-
+		[Conditional("iStdDev", "iStdDevOnArray")]
+		//{
 #region iStdDev
         private struct stdDevParameters
         {
@@ -205,7 +227,10 @@
             return indicator;
         }
 #endregion //iStdDev
+		//}
 
+		[Conditional("iWPR")]
+		//{
 #region iWPR
         private struct WprParameters
         {
@@ -226,7 +251,10 @@
             return indicator;
         }
 #endregion //iWPR
+		//}
 
+		[Conditional("iSAR")]
+		//{
 #region iSAR
         private struct SarParameters
         {
@@ -248,4 +276,5 @@
             return indicator;
         }
 #endregion //iSAR
+		//}
     }
