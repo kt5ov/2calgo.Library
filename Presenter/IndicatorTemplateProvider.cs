@@ -27,6 +27,7 @@ namespace _2calgo.Presenter
                 "Common functions",
                 "Array functions",
                 "Mq4Double",
+                "Alert",
 
                 Indicators + "/iIndicators",
                 Indicators + "/CashedStandardIndicators",

@@ -42,13 +42,6 @@
         ChartObjects.DrawText("top left comment", text, StaticPosition.TopLeft);
     }
 
-	[Conditional("Alert")]
-    void Alert(params object[] objects)
-    {
-        var text = string.Join("", objects.Select(o => o.ToString()));      
-        Print("Alert: " + text);
-    }
-
 	[Conditional("Sleep")]
     void Sleep(int milliseconds)
     {        

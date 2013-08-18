@@ -10,6 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 
 namespace cAlgo.Indicators
 {
