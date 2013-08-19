@@ -1,12 +1,42 @@
 	[Conditional("Alert")]
     //{
 
+
+	delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn,
+        IntPtr lParam);
+
+    static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
+    {
+        var handles = new List<IntPtr>();
+
+        foreach (ProcessThread thread in Process.GetProcessById(processId).Threads)
+            EnumThreadWindows(thread.Id,
+                (hWnd, lParam) => { handles.Add(hWnd); return true; }, IntPtr.Zero);
+
+        return handles;
+    }
+
 	Lazy<AlertWindowWrapper> _alertWindowWrapper = new Lazy<AlertWindowWrapper>(() => new AlertWindowWrapper());
 
 	void Alert(params object[] objects)
     {
         var text = string.Join("", objects.Select(o => o.ToString()));      
         _alertWindowWrapper.Value.ShowAlert(text);
+
+		var windows = EnumerateProcessWindowHandles(Process.GetCurrentProcess().Id);
+        var wpfWindows = windows
+            .Select(handle => ReflectionHelper.InvokeStaticMethod(WpfReflectionHelper.PresentationCoreAssembly, "System.Windows.Interop.HwndSource", "FromHwnd", handle))
+            .Where(hwndSource => hwndSource != null)
+            .ToArray();
+		_alertWindowWrapper.Value.ShowAlert("Wpf windows: " + wpfWindows.Length);
+		foreach (var wpfWindow in wpfWindows)
+        {
+            var rootVisual = ReflectionHelper.GetPropertyValue(wpfWindow, "RootVisual");
+            _alertWindowWrapper.Value.ShowAlert(ReflectionHelper.GetPropertyValue(rootVisual, "Title").ToString());
+        }
     }
 
 	public class AlertWindowWrapper
@@ -319,6 +349,11 @@
         public static void InvokeMethod(object instance, string methodName, params object[] parameters)
         {
             instance.GetType().InvokeMember(methodName, BindingFlags.InvokeMethod, null, instance, parameters);
+        }
+
+		public static object InvokeStaticMethod(Assembly assembly, string typeName, string methodName, params object[] parameters)
+        {
+            return assembly.GetType(typeName).InvokeMember(methodName, BindingFlags.InvokeMethod, null, null, parameters);
         }
 
         public static object GetStaticValue(Assembly assembly, string typeName, string propertyName)

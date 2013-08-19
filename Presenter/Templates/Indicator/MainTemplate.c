@@ -15,6 +15,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace cAlgo.Indicators
 {
