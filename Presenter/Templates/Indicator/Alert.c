@@ -1,86 +1,164 @@
 	[Conditional("Alert")]
     //{
-
-
-	delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
-
-    [DllImport("user32.dll")]
-    static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn,
-        IntPtr lParam);
-
-    static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
-    {
-        var handles = new List<IntPtr>();
-
-        foreach (ProcessThread thread in Process.GetProcessById(processId).Threads)
-            EnumThreadWindows(thread.Id,
-                (hWnd, lParam) => { handles.Add(hWnd); return true; }, IntPtr.Zero);
-
-        return handles;
-    }
-
-	Lazy<AlertWindowWrapper> _alertWindowWrapper = new Lazy<AlertWindowWrapper>(() => new AlertWindowWrapper());
+	
+	Lazy<AlertWindowWrapper> _alertWindowWrapper = new Lazy<AlertWindowWrapper>(() => 
+	{
+		var appDomain = AppDomain.CreateDomain("Alert domain");
+        var alertWindowWrapper = (AlertWindowWrapper)appDomain.CreateInstanceAndUnwrap(typeof(AlertWindowWrapper).Assembly.FullName, typeof (AlertWindowWrapper).FullName);
+		return alertWindowWrapper;
+	});
 
 	void Alert(params object[] objects)
     {
         var text = string.Join("", objects.Select(o => o.ToString()));      
         _alertWindowWrapper.Value.ShowAlert(text);
+    }
 
-		var windows = EnumerateProcessWindowHandles(Process.GetCurrentProcess().Id);
-        var wpfWindows = windows
-            .Select(handle => ReflectionHelper.InvokeStaticMethod(WpfReflectionHelper.PresentationCoreAssembly, "System.Windows.Interop.HwndSource", "FromHwnd", handle))
-            .Where(hwndSource => hwndSource != null)
-            .ToArray();
-		_alertWindowWrapper.Value.ShowAlert("Wpf windows: " + wpfWindows.Length);
-		foreach (var wpfWindow in wpfWindows)
+	internal static class FolderService
+    {
+        public static string SystemAppData
         {
-            var rootVisual = ReflectionHelper.GetPropertyValue(wpfWindow, "RootVisual");
-            _alertWindowWrapper.Value.ShowAlert(ReflectionHelper.GetPropertyValue(rootVisual, "Title").ToString());
+            get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); }
+        }
+
+        public static string AlertFolder
+        {
+            get { return EnsureDirectoryExists(Path.Combine(_2calgoFolder, "Alert")); }
+        }
+
+        public static string _2calgoFolder
+        {
+            get { return EnsureDirectoryExists(Path.Combine(SystemAppData, "2calgo")); }
+        }
+
+        public static string EnsureDirectoryExists(string directory)
+        {
+            Directory.CreateDirectory(directory);
+            return directory;
         }
     }
 
-	public class AlertWindowWrapper
+    public class AlertWindowWrapper : MarshalByRefObject
     {
-        private Thread _thread;
-        private object _window;
-        private readonly object _windowAccessObject = new object();
+        private Thread _windowThread;
         private readonly AutoResetEvent _loadedEvent = new AutoResetEvent(false);
-        private AlertWindowModel _windowModel;
-        private object _dispatcher;
+
+        const string AlertSynchPrefix = "2calgo_alert_";
+        private readonly Mutex _accessFileMutex = new Mutex(false, AlertSynchPrefix + "AccessFileMutex");
+        private readonly Mutex _checkForWindowMutex = new Mutex(false, AlertSynchPrefix + "CheckForWindowMutex");
+        private readonly EventWaitHandle _fileUpdatedEvent = new EventWaitHandle(false, EventResetMode.AutoReset, AlertSynchPrefix + "FileUpdatedEvent");
+        private readonly EventWaitHandle _windowExistsEvent = new EventWaitHandle(false, EventResetMode.ManualReset, AlertSynchPrefix + "WindowExistsEvent");
+        private readonly AutoResetEvent _windowClosedEvent = new AutoResetEvent(false);
+        private object _window;
 
         public void ShowAlert(string message)
         {
-            lock (_windowAccessObject)
+            var messagesFilePath = Path.Combine(FolderService.AlertFolder, "messages.txt");
+
+            _accessFileMutex.WaitOne();
+            try
             {
-                if (_window == null)
-                {
-                    _window = CreateWindow();
-                    _dispatcher = ReflectionHelper.GetPropertyValue(_window, "Dispatcher");
-                }
+                if (!File.Exists(messagesFilePath))
+                    File.WriteAllText(messagesFilePath, string.Empty);
+                var formattedMessage = string.Format("{0}|{1}{2}", DateTime.Now, message, Environment.NewLine);
+                File.AppendAllText(messagesFilePath, formattedMessage);
             }
-            ReflectionHelper.InvokeMethod(_dispatcher, "BeginInvoke", new Action(() =>
+            finally
             {
-                _windowModel.Items.Insert(0, new AlertItem(DateTime.Now, message));
-                _windowModel.Message = message;
-                ReflectionHelper.SetProperty(_window, "Visibility", ReflectionHelper.GetEnumValue(WpfReflectionHelper.PresentationCoreAssembly, "System.Windows.Visibility", "Visible"));
-            }));
+                _accessFileMutex.ReleaseMutex();
+            }
+            _fileUpdatedEvent.Set();
+
+            CreateWindowIfNeeded(messagesFilePath);
         }
 
-        private object CreateWindow()
+        private void CreateWindowIfNeeded(string messagesFilePath)
         {
-            object window = null;
-            _thread = new Thread(() =>
+            _checkForWindowMutex.WaitOne();
+            try
             {
-                window = ReflectionHelper.CreateInstance(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.Window");
-                SubscribeToEvent(window, "Loaded", "Window_Loaded");
-                SubscribeToEvent(window, "Closing", "Window_Closing");
-                ReflectionHelper.SetProperty(window, "ShowInTaskbar", true);
-                ReflectionHelper.SetProperty(window, "ShowActivated", true);
-                ReflectionHelper.SetProperty(window, "Width", 525);
-                ReflectionHelper.SetProperty(window, "Height", 400);
-                ReflectionHelper.SetProperty(window, "WindowStartupLocation", ReflectionHelper.GetStaticValue(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.WindowStartupLocation", "CenterScreen"));
-                ReflectionHelper.SetProperty(window, "WindowStyle", ReflectionHelper.GetStaticValue(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.WindowStyle", "ToolWindow"));
-                ReflectionHelper.SetProperty(window, "Title", "Alert");
+                if (!_windowExistsEvent.WaitOne(0))
+                {
+                    _windowExistsEvent.Set();
+
+                    var alertWindowModel = CreateWindow();
+                    var readingThread = new Thread(() =>
+                        {
+                            while (true)
+                            {
+                                var signaledEvent = WaitAny(_fileUpdatedEvent, _windowClosedEvent);
+                                if (signaledEvent == _windowClosedEvent)
+                                {
+                                    _windowExistsEvent.Reset();
+                                    if (ReadAlertItemsFromFile(messagesFilePath, false).Any())
+                                        CreateWindowIfNeeded(messagesFilePath);
+                                    break;
+                                }
+
+                                var items = alertWindowModel.Items.ToList();
+                                var newItems = ReadAlertItemsFromFile(messagesFilePath, true);
+                                items.InsertRange(0, newItems);
+                                if (items.Any())
+                                    alertWindowModel.Message = items[0].Message;
+                                alertWindowModel.Items = items;
+                            }
+                        });
+                    readingThread.Start();
+                }
+            }
+            finally
+            {
+                _checkForWindowMutex.ReleaseMutex();
+            }
+        }
+        
+        private IEnumerable<AlertItem> ReadAlertItemsFromFile(string messagesFilePath, bool cleanFileAfterRead)
+        {
+            var newItems = new List<AlertItem>();
+                                
+            _accessFileMutex.WaitOne();
+            try
+            {
+                var contentLines = File.ReadAllLines(messagesFilePath);
+                foreach (var contentLine in contentLines)
+                {
+                    var parts = contentLine.Split('|');
+                    var time = DateTime.Parse(parts[0]);
+                    var textMessage = contentLine.Remove(0, parts[0].Length + 1);
+                    newItems.Insert(0, new AlertItem(time, textMessage));
+                }
+                if (cleanFileAfterRead)
+                    File.WriteAllText(messagesFilePath, string.Empty);
+            }
+            finally
+            {
+                _accessFileMutex.ReleaseMutex();
+            }
+
+            return newItems;
+        }
+
+        private WaitHandle WaitAny(params WaitHandle[] waitHandles)
+        {
+            var signaledEventIndex = WaitHandle.WaitAny(waitHandles);
+            return waitHandles[signaledEventIndex];
+        }
+
+        private AlertWindowModel CreateWindow()
+        {
+            AlertWindowModel windowModel = null;
+            _windowThread = new Thread(() =>
+            {
+                _window = ReflectionHelper.CreateInstance(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.Window");
+                SubscribeToEvent(_window, "Loaded", "Window_Loaded");
+                SubscribeToEvent(_window, "Closing", "Window_Closing");
+                ReflectionHelper.SetProperty(_window, "ShowInTaskbar", true);
+                ReflectionHelper.SetProperty(_window, "ShowActivated", true);
+                ReflectionHelper.SetProperty(_window, "Width", 525);
+                ReflectionHelper.SetProperty(_window, "Height", 400);
+                ReflectionHelper.SetProperty(_window, "WindowStartupLocation", ReflectionHelper.GetStaticValue(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.WindowStartupLocation", "CenterScreen"));
+                ReflectionHelper.SetProperty(_window, "WindowStyle", ReflectionHelper.GetStaticValue(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.WindowStyle", "ToolWindow"));
+                ReflectionHelper.SetProperty(_window, "Title", "Alert");
                 var rootGrid = WpfReflectionHelper.CreateGrid();
                 WpfReflectionHelper.SetMargin(rootGrid, 5);
                 WpfReflectionHelper.AddAutoRowDefinition(rootGrid);
@@ -129,21 +207,22 @@
                 WpfReflectionHelper.AddChild(rootGrid, messageGrid);
                 WpfReflectionHelper.AddChild(rootGrid, allAlertsGrid);
                 
-                ReflectionHelper.SetProperty(window, "Content", rootGrid);
-                _windowModel = new AlertWindowModel();
-                ReflectionHelper.SetProperty(window, "DataContext", _windowModel);
-                ReflectionHelper.InvokeMethod(window, "ShowDialog");
+                ReflectionHelper.SetProperty(_window, "Content", rootGrid);
+                windowModel = new AlertWindowModel();
+                ReflectionHelper.SetProperty(_window, "DataContext", windowModel);
+                
+                ReflectionHelper.InvokeMethod(_window, "ShowDialog");
             }
                 )
             {
-                IsBackground = true
+                IsBackground = false
             };
 
-            _thread.TrySetApartmentState(ApartmentState.STA);
-            _thread.Start();
+            _windowThread.TrySetApartmentState(ApartmentState.STA);
+            _windowThread.Start();
             _loadedEvent.WaitOne();
 
-            return window;
+            return windowModel;
         }
 
         private static object Base64ToImage(string stringValue)
@@ -165,7 +244,7 @@
         {
             ReflectionHelper.InvokeMethod(_window, "Close");
         }
-        
+
         public void Window_Loaded(object s, object e)
         {
             _loadedEvent.Set();
@@ -173,11 +252,8 @@
 
         public void Window_Closing(object sender, CancelEventArgs e)
         {
-            lock (_windowAccessObject)
-            {
-                _window = null;
-            }
-        } 
+            _windowClosedEvent.Set();
+        }
 
         private void SubscribeToEvent(object @object, string eventName, string handlerName)
         {
@@ -191,11 +267,7 @@
     public class AlertWindowModel : INotifyPropertyChanged
     {
         private string _message;
-
-        public AlertWindowModel()
-        {
-            Items = new ObservableCollection<AlertItem>();
-        }
+        private IEnumerable<AlertItem> _items = new List<AlertItem>();
 
         public string Message
         {
@@ -210,7 +282,19 @@
             }
         }
 
-        public ObservableCollection<AlertItem> Items { get; private set; }
+        public IEnumerable<AlertItem> Items
+        {
+            get { return _items; }
+            set
+            {
+                if (_items == value)
+                    return;
+
+                _items = value;
+                OnPropertyChanged("Items");
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -351,7 +435,7 @@
             instance.GetType().InvokeMember(methodName, BindingFlags.InvokeMethod, null, instance, parameters);
         }
 
-		public static object InvokeStaticMethod(Assembly assembly, string typeName, string methodName, params object[] parameters)
+        public static object InvokeStaticMethod(Assembly assembly, string typeName, string methodName, params object[] parameters)
         {
             return assembly.GetType(typeName).InvokeMember(methodName, BindingFlags.InvokeMethod, null, null, parameters);
         }
