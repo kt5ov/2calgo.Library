@@ -52,3 +52,9 @@
     {
         Notifications.PlaySound(fileName);
     }
+	
+	[Conditional("SendMail")]
+	void SendMail(string subject, string text)
+    {
+        Notifications.SendEmail(EmailAddressFrom, EmailAddressTo, subject, text);
+    }

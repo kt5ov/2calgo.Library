@@ -24,6 +24,15 @@ namespace cAlgo.Indicators
 	[Levels(#Levels_PLACE_HOLDER#)]
     public class ConvertedIndicator : Indicator
     {
+[Conditional("SendMail")]
+//{
+		[Parameter("Email from", DefaultValue = "your_email@gmail.com")]
+        public string EmailAddressFrom { get; set; }
+
+        [Parameter("Email to", DefaultValue = "your_email@gmail.com")]
+        public string EmailAddressTo { get; set; }
+//}
+
 #Parameters_PLACE_HOLDER#
 
 #Lines_declarations_PLACE_HOLDER#
