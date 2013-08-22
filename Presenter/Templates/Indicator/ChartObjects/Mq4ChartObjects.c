@@ -61,6 +61,7 @@
 									double price2, int time3, double price3)
 		{
 			Mq4Object mq4Object = null;
+			[Conditional("OBJ_VLINE", "OBJ_HLINE", "OBJ_TEXT", "OBJ_LABEL", "OBJ_TREND", "OBJ_RECTANGLE")] 
 			switch (type)
 			{
 				[Conditional("OBJ_VLINE")] 
