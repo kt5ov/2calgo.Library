@@ -3,9 +3,7 @@
 	
 	Lazy<AlertWindowWrapper> _alertWindowWrapper = new Lazy<AlertWindowWrapper>(() => 
 	{
-		var appDomain = AppDomain.CreateDomain("Alert domain");
-        var alertWindowWrapper = (AlertWindowWrapper)appDomain.CreateInstanceAndUnwrap(typeof(AlertWindowWrapper).Assembly.FullName, typeof (AlertWindowWrapper).FullName);
-		return alertWindowWrapper;
+		return new AlertWindowWrapper();
 	});
 
 	void Alert(params object[] objects)
@@ -13,140 +11,31 @@
         var text = string.Join("", objects.Select(o => o.ToString()));      
         _alertWindowWrapper.Value.ShowAlert(text);
     }
-
-	internal static class FolderService
+	public class AlertWindowWrapper : MarshalByRefObject
     {
-        public static string SystemAppData
-        {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); }
-        }
+        private static Thread _windowThread;
+        private static readonly AutoResetEvent LoadedEvent = new AutoResetEvent(false);
+        private static readonly object SyncObject = new object();
 
-        public static string AlertFolder
-        {
-            get { return EnsureDirectoryExists(Path.Combine(_2calgoFolder, "Alert")); }
-        }
-
-        public static string _2calgoFolder
-        {
-            get { return EnsureDirectoryExists(Path.Combine(SystemAppData, "2calgo")); }
-        }
-
-        public static string EnsureDirectoryExists(string directory)
-        {
-            Directory.CreateDirectory(directory);
-            return directory;
-        }
-    }
-
-    public class AlertWindowWrapper : MarshalByRefObject
-    {
-        private Thread _windowThread;
-        private readonly AutoResetEvent _loadedEvent = new AutoResetEvent(false);
-
-        const string AlertSynchPrefix = "2calgo_alert_";
-        private readonly Mutex _accessFileMutex = new Mutex(false, AlertSynchPrefix + "AccessFileMutex");
-        private readonly Mutex _checkForWindowMutex = new Mutex(false, AlertSynchPrefix + "CheckForWindowMutex");
-        private readonly EventWaitHandle _fileUpdatedEvent = new EventWaitHandle(false, EventResetMode.AutoReset, AlertSynchPrefix + "FileUpdatedEvent");
-        private readonly EventWaitHandle _windowExistsEvent = new EventWaitHandle(false, EventResetMode.ManualReset, AlertSynchPrefix + "WindowExistsEvent");
-        private readonly AutoResetEvent _windowClosedEvent = new AutoResetEvent(false);
-        private object _window;
+        private static object _window;
+        private static AlertWindowModel _alertWindowModel;
 
         public void ShowAlert(string message)
         {
-            var messagesFilePath = Path.Combine(FolderService.AlertFolder, "messages.txt");
-
-            _accessFileMutex.WaitOne();
-            try
+            lock (SyncObject)
             {
-                if (!File.Exists(messagesFilePath))
-                    File.WriteAllText(messagesFilePath, string.Empty);
-                var formattedMessage = string.Format("{0}|{1}{2}", DateTime.Now, message, Environment.NewLine);
-                File.AppendAllText(messagesFilePath, formattedMessage);
-            }
-            finally
-            {
-                _accessFileMutex.ReleaseMutex();
-            }
-            _fileUpdatedEvent.Set();
+                if (_window == null)
+                    CreateWindow();
 
-            CreateWindowIfNeeded(messagesFilePath);
-        }
-
-        private void CreateWindowIfNeeded(string messagesFilePath)
-        {
-            _checkForWindowMutex.WaitOne();
-            try
-            {
-                if (!_windowExistsEvent.WaitOne(0))
-                {
-                    _windowExistsEvent.Set();
-
-                    var alertWindowModel = CreateWindow();
-                    var readingThread = new Thread(() =>
-                        {
-                            while (true)
-                            {
-                                var signaledEvent = WaitAny(_fileUpdatedEvent, _windowClosedEvent);
-                                if (signaledEvent == _windowClosedEvent)
-                                {
-                                    _windowExistsEvent.Reset();
-                                    if (ReadAlertItemsFromFile(messagesFilePath, false).Any())
-                                        CreateWindowIfNeeded(messagesFilePath);
-                                    break;
-                                }
-
-                                var items = alertWindowModel.Items.ToList();
-                                var newItems = ReadAlertItemsFromFile(messagesFilePath, true);
-                                items.InsertRange(0, newItems);
-                                if (items.Any())
-                                    alertWindowModel.Message = items[0].Message;
-                                alertWindowModel.Items = items;
-                            }
-                        });
-                    readingThread.Start();
-                }
-            }
-            finally
-            {
-                _checkForWindowMutex.ReleaseMutex();
+                _alertWindowModel.Message = message;
+                var items = new List<AlertItem>(_alertWindowModel.Items);
+                items.Insert(0, new AlertItem(DateTime.Now, message));
+                _alertWindowModel.Items = items;
             }
         }
-        
-        private IEnumerable<AlertItem> ReadAlertItemsFromFile(string messagesFilePath, bool cleanFileAfterRead)
-        {
-            var newItems = new List<AlertItem>();
-                                
-            _accessFileMutex.WaitOne();
-            try
-            {
-                var contentLines = File.ReadAllLines(messagesFilePath);
-                foreach (var contentLine in contentLines)
-                {
-                    var parts = contentLine.Split('|');
-                    var time = DateTime.Parse(parts[0]);
-                    var textMessage = contentLine.Remove(0, parts[0].Length + 1);
-                    newItems.Insert(0, new AlertItem(time, textMessage));
-                }
-                if (cleanFileAfterRead)
-                    File.WriteAllText(messagesFilePath, string.Empty);
-            }
-            finally
-            {
-                _accessFileMutex.ReleaseMutex();
-            }
 
-            return newItems;
-        }
-
-        private WaitHandle WaitAny(params WaitHandle[] waitHandles)
+        private void CreateWindow()
         {
-            var signaledEventIndex = WaitHandle.WaitAny(waitHandles);
-            return waitHandles[signaledEventIndex];
-        }
-
-        private AlertWindowModel CreateWindow()
-        {
-            AlertWindowModel windowModel = null;
             _windowThread = new Thread(() =>
             {
                 _window = ReflectionHelper.CreateInstance(WpfReflectionHelper.PresentationFrameworkAssembly, "System.Windows.Window");
@@ -208,21 +97,20 @@
                 WpfReflectionHelper.AddChild(rootGrid, allAlertsGrid);
                 
                 ReflectionHelper.SetProperty(_window, "Content", rootGrid);
-                windowModel = new AlertWindowModel();
-                ReflectionHelper.SetProperty(_window, "DataContext", windowModel);
+                _alertWindowModel = new AlertWindowModel();
+                ReflectionHelper.SetProperty(_window, "DataContext", _alertWindowModel);
                 
                 ReflectionHelper.InvokeMethod(_window, "ShowDialog");
             }
                 )
             {
-                IsBackground = false
+                IsBackground = false,
+                Name = "Alert Window thread"
             };
 
             _windowThread.TrySetApartmentState(ApartmentState.STA);
             _windowThread.Start();
-            _loadedEvent.WaitOne();
-
-            return windowModel;
+            LoadedEvent.WaitOne();
         }
 
         private static object Base64ToImage(string stringValue)
@@ -247,12 +135,13 @@
 
         public void Window_Loaded(object s, object e)
         {
-            _loadedEvent.Set();
+            LoadedEvent.Set();
         }
 
         public void Window_Closing(object sender, CancelEventArgs e)
         {
-            _windowClosedEvent.Set();
+            _window = null;
+            _alertWindowModel = null;
         }
 
         private void SubscribeToEvent(object @object, string eventName, string handlerName)
