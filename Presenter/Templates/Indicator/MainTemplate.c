@@ -235,4 +235,21 @@ namespace cAlgo.Indicators
 				action(arg1, arg2);
 		}
 	}
+
+	static class TimeSeriesExtensions
+	{
+		public static int GetIndexByTime(this TimeSeries timeSeries, DateTime time)
+		{
+			var index = timeSeries.Count - 1;
+			for (var i = timeSeries.Count - 1; i >= 0; i--)
+			{
+				if (timeSeries[i] < time)
+				{
+					index = i + 1;
+					break;
+				}
+			}   
+			return index;
+		}
+	}
 }

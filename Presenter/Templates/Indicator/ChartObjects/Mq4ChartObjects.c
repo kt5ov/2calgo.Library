@@ -91,7 +91,7 @@
 				[Conditional("OBJ_TREND")] 
 				//{
 				case OBJ_TREND:
-					mq4Object = new Mq4TrendLine(name, type, _algoChartObjects);
+					mq4Object = new Mq4TrendLine(name, type, _algoChartObjects, _timeSeries);
 					break;                    
 				//}
 				[Conditional("OBJ_RECTANGLE")] 

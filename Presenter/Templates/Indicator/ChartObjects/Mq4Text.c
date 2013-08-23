@@ -11,25 +11,16 @@
             _timeSeries = timeSeries;
         }
             
-		public string Text { get; set; }
+		public string Text { get; set; }		
             
 		public override void Set(int index, Mq4Double value)
 		{
 			base.Set(index, value);
 			switch (index)        
 			{ 
-				case OBJPROP_TIME1:           
-				var time1 = Time1;
-				_index = _timeSeries.Count - 1;
-						for (var i = _timeSeries.Count - 1; i >= 0; i--)
-						{
-						if (_timeSeries[i] < time1)
-						{
-							_index = i + 1;
-							break;
-						}
-						}               
-						break;
+				case OBJPROP_TIME1:           					
+					_index = _timeSeries.GetIndexByTime(Time1);
+					break;
 			}
 		}
             
