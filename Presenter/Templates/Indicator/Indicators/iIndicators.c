@@ -323,3 +323,66 @@
         }        
 #endregion //iSAR
 		//}
+
+[Conditional("iFractals")]
+//{
+	private Mq4Double iFractals(string symbol, int timeframe, int mode, int shift)
+	{
+		ValidateSymbolAndTimeFrame(symbol, timeframe);
+		var index = MarketSeries.Close.Count - 1 - shift;
+		if (mode == MODE_UPPER)
+		{
+			if (IsUpFractal(index))
+				return MarketSeries.High[index];
+		}
+		if (mode == MODE_LOWER)
+		{
+			if (IsDownFractal(index))
+				return MarketSeries.Low[index];
+		}
+		return 0;
+	}
+		
+	private bool IsUpFractal(int i)
+    {
+        var high = MarketSeries.High;
+        if (high[i] > high[i - 1] && high[i] > high[i - 2] && high[i] > high[i + 1] && high[i] > high[i + 2])
+            return true;
+
+        if (high[i] == high[i - 1] && high[i] > high[i - 2] && high[i] > high[i - 3] && high[i] > high[i + 1] && high[i] > high[i + 2])
+            return true;
+
+        if (high[i] >= high[i - 1] && high[i] == high[i - 2] && high[i] > high[i - 3] && high[i] > high[i - 4] && high[i] > high[i + 1] && high[i] > high[i + 2])
+            return true;
+
+        if (high[i] >= high[i - 1] && high[i] == high[i - 2] && high[i] == high[i - 3] && high[i] > high[i - 4] && high[i] > high[i - 5] && high[i] > high[i + 1] && high[i] > high[i + 2])
+            return true;
+
+        if (high[i] >= high[i - 1] && high[i] == high[i - 2] && high[i] >= high[i - 3] && high[i] == high[i - 4] && high[i] > high[i - 5] && high[i] > high[i - 6] && high[i] > high[i + 1] && high[i] > high[i + 2])
+            return true;
+
+        return false;
+    }
+
+    private bool IsDownFractal(int i)
+    {
+        var low = MarketSeries.Low;
+        if (low[i] < low[i - 1] && low[i] < low[i - 2] && low[i] < low[i + 1] && low[i] < low[i + 2])
+            return true;
+
+        if (low[i] == low[i - 1] && low[i] < low[i - 2] && low[i] < low[i - 3] && low[i] < low[i + 1] && low[i] < low[i + 2])
+            return true;
+
+        if (low[i] <= low[i - 1] && low[i] == low[i - 2] && low[i] < low[i - 3] && low[i] < low[i - 4] && low[i] < low[i + 1] && low[i] < low[i + 2])
+            return true;
+
+        if (low[i] <= low[i - 1] && low[i] == low[i - 2] && low[i] == low[i - 3] && low[i] < low[i - 4] && low[i] < low[i - 5] && low[i] < low[i + 1] && low[i] < low[i + 2])
+            return true;
+
+        if (low[i] <= low[i - 1] && low[i] == low[i - 2] && low[i] <= low[i - 3] && low[i] == low[i - 4] && low[i] < low[i - 5] && low[i] < low[i - 6] && low[i] < low[i + 1] && low[i] < low[i + 2])
+            return true;
+
+        return false;
+    }
+
+//}
