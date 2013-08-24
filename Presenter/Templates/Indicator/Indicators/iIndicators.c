@@ -386,3 +386,30 @@
     }
 
 //}
+
+[Conditional("iStochastic")]
+//{
+
+	Mq4Double iStochastic(string symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
+	{
+		ValidateSymbolAndTimeFrame(symbol, timeframe);
+		
+		var maType = ToMaType(method);   
+		var stochasticMode = mode == 0 ? CashedStandardIndicators.StochasticMode.LowHigh : CashedStandardIndicators.StochasticMode.CloseClose;
+		var marketSeries = MarketSeries;
+		var index = marketSeries.Close.Count - 1 - shift;
+
+		var stochasticValues = _cashedStandardIndicators.Stochastic(marketSeries, kperiod, dperiod, slowing, maType, stochasticMode, index);
+
+		switch (mode)
+		{
+			case MODE_MAIN:
+				return stochasticValues.K;
+			case MODE_SIGNAL:
+				return stochasticValues.D; 
+		}
+
+		return 0;
+	}
+
+//}

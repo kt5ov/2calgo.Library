@@ -28,7 +28,8 @@ namespace _2calgo.Parser.Errors
                 "iStdDev",
                 "iWPR",
                 "iSAR",
-                "iFractals"
+                "iFractals",
+                "iStochastic",
             };
         
         private static readonly List<string> MultiTimeFrameMethods = new List<string>
