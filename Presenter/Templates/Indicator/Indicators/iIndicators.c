@@ -395,11 +395,10 @@
 		ValidateSymbolAndTimeFrame(symbol, timeframe);
 		
 		var maType = ToMaType(method);   
-		var stochasticMode = method == 0 ? CashedStandardIndicators.StochasticMode.LowHigh : CashedStandardIndicators.StochasticMode.CloseClose;
-		var marketSeries = MarketSeries;
+		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;
 		var index = _currentIndex - shift;
 
-		var stochasticValues = _cashedStandardIndicators.Stochastic(marketSeries, kperiod, dperiod, slowing, maType, stochasticMode, index);
+		var stochasticValues = CalculateStochastic(kperiod, dperiod, slowing, maType, stochasticMode, index);
 
 		switch (mode)
 		{
@@ -411,5 +410,126 @@
 
 		return 0;
 	}
+
+	private struct StochasticParameters
+    {
+        public int KPeriods;
+		public int DPeriods;
+		public int KSlowing;
+		public MovingAverageType MAType;
+		public StochasticMode StochasticMode;
+    }
+
+	private class StochasticValues
+	{
+		public Mq4Double K { get; private set; }
+		public Mq4Double D { get; private set; }
+
+		public StochasticValues(double k, double d)
+		{
+			K = k;
+			D = d;
+		}
+	}
+
+	private enum StochasticMode
+	{
+		LowHigh,
+		CloseClose
+	}
+
+	private class Mq4StochasticIndicator
+	{
+		private readonly StochasticParameters _parameters;
+		private IndicatorDataSeries _fastK;
+		private MovingAverage _slowK;
+		private MovingAverage _averageOnSlowK;
+		private MarketSeries _marketSeries;
+
+		public Mq4StochasticIndicator(StochasticParameters stochasticParameters, IIndicatorsAccessor indicatorAccessor, MarketSeries marketSeries)
+		{
+			_parameters = stochasticParameters;
+			_marketSeries = marketSeries;
+			_fastK = new IndicatorDataSeries();
+			_slowK = indicatorAccessor.MovingAverage(_fastK, _parameters.KSlowing, _parameters.MAType);
+			_averageOnSlowK = indicatorAccessor.MovingAverage(_slowK.Result, _parameters.DPeriods, _parameters.MAType);
+		}
+
+		public StochasticValues Calculate(int index)
+        {
+            for (var i = index - _parameters.KSlowing * _parameters.DPeriods; i <= index; i++)
+				_fastK[i] = GetFastKValue(i);	
+
+            for (var i = Math.Max(0, index - _parameters.DPeriods); i <= index; i++)
+                _slowK.Calculate(i + 1);
+            var k = _slowK.Result[index];
+
+            for (var i = Math.Max(0, index - _parameters.DPeriods); i <= index; i++)
+                _averageOnSlowK.Calculate(i + 1);    
+            var d = _averageOnSlowK.Result[index];
+
+            return new StochasticValues(k, d);
+        }
+
+		private double GetFastKValue(int index)
+		{
+			DataSeries low = _marketSeries.Low;
+			DataSeries high = _marketSeries.High;
+				
+			if (_parameters.StochasticMode == StochasticMode.CloseClose)
+			{
+				low = _marketSeries.Close;
+				high = _marketSeries.Close;
+			}
+			double minFromPeriod = GetMinFromPeriod(low, index, _parameters.KPeriods);
+			double maxFromPeriod = GetMaxFromPeriod(high, index, _parameters.KPeriods);
+			return (_marketSeries.Close[index] - minFromPeriod) / (maxFromPeriod - minFromPeriod) * 100.0;
+		}
+
+		private static double GetMinFromPeriod(DataSeries dataSeries, int endIndex, int periods)
+		{
+			double num = dataSeries[endIndex];
+			for (int index = endIndex; index > endIndex - periods; --index)
+			{
+				if (dataSeries[index] < num)
+					num = dataSeries[index];
+			}
+			return num;
+		}
+
+		private static double GetMaxFromPeriod(DataSeries dataSeries, int endIndex, int periods)
+		{
+			double num = dataSeries[endIndex];
+			for (int index = endIndex; index > endIndex - periods; --index)
+			{
+				if (dataSeries[index] > num)
+					num = dataSeries[index];
+			}
+			return num;
+		}
+	}
+    
+    private Dictionary<StochasticParameters, Mq4StochasticIndicator> _stochasticIndicators = new Dictionary<StochasticParameters, Mq4StochasticIndicator>();
+
+	private StochasticValues CalculateStochastic(int kPeriod, int dPeriod, int slowing, MovingAverageType maType, StochasticMode stochasticMode, int index)
+	{
+		var parameters = new StochasticParameters
+		{
+			KPeriods = kPeriod,
+			DPeriods = dPeriod,
+			KSlowing = slowing,
+			MAType = maType,
+			StochasticMode = stochasticMode
+		};
+
+		Mq4StochasticIndicator indicator;
+		if (!_stochasticIndicators.TryGetValue(parameters, out indicator))
+		{
+			indicator = new Mq4StochasticIndicator(parameters, Indicators, MarketSeries);
+			_stochasticIndicators[parameters] = indicator;
+		}
+
+		return indicator.Calculate(index);
+	}	
 
 //}
