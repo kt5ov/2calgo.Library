@@ -288,9 +288,9 @@
                 case 240:
                     return "⇨";
                 case 241:
-                    return "⇧";
+                    return "◭";
                 case 242:
-                    return "⇩";
+                    return "⧨";
                 case 243:
                     return "⬄";
                 case 244:
