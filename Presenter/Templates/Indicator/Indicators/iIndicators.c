@@ -329,7 +329,7 @@
 	private Mq4Double iFractals(string symbol, int timeframe, int mode, int shift)
 	{
 		ValidateSymbolAndTimeFrame(symbol, timeframe);
-		var index = MarketSeries.Close.Count - 1 - shift;
+		var index = _currentIndex - shift;
 		if (mode == MODE_UPPER)
 		{
 			if (IsUpFractal(index))
@@ -395,9 +395,9 @@
 		ValidateSymbolAndTimeFrame(symbol, timeframe);
 		
 		var maType = ToMaType(method);   
-		var stochasticMode = mode == 0 ? CashedStandardIndicators.StochasticMode.LowHigh : CashedStandardIndicators.StochasticMode.CloseClose;
+		var stochasticMode = method == 0 ? CashedStandardIndicators.StochasticMode.LowHigh : CashedStandardIndicators.StochasticMode.CloseClose;
 		var marketSeries = MarketSeries;
-		var index = marketSeries.Close.Count - 1 - shift;
+		var index = _currentIndex - shift;
 
 		var stochasticValues = _cashedStandardIndicators.Stochastic(marketSeries, kperiod, dperiod, slowing, maType, stochasticMode, index);
 

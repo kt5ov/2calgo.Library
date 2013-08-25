@@ -323,27 +323,30 @@
 			}
 
 			public StochasticValues Calculate(int index)
-			{
-				for (var i = 0; i < _parameters.KSlowing * _parameters.DPeriods; i++)
-                _fastK[index - i] = GetFastKValue(index - i);
+            {
+                for (var i = index - _parameters.KSlowing * _parameters.DPeriods; i <= index; i++)
+					_fastK[i] = GetFastKValue(i);	
 
-				for (var i = 0; i < _parameters.DPeriods; i++)
-					_slowK.Calculate(index - i);
+                for (var i = Math.Max(0, index - _parameters.DPeriods); i <= index; i++)
+                    _slowK.Calculate(i + 1);
+                var k = _slowK.Result[index];
 
-				var k = _slowK.Result[index];
-				var d = _averageOnSlowK.Result[index];
+                for (var i = Math.Max(0, index - _parameters.DPeriods); i <= index; i++)
+                    _averageOnSlowK.Calculate(i + 1);    
+                var d = _averageOnSlowK.Result[index];
 
-				return new StochasticValues(k, d);
-			}
+                return new StochasticValues(k, d);
+            }
 
 			private double GetFastKValue(int index)
 			{
 				DataSeries low = _marketSeries.Low;
 				DataSeries high = _marketSeries.High;
+				
 				if (_parameters.StochasticMode == StochasticMode.CloseClose)
 				{
 					low = _marketSeries.Close;
-					high = _marketSeries.High;
+					high = _marketSeries.Close;
 				}
 				double minFromPeriod = GetMinFromPeriod(low, index, _parameters.KPeriods);
 				double maxFromPeriod = GetMaxFromPeriod(high, index, _parameters.KPeriods);
