@@ -446,11 +446,15 @@
 		private MovingAverage _averageOnSlowK;
 		private MarketSeries _marketSeries;
 
-		public Mq4StochasticIndicator(StochasticParameters stochasticParameters, IIndicatorsAccessor indicatorAccessor, MarketSeries marketSeries)
+		public Mq4StochasticIndicator(
+			StochasticParameters stochasticParameters, 
+			IIndicatorsAccessor indicatorAccessor, 
+			MarketSeries marketSeries,
+			Func<IndicatorDataSeries> dataSeriesFactory)
 		{
 			_parameters = stochasticParameters;
 			_marketSeries = marketSeries;
-			_fastK = new IndicatorDataSeries();
+			_fastK = dataSeriesFactory();
 			_slowK = indicatorAccessor.MovingAverage(_fastK, _parameters.KSlowing, _parameters.MAType);
 			_averageOnSlowK = indicatorAccessor.MovingAverage(_slowK.Result, _parameters.DPeriods, _parameters.MAType);
 		}
@@ -525,7 +529,7 @@
 		Mq4StochasticIndicator indicator;
 		if (!_stochasticIndicators.TryGetValue(parameters, out indicator))
 		{
-			indicator = new Mq4StochasticIndicator(parameters, Indicators, MarketSeries);
+			indicator = new Mq4StochasticIndicator(parameters, Indicators, MarketSeries, () => CreateDataSeries());
 			_stochasticIndicators[parameters] = indicator;
 		}
 

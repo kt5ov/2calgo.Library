@@ -157,9 +157,6 @@
     <Resource Include="Templates\Indicator\DataSeries\Mq4OutputDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\IndicatorDataSeries.c" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Templates\Indicator\ChartObjects\Mq4Arrow.c" />
   </ItemGroup>
   <ItemGroup>

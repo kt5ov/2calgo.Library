@@ -98,7 +98,7 @@ namespace _2calgo.Presenter
 
                 template.LinesDeclarations.AppendFormat("[Output(\"{0}\"{1}{2})]\n", bufferName, colorPart, plotTypePart);
             }
-            template.LinesDeclarations.AppendFormat("public cAlgo.API.IndicatorDataSeries {0}_AlgoOutputDataSeries {1}\n", bufferName,
+            template.LinesDeclarations.AppendFormat("public IndicatorDataSeries {0}_AlgoOutputDataSeries {1}\n", bufferName,
                                                     "{ get; set; }");
         }
 
