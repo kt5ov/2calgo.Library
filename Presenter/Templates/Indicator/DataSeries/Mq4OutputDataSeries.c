@@ -66,7 +66,10 @@
             }
             set 
             { 
-                var indexToSet = _currentIndex - index + _shift;                
+                var indexToSet = _currentIndex - index + _shift;  
+				if (indexToSet < 0)
+					return;
+
                 _originalValues[indexToSet] = value;
 
                 var valueToSet = value;

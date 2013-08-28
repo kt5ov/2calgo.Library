@@ -57,7 +57,7 @@
                 
         private double iMAOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
         {
-			var dataSeries = _mq4ArrayToDataSeriesAdapterFactory.Create(mq4Array);
+			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateiMA(dataSeries, period, ma_method, shift);
         }
         
@@ -102,7 +102,7 @@
                 
         private double iRSIOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int shift) 
         {
-			var dataSeries = _mq4ArrayToDataSeriesAdapterFactory.Create(mq4Array);
+			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateRsi(dataSeries, period, shift);
         }
         

@@ -56,6 +56,7 @@ namespace cAlgo.Indicators
 
             _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
+			_mq4ArrayToDataSeriesConverterFactory = new Mq4ArrayToDataSeriesConverterFactory(() => CreateDataSeries());
             Debug.Initialize(m => Print(m)); 
         }
 
@@ -73,7 +74,7 @@ namespace cAlgo.Indicators
 
         DataSeriesExtremums _closeExtremums;
         readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
-		readonly Mq4ArrayToDataSeriesAdapterFactory _mq4ArrayToDataSeriesAdapterFactory = new Mq4ArrayToDataSeriesAdapterFactory();
+		Mq4ArrayToDataSeriesConverterFactory _mq4ArrayToDataSeriesConverterFactory;
 
     public override void Calculate(int index)
     {

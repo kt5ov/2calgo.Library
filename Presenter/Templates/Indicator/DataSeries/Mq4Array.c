@@ -64,6 +64,9 @@
 				EnsureCountIsEnough(index);
           
 				_data[index] = value;
+				Changed.Raise(index, value);
 			}
 		}
+
+		public event Action<int, T> Changed;
 	}

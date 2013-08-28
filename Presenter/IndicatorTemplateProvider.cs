@@ -54,8 +54,8 @@ namespace _2calgo.Presenter
                 DataSeries + "/IMq4Array",
                 DataSeries + "/Mq4Array",
                 DataSeries + "/DefaultValues",
-                DataSeries + "/Mq4ArrayToDataSeriesAdapter",
-                DataSeries + "/Mq4ArrayToDataSeriesAdapterFactory",
+                DataSeries + "/Mq4ArrayToDataSeriesConverter",
+                DataSeries + "/Mq4ArrayToDataSeriesConverterFactory",
             };
 
         public static string GetTemplate()

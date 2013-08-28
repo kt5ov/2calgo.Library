@@ -172,10 +172,10 @@
     <Resource Include="Templates\Indicator\Standard constants\Trade operations.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesAdapter.c" />
+    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesConverter.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesAdapterFactory.c" />
+    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesConverterFactory.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Alert.c" />
