@@ -1,7 +1,7 @@
 	class Mq4OutputDataSeries : IMq4Array<Mq4Double>
     {
         public cAlgo.API.IndicatorDataSeries OutputDataSeries { get; private set; }
-        private readonly IndicatorDataSeries _originalValues = new IndicatorDataSeries();
+        private readonly cAlgo.API.IndicatorDataSeries _originalValues;
         private int _currentIndex;
         private int _shift;
         private double _emptyValue = double.NaN;
@@ -19,6 +19,7 @@
 			ChartObjects chartObjects, 
 			int style, 
 			int bufferIndex,
+			Func<cAlgo.API.IndicatorDataSeries> dataSeriesFactory,
 			Colors? color = null)
         {
             OutputDataSeries = outputDataSeries;
@@ -28,6 +29,7 @@
 			_bufferIndex = bufferIndex;
 			_indicator = indicator;
 			_color = color;
+			_originalValues = dataSeriesFactory();
         }
 
         public int Length
