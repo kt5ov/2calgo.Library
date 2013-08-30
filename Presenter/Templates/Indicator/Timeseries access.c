@@ -50,35 +50,43 @@
     }
 
 	[Conditional("iHighest", "Highest")]
-    int iHighest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+    //{
+	int iHighest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return GetExtremeIndex(GetHighestIndex, timeframe, type, count, start);
     }
+	
+    int Highest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+    {
+      return iHighest(symbol, timeframe, type, count, start);
+    }
+	//}
 
 	[Conditional("iLowest", "Lowest")]
+	//{
     int iLowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return GetExtremeIndex(GetLowestIndex, timeframe, type, count, start);
     }
 
-	[Conditional("iHighest", "Highest")]
-    int Highest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
-    {
-      return iHighest(symbol, timeframe, type, count, start);
-    }
-
-	[Conditional("iLowest", "Lowest")]
     int Lowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return iLowest(symbol, timeframe, type, count, start);
     }
+	//}
 
 	[Conditional("iClose")]
+	//{
     Mq4Double iClose(string symbol, int timeframe, int shift)
     {
 		return GetSeries(timeframe).Close.FromEnd(shift);
     }
 
+    Mq4Double iClose(string symbol, string timeframe, int shift)
+    {
+		return iClose(symbol, 0, shift);
+    }
+	//}
 	[Conditional("iHigh")]
     Mq4Double iHigh(string symbol, int timeframe, int shift)
     {
@@ -92,10 +100,17 @@
     }
 
 	[Conditional("iOpen")]
+	//{
     Mq4Double iOpen(string symbol, int timeframe, int shift)
     {	
 		return GetSeries(timeframe).Open.FromEnd(shift);
     }
+
+    Mq4Double iOpen(string symbol, string timeframe, int shift)
+    {	
+		return iOpen(symbol, 0, shift);
+    }
+	//}
 
 	[Conditional("iVolume")]
     Mq4Double iVolume(string symbol, int timeframe, int shift)

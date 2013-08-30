@@ -22,6 +22,8 @@ namespace _2calgo.Parser
                 var name = match.Groups["name"].Value;
                 if (match.Index < previousFunctionEndIndex)
                     continue;
+                if (IsInsideSomeStructure(match.Index, code))
+                    continue;
                 
                 var declaration = match.Value;
                 var bodyWithAroundingBrackets = code.GetBodyWithAroundingBrackets(match.Index);
@@ -44,6 +46,14 @@ namespace _2calgo.Parser
 
                 yield return function;
             }
+        }
+
+        private static bool IsInsideSomeStructure(int index, string code)
+        {
+            var innerStructures = new InnerStructures.InnerStructures();
+            for (var i = 0; i < index; i++)
+                innerStructures.Handle(code[i]);
+            return innerStructures.IsInsideSomeStructure;
         }
 
         private static string RemoveRefModifiers(this string parameters)
