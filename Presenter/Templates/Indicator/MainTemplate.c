@@ -80,6 +80,7 @@ namespace cAlgo.Indicators
     {
         _currentIndex = index;
 #Buffers_SetCurrentIndex_PLACE_HOLDER#
+		Time.SetCurrentIndex(index);
 
         if (index == 100)
             Mq4Init();
