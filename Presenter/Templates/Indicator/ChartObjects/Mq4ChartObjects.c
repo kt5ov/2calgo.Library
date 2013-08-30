@@ -229,4 +229,14 @@
 
 			return _mq4ObjectNameByIndex[index];
 		}
+
+		[Conditional("ObjectType")] 
+		public int ObjectType(string name)
+		{
+			if (!_mq4ObjectByName.ContainsKey(name))
+				return -1;
+			
+			var mq4Object = _mq4ObjectByName[name];
+			return mq4Object.Type;
+		}
 	}

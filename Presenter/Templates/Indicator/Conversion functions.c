@@ -1,3 +1,9 @@
+	[Conditional("CharToStr")]        
+	string CharToStr(int code)
+	{
+		return ((char)code).ToString();
+	}
+
 	[Conditional("DoubleToStr")]        
     string DoubleToStr(double value, int digits)
     {

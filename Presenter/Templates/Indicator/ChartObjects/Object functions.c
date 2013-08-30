@@ -62,3 +62,9 @@
 	{
 		return _mq4ChartObjects.ObjectName(index);		
 	}
+	
+	[Conditional("ObjectType")] 
+	int ObjectType(string name)
+	{
+		return _mq4ChartObjects.ObjectType(name);
+	}

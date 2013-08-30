@@ -81,14 +81,6 @@ namespace cAlgo.Indicators
         _currentIndex = index;
 #Buffers_SetCurrentIndex_PLACE_HOLDER#
 
-        Open.SetCurrentIndex(index);
-        High.SetCurrentIndex(index);
-        Low.SetCurrentIndex(index);
-        Close.SetCurrentIndex(index);
-        Median.SetCurrentIndex(index);
-        Volume.SetCurrentIndex(index);
-        Time.SetCurrentIndex(index);
-
         if (index == 100)
             Mq4Init();
         if (IsRealTime || MarketSeries.OpenTime[index] == LastBarOpenTimeInUtc || IsWeekend && MarketSeries.OpenTime[index] >= LastBarOfWeekOpenTimeInUtc) 
@@ -193,8 +185,16 @@ namespace cAlgo.Indicators
         }
     }
 
-#Conditional_Part_PLACE_HOLDER#
+	MarketSeries GetSeries(int period)
+	{
+		var timeFrame = PeriodToTimeFrame(period);
+		return MarketData.GetSeries(timeFrame);
 	}
+
+#InnerParts_PLACE_HOLDER#
+	}
+
+#OuterParts_PLACE_HOLDER#
 
 	static class Mq4LineStyles
     {
@@ -234,23 +234,6 @@ namespace cAlgo.Indicators
 		{
 			if (action != null)
 				action(arg1, arg2);
-		}
-	}
-
-	static class TimeSeriesExtensions
-	{
-		public static int GetIndexByTime(this TimeSeries timeSeries, DateTime time)
-		{
-			var index = timeSeries.Count - 1;
-			for (var i = timeSeries.Count - 1; i >= 0; i--)
-			{
-				if (timeSeries[i] < time)
-				{
-					index = i + 1;
-					break;
-				}
-			}   
-			return index;
 		}
 	}
 }

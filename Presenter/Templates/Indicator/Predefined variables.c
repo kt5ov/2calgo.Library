@@ -38,6 +38,12 @@
 			return 4;
 		if (TimeFrame == TimeFrame.Minute5)
 			return 5;
+		if (TimeFrame == TimeFrame.Minute10)
+			return 10;
+		if (TimeFrame == TimeFrame.Minute15)
+			return 15;
+		if (TimeFrame == TimeFrame.Minute30)
+			return 30;
 		if (TimeFrame == TimeFrame.Hour)
 			return 60;
 		if (TimeFrame == TimeFrame.Hour4)
@@ -51,3 +57,42 @@
 		
 		return 43200;
 	}
+
+	public TimeFrame PeriodToTimeFrame(int period)
+    {
+        switch (period) 
+		{		
+			case 0: 			
+				return TimeFrame;
+            case 1:
+                return TimeFrame.Minute;
+            case 2:
+                return TimeFrame.Minute2;
+            case 3:
+                return TimeFrame.Minute3;
+            case 4:
+                return TimeFrame.Minute4;
+            case 5:
+                return TimeFrame.Minute5;
+            case 10:
+                return TimeFrame.Minute10;
+            case 15:
+                return TimeFrame.Minute15;
+            case 30:
+                return TimeFrame.Minute30;
+            case 60:
+                return TimeFrame.Hour;
+            case 240:
+                return TimeFrame.Hour4;
+            case 720:
+                return TimeFrame.Hour12;
+            case 1440:
+                return TimeFrame.Daily;
+            case 10080:
+                return TimeFrame.Weekly;
+            case 43200:
+                return TimeFrame.Monthly;
+			default:
+				throw new NotSupportedException(string.Format("TimeFrame {0} minutes isn't supported by cAlgo", period));
+        }
+    }

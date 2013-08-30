@@ -94,11 +94,16 @@
       
       public static bool operator !=(Mq4Double d1, Mq4Double d2) 
       {
-        return d1._value != d2._value;
+		return d1._value != d2._value;
+      }
+
+	  public static implicit operator string(Mq4Double property)
+      {
+		return property.ToString();
       }
           
       public override string ToString()
       {
-        return _value.ToString();
+		return _value.ToString();
       }
     }   

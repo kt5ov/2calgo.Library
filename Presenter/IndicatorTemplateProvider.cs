@@ -12,7 +12,14 @@ namespace _2calgo.Presenter
         private const string Indicators = "Indicators";
         private const string StandardConstants = "Standard constants";
 
-        private static readonly IEnumerable<string> PartNames = new[]
+        private static readonly IEnumerable<string> OuterParts = new[]
+            {
+                "Mq4Double",
+                 DataSeries + "/DataSeriesExtensions",
+                 DataSeries + "/TimeSeriesExtensions",
+            };
+
+        private static readonly IEnumerable<string> InnerParts = new[]
             {
                 "Debug",
                 "Predefined variables",
@@ -22,12 +29,12 @@ namespace _2calgo.Presenter
                 "String functions",
                 "Date and Time functions",
                 "Messages",
-                "Validation",
                 "Timeseries access",
                 "Common functions",
                 "Array functions",
-                "Mq4Double",
                 "Alert",
+                "Checkup",
+                "stdlib",
 
                 Indicators + "/iIndicators",
                 Indicators + "/CashedStandardIndicators",
@@ -61,10 +68,19 @@ namespace _2calgo.Presenter
         public static string GetTemplate()
         {
             var mainTemplate = StringResourceReader.Read(FolderPath + "MainTemplate.c");
-            var parts = PartNames.Select(part => StringResourceReader.Read(FolderPath + part + ".c"));
-            var allParts = string.Join(Environment.NewLine, parts);
+            var innerParts = JoinParts(InnerParts);
+            var outerParts = JoinParts(OuterParts);
 
-            return mainTemplate.Replace("#Conditional_Part_PLACE_HOLDER#", allParts);
+            return mainTemplate
+                .Replace("#InnerParts_PLACE_HOLDER#", innerParts)
+                .Replace("#OuterParts_PLACE_HOLDER#", outerParts);
+        }
+
+        private static string JoinParts(IEnumerable<string> parts)
+        {
+            var partsContents = parts.Select(part => StringResourceReader.Read(FolderPath + part + ".c"));
+            var allParts = string.Join(Environment.NewLine, partsContents);
+            return allParts;
         }
     }
 }

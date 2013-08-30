@@ -100,9 +100,6 @@
     <Resource Include="Templates\Indicator\Messages.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Validation.c" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Templates\Indicator\Timeseries access.c" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +176,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\Alert.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\Checkup.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\stdlib.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtensions.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\DataSeries\TimeSeriesExtensions.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

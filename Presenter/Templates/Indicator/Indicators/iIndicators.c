@@ -1,22 +1,28 @@
 
         private DataSeries ToMarketSeries(int constant)
         {
+            return ToMarketSeries(0, constant);
+        }   
+
+		private DataSeries ToMarketSeries(int timeframe, int constant)
+        {
+			var series = GetSeries(timeframe);
             switch (constant)
             {
                 case PRICE_OPEN:
-                    return MarketSeries.Open;
+                    return series.Open;
                 case PRICE_HIGH:
-                    return MarketSeries.High;
+                    return series.High;
                 case PRICE_LOW:
-                    return MarketSeries.Low;
+                    return series.Low;
                 case PRICE_CLOSE:
-                    return MarketSeries.Close;
+                    return series.Close;
                 case PRICE_MEDIAN:
-                    return MarketSeries.Median;       
+                    return series.Median;       
                 case PRICE_TYPICAL:
-                    return MarketSeries.Typical;    
+                    return series.Typical;    
                 case PRICE_WEIGHTED:
-                    return MarketSeries.Weighted;
+                    return series.Weighted;
             }
             throw new NotImplementedException("Converter doesn't support working with this type of AppliedPrice");
         }   
@@ -41,11 +47,10 @@
 #region iMA
         private double iMA(string symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);            
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToMarketSeries(applied_price);
+            var series = ToMarketSeries(timeframe, applied_price);
       
             return CalculateiMA(series, period, ma_method, shift);
         }       
@@ -71,14 +76,14 @@
             var maType = ToMaType(ma_method);            
             var indicator = _cashedStandardIndicators.MovingAverage(dataSeries, period, maType);
 
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }        
         
         private double CalculateWellesWilderSmoothing(DataSeries dataSeries, int period, int shift)
         {
             var indicator = _cashedStandardIndicators.WellesWilderSmoothing(dataSeries, period);
             
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }
 #endregion //iMA
 		//}
@@ -88,9 +93,7 @@
 #region iRSI
         private double iRSI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);            
-            
-            var series = ToMarketSeries(applied_price);
+            var series = ToMarketSeries(timeframe, applied_price);
       
             return CalculateRsi(series, period, shift);
         }       
@@ -109,7 +112,7 @@
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
         {     
             var indicator = _cashedStandardIndicators.RelativeStrengthIndex(dataSeries, period);
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }
 
 #endregion //iRSI    
@@ -120,7 +123,6 @@
 #region iBands
         private double iBands(string symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);                        
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
@@ -144,11 +146,11 @@
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.Main[_currentIndex - shift];
+                return indicator.Main.FromEnd(shift);
               case MODE_UPPER:
-                return indicator.Top[_currentIndex - shift];
+                return indicator.Top.FromEnd(shift);
               case MODE_LOWER:
-                return indicator.Bottom[_currentIndex - shift];
+                return indicator.Bottom.FromEnd(shift);
             }
 
             return 0;
@@ -162,25 +164,25 @@
 #region iADX
         private Mq4Double iADX(string symbol, int timeframe, int period, int applied_price, int mode, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);            
-
             if (applied_price != PRICE_CLOSE)            
               throw new NotImplementedException(AdxSupportsOnlyClosePrice);            
+
+			var marketSeries = GetSeries(timeframe);
       
-            return CalculateAdx(period, mode, shift);
+            return CalculateAdx(marketSeries, period, mode, shift);
         }      
         
-        private Mq4Double CalculateAdx(int period, int mode, int shift)
+        private Mq4Double CalculateAdx(MarketSeries marketSeries, int period, int mode, int shift)
         {     
-            var indicator = _cashedStandardIndicators.DirectionalMovementSystem(period);            
+            var indicator = _cashedStandardIndicators.DirectionalMovementSystem(marketSeries, period);            
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.ADX[_currentIndex - shift];
+                return indicator.ADX.FromEnd(shift);
               case MODE_PLUSDI:
-                return indicator.DIPlus[_currentIndex - shift];
+                return indicator.DIPlus.FromEnd(shift);
               case MODE_MINUSDI:
-                return indicator.DIMinus[_currentIndex - shift];
+                return indicator.DIMinus.FromEnd(shift);
             }
             return 0;
         }
@@ -193,8 +195,6 @@
 #region iATR
         private double iATR(string symbol, int timeframe, int period, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);                        
-                  
             return CalculateATR(period, shift);
         }       
                 
@@ -202,7 +202,7 @@
         {     
             var indicator = _cashedStandardIndicators.ATR(period);
 
-            return indicator.Result[_currentIndex - shift];            
+            return indicator.Result.FromEnd(shift);            
         }
 
 #endregion //iATR   
@@ -213,25 +213,21 @@
 #region iMACD
         private double iMACD(string symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);                                    
-            if (applied_price != PRICE_CLOSE)
-            {
-                throw new Exception("cTrader doesn't support source parameter for MACD");
-            }
+            var series = ToMarketSeries(timeframe, applied_price);
       
-            return CalculateMACD(fast_ema_period, slow_ema_period, signal_period, mode, shift);
+            return CalculateMACD(series, fast_ema_period, slow_ema_period, signal_period, mode, shift);
         }       
         
-        private double CalculateMACD(int fast_ema_period, int slow_ema_period, int signal_period, int mode, int shift)
+        private double CalculateMACD(DataSeries series, int fast_ema_period, int slow_ema_period, int signal_period, int mode, int shift)
         {     
-            var indicator = _cashedStandardIndicators.MACD(fast_ema_period, slow_ema_period, signal_period);
+            var indicator = _cashedStandardIndicators.MACD(series, fast_ema_period, slow_ema_period, signal_period);
 
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.Histogram[_currentIndex - shift];
+                return indicator.Histogram.FromEnd(shift);
               default:
-                return indicator.Signal[_currentIndex - shift];
+                return indicator.Signal.FromEnd(shift);
             }
         }
 
@@ -243,8 +239,6 @@
 #region iCCI
         private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);                        
-                        
             var series = ToMarketSeries(applied_price);
       
             return CalculateCCI(series, period, shift);
@@ -259,7 +253,7 @@
         {     
             var indicator = _cashedStandardIndicators.CommodityChannelIndex(period);
 
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }
 #endregion //iCCI		
 		//}
@@ -269,7 +263,6 @@
 #region iStdDev
         private double iStdDev( string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);            
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
@@ -291,7 +284,7 @@
             var maType = ToMaType(ma_method);            
             var indicator = _cashedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
 
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }        
 #endregion //iStdDev		
 		//}
@@ -301,11 +294,9 @@
 #region iWPR
         private double iWPR(string symbol, int timeframe, int period, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);
-                   
             var indicator = _cashedStandardIndicators.WilliamsPctR(period);
 
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }        
 #endregion //iWPR		
 		//}
@@ -315,11 +306,10 @@
 #region iSAR
         private double iSAR(string symbol, int timeframe, double step, double maximum, int shift)
         {
-            ValidateSymbolAndTimeFrame(symbol, timeframe);
-                   
-            var indicator = _cashedStandardIndicators.ParabolicSAR(step, maximum);
+			var series = GetSeries(timeframe);
+            var indicator = _cashedStandardIndicators.ParabolicSAR(series, step, maximum);
 
-            return indicator.Result[_currentIndex - shift];
+            return indicator.Result.FromEnd(shift);
         }        
 #endregion //iSAR
 		//}
@@ -328,7 +318,6 @@
 //{
 	private Mq4Double iFractals(string symbol, int timeframe, int mode, int shift)
 	{
-		ValidateSymbolAndTimeFrame(symbol, timeframe);
 		var index = _currentIndex - shift;
 		if (mode == MODE_UPPER)
 		{
@@ -392,8 +381,6 @@
 
 	Mq4Double iStochastic(string symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
 	{
-		ValidateSymbolAndTimeFrame(symbol, timeframe);
-		
 		var maType = ToMaType(method);   
 		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;
 		var index = _currentIndex - shift;

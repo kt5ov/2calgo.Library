@@ -110,13 +110,14 @@
         private struct AdxParameters
         {
             public int Periods;
+			public MarketSeries MarketSeries;
         }
     
         private Dictionary<AdxParameters, DirectionalMovementSystem> _adxIndicators = new Dictionary<AdxParameters, DirectionalMovementSystem>();
 
-        public DirectionalMovementSystem DirectionalMovementSystem(int periods)
+        public DirectionalMovementSystem DirectionalMovementSystem(MarketSeries marketSeries, int periods)
         {
-            var adxParameters = new AdxParameters { Periods = periods };
+            var adxParameters = new AdxParameters { Periods = periods, MarketSeries = marketSeries };
             if (_adxIndicators.ContainsKey(adxParameters))
                 return _adxIndicators[adxParameters];
 
@@ -158,6 +159,7 @@
 #region iMACD
         private struct MacdParameters
         {
+			public DataSeries Series;
             public int LongPeriod;
             public int ShortPeriod;
             public int Periods;
@@ -165,9 +167,9 @@
     
         private Dictionary<MacdParameters, MacdHistogram> _macdIndicators = new Dictionary<MacdParameters, MacdHistogram>();
         
-        public MacdHistogram MACD(int shortPeriod, int longPeriod, int periods)
+        public MacdHistogram MACD(DataSeries series, int shortPeriod, int longPeriod, int periods)
         {
-            var parameters = new MacdParameters { LongPeriod = longPeriod, ShortPeriod = shortPeriod, Periods = periods };
+            var parameters = new MacdParameters { LongPeriod = longPeriod, ShortPeriod = shortPeriod, Periods = periods, Series = series };
             if (_macdIndicators.ContainsKey(parameters))
                 return _macdIndicators[parameters];
 
@@ -259,13 +261,14 @@
         {
             public double Step;
 			public double Maximum;
+			public MarketSeries Series;
         }
     
         private Dictionary<SarParameters, ParabolicSAR> _sarIndicators = new Dictionary<SarParameters, ParabolicSAR>();
 
-        public ParabolicSAR ParabolicSAR(double step, double maximum)
+        public ParabolicSAR ParabolicSAR(MarketSeries series, double step, double maximum)
         {
-            var sarParameters = new SarParameters { Step = step, Maximum = maximum };
+            var sarParameters = new SarParameters { Step = step, Maximum = maximum, Series = series };
             if (_sarIndicators.ContainsKey(sarParameters))
                 return _sarIndicators[sarParameters];
 
