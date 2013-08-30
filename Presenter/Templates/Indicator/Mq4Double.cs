@@ -96,11 +96,6 @@
       {
 		return d1._value != d2._value;
       }
-
-	  public static implicit operator string(Mq4Double property)
-      {
-		return property.ToString();
-      }
           
       public override string ToString()
       {

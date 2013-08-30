@@ -195,12 +195,13 @@
 #region iATR
         private double iATR(string symbol, int timeframe, int period, int shift)
         {
-            return CalculateATR(period, shift);
+			var series = GetSeries(timeframe);
+            return CalculateATR(series, period, shift);
         }       
                 
-        private double CalculateATR(int period, int shift)
+        private double CalculateATR(MarketSeries series, int period, int shift)
         {     
-            var indicator = _cashedStandardIndicators.ATR(period);
+            var indicator = _cashedStandardIndicators.ATR(series, period);
 
             return indicator.Result.FromEnd(shift);            
         }

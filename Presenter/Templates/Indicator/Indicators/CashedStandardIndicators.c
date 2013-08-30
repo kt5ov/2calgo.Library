@@ -134,14 +134,15 @@
 #region iATR
         private struct ATRParameters
         {
+			public MarketSeries MarketSeries;
             public int Periods;
         }
     
         private Dictionary<ATRParameters, SimpleMovingAverage> _atrIndicators = new Dictionary<ATRParameters, SimpleMovingAverage>();
 
-        public SimpleMovingAverage ATR(int periods)
+        public SimpleMovingAverage ATR(MarketSeries series, int periods)
         {
-            var parameters = new ATRParameters { Periods = periods };
+            var parameters = new ATRParameters { Periods = periods, MarketSeries = series };
             if (_atrIndicators.ContainsKey(parameters))
                 return _atrIndicators[parameters];
 
