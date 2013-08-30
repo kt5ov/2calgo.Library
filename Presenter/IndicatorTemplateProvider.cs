@@ -14,55 +14,55 @@ namespace _2calgo.Presenter
 
         private static readonly IEnumerable<string> OuterParts = new[]
             {
-                "Mq4Double",
-                 DataSeries + "/DataSeriesExtensions",
-                 DataSeries + "/TimeSeriesExtensions",
+                "Mq4Double.cs",
+                 DataSeries + "/DataSeriesExtensions.c",
+                 DataSeries + "/TimeSeriesExtensions.c",
             };
 
         private static readonly IEnumerable<string> InnerParts = new[]
             {
-                "Debug",
-                "Predefined variables",
-                "Math and Trig",
-                "Conversion functions",
-                "Window functions",
-                "String functions",
-                "Date and Time functions",
-                "Messages",
-                "Timeseries access",
-                "Common functions",
-                "Array functions",
-                "Alert",
-                "Checkup",
-                "stdlib",
+                "Debug.c",
+                "Predefined variables.c",
+                "Math and Trig.c",
+                "Conversion functions.c",
+                "Window functions.c",
+                "String functions.c",
+                "Date and Time functions.c",
+                "Messages.c",
+                "Timeseries access.c",
+                "Common functions.c",
+                "Array functions.c",
+                "Alert.cs",
+                "Checkup.c",
+                "stdlib.c",
 
-                Indicators + "/iIndicators",
-                Indicators + "/CashedStandardIndicators",
-                Indicators + "/Custom indicators",
+                Indicators + "/iIndicators.c",
+                Indicators + "/CashedStandardIndicators.c",
+                Indicators + "/Custom indicators.c",
 
-                StandardConstants + "/Constants",
-                StandardConstants + "/Trade operations",
+                StandardConstants + "/Constants.c",
+                StandardConstants + "/Trade operations.c",
                 
-                ChartObjects + "/Mq4ChartObjects",
-                ChartObjects + "/Mq4Object",
-                ChartObjects + "/Mq4VerticalLine",
-                ChartObjects + "/Mq4HorizontalLine",
-                ChartObjects + "/Mq4Text",
-                ChartObjects + "/Mq4Label",
-                ChartObjects + "/Mq4TrendLine",
-                ChartObjects + "/Mq4Rectangle",
-                ChartObjects + "/Mq4Arrow",
-                ChartObjects + "/Object functions",
+                ChartObjects + "/Mq4ChartObjects.c",
+                ChartObjects + "/Mq4Object.c",
+                ChartObjects + "/Mq4VerticalLine.c",
+                ChartObjects + "/Mq4HorizontalLine.c",
+                ChartObjects + "/Mq4Text.c",
+                ChartObjects + "/Mq4Label.c",
+                ChartObjects + "/Mq4TrendLine.c",
+                ChartObjects + "/Mq4Rectangle.c",
+                ChartObjects + "/Mq4Arrow.c",
+                ChartObjects + "/Object functions.c",
                 
-                DataSeries + "/DataSeriesExtremums",
-                DataSeries + "/Mq4MarketDataSeries",
-                DataSeries + "/Mq4OutputDataSeries",
-                DataSeries + "/Mq4TimeSeries",
-                DataSeries + "/IMq4Array",
-                DataSeries + "/Mq4Array",
-                DataSeries + "/DefaultValues",
-                DataSeries + "/Mq4ArrayToDataSeriesConverter",
-                DataSeries + "/Mq4ArrayToDataSeriesConverterFactory",
+                DataSeries + "/DataSeriesExtremums.c",
+                DataSeries + "/Mq4MarketDataSeries.c",
+                DataSeries + "/Mq4OutputDataSeries.c",
+                DataSeries + "/Mq4TimeSeries.c",
+                DataSeries + "/IMq4Array.c",
+                DataSeries + "/Mq4Array.c",
+                DataSeries + "/DefaultValues.c",
+                DataSeries + "/Mq4ArrayToDataSeriesConverter.c",
+                DataSeries + "/Mq4ArrayToDataSeriesConverterFactory.c",
             };
 
         public static string GetTemplate()
@@ -78,7 +78,7 @@ namespace _2calgo.Presenter
 
         private static string JoinParts(IEnumerable<string> parts)
         {
-            var partsContents = parts.Select(part => StringResourceReader.Read(FolderPath + part + ".c"));
+            var partsContents = parts.Select(part => StringResourceReader.Read(FolderPath + part));
             var allParts = string.Join(Environment.NewLine, partsContents);
             return allParts;
         }

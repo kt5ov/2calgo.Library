@@ -11,6 +11,7 @@
         var text = string.Join("", objects.Select(o => o.ToString()));      
         _alertWindowWrapper.Value.ShowAlert(text);
     }
+
 	public class AlertWindowWrapper : MarshalByRefObject
     {
         private static Thread _windowThread;
