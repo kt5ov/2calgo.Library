@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 
 namespace cAlgo.Indicators
 {
-    [Indicator(ScalePrecision = 5, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
+    [Indicator(ScalePrecision = 5, AutoRescale = false, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
 	[Levels(#Levels_PLACE_HOLDER#)]
     public class ConvertedIndicator : Indicator
     {

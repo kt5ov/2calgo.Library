@@ -126,7 +126,7 @@
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
-            var series = ToMarketSeries(applied_price);
+            var series = ToMarketSeries(timeframe, applied_price);
       
             return CalculateBands(series, period, deviation, mode, shift);
         }       
