@@ -262,12 +262,12 @@
 		[Conditional("iStdDev", "iStdDevOnArray")]
 		//{
 #region iStdDev
-        private double iStdDev( string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
+        private double iStdDev(string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
         {
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToMarketSeries(applied_price);
+            var series = ToMarketSeries(timeframe, applied_price);
       
             return CalculateiStdDev(series, ma_period, ma_shift, ma_method, shift);
         }       
