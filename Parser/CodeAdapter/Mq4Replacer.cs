@@ -62,5 +62,10 @@ namespace _2calgo.Parser.CodeAdapter
                 indicatorCode.Functions.Add(new Function("void", "Mq4Init", new FunctionParameter[0], string.Empty));
             }
         }
+
+        public static string RenameTimeFrameParameter(this string code)
+        {
+            return code.Replace("TimeFrame", "TimeFrame_");
+        }
     }
 }

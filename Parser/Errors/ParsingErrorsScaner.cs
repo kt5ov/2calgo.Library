@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace _2calgo.Parser.Errors
 {
@@ -7,10 +6,6 @@ namespace _2calgo.Parser.Errors
     {
          public static string HandleParsingErrors(this string code, ParsingErrors parsingErrors)
          {
-             var twoDimentialArrayRegex = new Regex(@"\[[^\]]*\]\s*\[[^\]]*\]", RegexOptions.Compiled);
-             if (twoDimentialArrayRegex.IsMatch(code))
-                 parsingErrors.Add(ErrorType.NotSupportedError, "Two dimential array");
-
              foreach (var errorDetector in ErrorDetectors)
              {
                  foreach (var error in errorDetector.FindErrors(code))
