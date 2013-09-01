@@ -321,22 +321,23 @@
 	private Mq4Double iFractals(string symbol, int timeframe, int mode, int shift)
 	{
 		var index = _currentIndex - shift;
+		var marketSeries = GetSeries(timeframe);
 		if (mode == MODE_UPPER)
 		{
-			if (IsUpFractal(index))
-				return MarketSeries.High[index];
+			if (IsUpFractal(marketSeries, index))
+				return marketSeries.High[index];
 		}
 		if (mode == MODE_LOWER)
 		{
-			if (IsDownFractal(index))
-				return MarketSeries.Low[index];
+			if (IsDownFractal(marketSeries, index))
+				return marketSeries.Low[index];
 		}
 		return 0;
 	}
 		
-	private bool IsUpFractal(int i)
+	private static bool IsUpFractal(MarketSeries marketSeries, int i)
     {
-        var high = MarketSeries.High;
+        var high = marketSeries.High;
         if (high[i] > high[i - 1] && high[i] > high[i - 2] && high[i] > high[i + 1] && high[i] > high[i + 2])
             return true;
 
@@ -355,9 +356,9 @@
         return false;
     }
 
-    private bool IsDownFractal(int i)
+    private static bool IsDownFractal(MarketSeries marketSeries, int i)
     {
-        var low = MarketSeries.Low;
+        var low = marketSeries.Low;
         if (low[i] < low[i - 1] && low[i] < low[i - 2] && low[i] < low[i + 1] && low[i] < low[i + 2])
             return true;
 
