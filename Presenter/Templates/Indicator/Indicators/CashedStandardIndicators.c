@@ -237,14 +237,15 @@
 #region iWPR
         private struct WprParameters
         {
+			public MarketSeries MarketSeries;
             public int Periods;
         }
     
         private Dictionary<WprParameters, WilliamsPctR> _wprIndicators = new Dictionary<WprParameters, WilliamsPctR>();
 
-        public WilliamsPctR WilliamsPctR(int periods)
+        public WilliamsPctR WilliamsPctR(MarketSeries marketSeries, int periods)
         {
-            var wprParameters = new WprParameters { Periods = periods };
+            var wprParameters = new WprParameters { Periods = periods, MarketSeries = marketSeries };
             if (_wprIndicators.ContainsKey(wprParameters))
                 return _wprIndicators[wprParameters];
 

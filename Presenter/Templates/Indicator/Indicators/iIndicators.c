@@ -295,7 +295,8 @@
 #region iWPR
         private double iWPR(string symbol, int timeframe, int period, int shift)
         {
-            var indicator = _cashedStandardIndicators.WilliamsPctR(period);
+			var marketSeries = GetSeries(timeframe);
+            var indicator = _cashedStandardIndicators.WilliamsPctR(marketSeries, period);
 
             return indicator.Result.FromEnd(shift);
         }        
