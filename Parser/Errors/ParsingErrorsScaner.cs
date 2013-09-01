@@ -32,7 +32,7 @@ namespace _2calgo.Parser.Errors
                 new ContainsStringErrorDetector("OBJPROP_BACK", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_RAY", ErrorType.NotSupportedWarning),
 
-                new MultiTimeframeDetector()
+                new MultiSymbolDetector()
             };
     }
 }
