@@ -8,7 +8,6 @@ namespace _2calgo.Parser.Errors
         private static readonly List<string> PossibleMultiTimeFrameMethods = new List<string>
             {
                 "iCCI",
-                "iStochastic",
             };
         
         private static readonly List<string> MultiTimeFrameMethods = new List<string>
