@@ -65,7 +65,7 @@ namespace _2calgo.Parser.CodeAdapter
 
         public static string RenameTimeFrameParameter(this string code)
         {
-            return code.Replace("TimeFrame", "TimeFrame_");
+            return code.Replace("TimeFrame", "TimeFrameParameter");
         }
     }
 }
