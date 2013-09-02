@@ -233,7 +233,7 @@
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
 #region iCCI
-        /*private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
+        private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
             var series = ToMarketSeries(timeframe, applied_price);
       
@@ -245,12 +245,55 @@
             return CalculateCCI(invertedDataSeries.OutputDataSeries, period, shift);
         }
         
+        private Dictionary<CciParameters, CciIndicator> _cciIndicators = new Dictionary<CciParameters, CciIndicator>();
         private double CalculateCCI(DataSeries dataSeries, int period, int shift)
         {     
-            var indicator = _cashedStandardIndicators.CommodityChannelIndex(period);
+            var parameters = new CciParameters
+			{
+                Source = dataSeries,
+                Period = period
+			};
+            CciIndicator indicator = null;
+            if (!_cciIndicators.TryGetValue(parameters, out indicator))
+			{
+                indicator = new CciIndicator(parameters, Indicators);
+                _cciIndicators[parameters] = indicator;
+			}
+            
+            var index = dataSeries.Count - 1 - shift;
+            return indicator.Calculate(index);
+        }
 
-            return indicator.Result.FromEnd(shift);
-        }*/
+        class CciParameters
+        {
+            public DataSeries Source { get; set; }
+            public int Period { get; set; }
+        }
+
+        class CciIndicator
+        {
+            private readonly CciParameters _parameters;
+            private readonly SimpleMovingAverage _sma;
+
+            public CciIndicator(CciParameters parameters, IIndicatorsAccessor indicatorsAccessor)
+            {
+                _parameters = parameters;
+                _sma = indicatorsAccessor.SimpleMovingAverage(_parameters.Source, _parameters.Period);
+            }
+
+            public double Calculate(int index)
+            {
+                var meanDeviation = 0.0;
+                for (var i = (index - _parameters.Period); i < index; i++)
+                {
+                    meanDeviation = meanDeviation + Math.Abs(_parameters.Source[i] - _sma.Result[index]);
+                }
+                meanDeviation /= _parameters.Period;
+                return (_parameters.Source[index] - _sma.Result[index]) / (meanDeviation * 0.015);
+            }
+        }
+
+        
 #endregion //iCCI		
 		//}
 
@@ -380,9 +423,9 @@
 	Mq4Double iStochastic(string symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
 	{
 		var maType = ToMaType(method);   
-		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;
-		var index = _currentIndex - shift;
+		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;		
 		var marketSeries = GetSeries(timeframe);
+        var index = marketSeries.Close.Count - 1 - shift;
 
 		var stochasticValues = CalculateStochastic(marketSeries, kperiod, dperiod, slowing, maType, stochasticMode, index);
 
