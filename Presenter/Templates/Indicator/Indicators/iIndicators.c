@@ -1,27 +1,4 @@
 
-		private DataSeries ToMarketSeries(int timeframe, int constant)
-        {
-			var series = GetSeries(timeframe);
-            switch (constant)
-            {
-                case PRICE_OPEN:
-                    return series.Open;
-                case PRICE_HIGH:
-                    return series.High;
-                case PRICE_LOW:
-                    return series.Low;
-                case PRICE_CLOSE:
-                    return series.Close;
-                case PRICE_MEDIAN:
-                    return series.Median;       
-                case PRICE_TYPICAL:
-                    return series.Typical;    
-                case PRICE_WEIGHTED:
-                    return series.Weighted;
-            }
-            throw new NotImplementedException("Converter doesn't support working with this type of AppliedPrice");
-        }   
-
         private static MovingAverageType ToMaType(int constant)
         {
             switch (constant)
