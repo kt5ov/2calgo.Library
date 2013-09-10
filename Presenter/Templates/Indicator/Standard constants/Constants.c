@@ -272,3 +272,6 @@
     const int DarkSlateGray = 5197615;
     const int DarkGreen = 25600;
     const int Black = 0;  
+
+	const int SYMBOL_LEFTPRICE = 5;
+	const int SYMBOL_RIGHTPRICE = 6;

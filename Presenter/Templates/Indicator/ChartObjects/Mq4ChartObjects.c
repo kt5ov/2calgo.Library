@@ -46,6 +46,11 @@
 				//{
 				case OBJ_RECTANGLE:
 					return _mq4ObjectByName.Values.OfType<Mq4Rectangle>().Count();                                     
+				//}					
+				[Conditional("OBJ_ARROW")] 
+				//{
+				case OBJ_ARROW:
+					return _mq4ObjectByName.Values.OfType<Mq4Arrow>().Count();                                     
 				//}
 				[Conditional("EMPTY")] 
 				//{
@@ -61,7 +66,7 @@
 									double price2, int time3, double price3)
 		{
 			Mq4Object mq4Object = null;
-			[Conditional("OBJ_VLINE", "OBJ_HLINE", "OBJ_TEXT", "OBJ_LABEL", "OBJ_TREND", "OBJ_RECTANGLE")] 
+			[Conditional("OBJ_VLINE", "OBJ_HLINE", "OBJ_TEXT", "OBJ_LABEL", "OBJ_TREND", "OBJ_RECTANGLE", "OBJ_ARROW")] 
 			switch (type)
 			{
 				[Conditional("OBJ_VLINE")] 
@@ -99,6 +104,12 @@
 				case OBJ_RECTANGLE:
 					mq4Object = new Mq4Rectangle(name, type, _algoChartObjects);
 					break;
+				//}					
+				[Conditional("OBJ_ARROW")] 
+				//{
+				case OBJ_ARROW:
+					mq4Object = new Mq4Arrow(name, type, _algoChartObjects, _timeSeries);
+					break;                                        
 				//}
 			}
 			if (mq4Object == null) 

@@ -16,17 +16,8 @@
 			base.Set(index, value);
 			switch (index)        
 			{ 
-				case OBJPROP_TIME1:           
-					var time1 = Time1;
-					_index = _timeSeries.Count - 1;
-					for (var i = _timeSeries.Count - 1; i >= 0; i--)
-					{
-						if (_timeSeries[i] < time1)
-						{
-							_index = i + 1;
-							break;
-						}
-					}               
+				case OBJPROP_TIME1:           					
+					_index = _timeSeries.GetIndexByTime(Time1);
 					break;
 			}
 		}
@@ -41,7 +32,23 @@
 
         public override void Draw()
         {
-			var arrowString = ConvertedIndicator.GetArrowByCode(ArrowCode);
-            _chartObjects.DrawText(Name, arrowString, _index, Price1, VerticalAlignment.Center, HorizontalAlignment.Center, Color);
+			string arrowString;
+			HorizontalAlignment horizontalAlignment;
+			switch (ArrowCode)
+			{
+				case SYMBOL_RIGHTPRICE:
+					horizontalAlignment = HorizontalAlignment.Right;
+					arrowString = Price1.ToString();
+					break;
+				case SYMBOL_LEFTPRICE:
+					horizontalAlignment = HorizontalAlignment.Left;
+					arrowString = Price1.ToString();
+					break;
+				default:
+					arrowString = ConvertedIndicator.GetArrowByCode(ArrowCode);
+					horizontalAlignment = HorizontalAlignment.Center;
+					break;
+			}				
+			_chartObjects.DrawText(Name, arrowString, _index, Price1, VerticalAlignment.Center, horizontalAlignment, Color);
         }
     }
