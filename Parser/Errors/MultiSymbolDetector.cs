@@ -30,6 +30,7 @@ namespace _2calgo.Parser.Errors
                 "iSAR",
                 "iFractals",
                 "iStochastic",
+                "iBars",
             };
 
         public override IEnumerable<ParsingError> FindErrors(string code)

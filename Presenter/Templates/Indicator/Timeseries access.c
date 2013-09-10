@@ -146,4 +146,11 @@
 		return iBarShift(NULL, timeframe, time, exact);
 	}
 	//}
+
+	[Conditional("iBars")]
+	int iBars(string symbol, int timeframe)
+	{
+		return GetSeries(timeframe).Close.Count;
+	}
+
 	
