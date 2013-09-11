@@ -67,5 +67,10 @@ namespace _2calgo.Parser.CodeAdapter
         {
             return code.Replace("TimeFrame", "TimeFrameParameter");
         }
+
+        public static string ReplacePrintToMq4Print(this string code)
+        {
+            return code.Replace("Print", "Mq4Print");
+        }
     }
 }

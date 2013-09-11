@@ -33,6 +33,7 @@ namespace _2calgo.Parser
                 .ReplaceMq4RgbColorsToKnownColors()
                 .ReplaceColorToInt()
                 .RenameTimeFrameParameter()
+                .ReplacePrintToMq4Print()
                 .AddRefModifiers();
 
             HandleProperties(code, indicator);

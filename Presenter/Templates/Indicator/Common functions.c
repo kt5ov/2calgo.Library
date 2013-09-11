@@ -58,3 +58,9 @@
     {
         Notifications.SendEmail(EmailAddressFrom, EmailAddressTo, subject, text);
     }
+
+	[Conditional("Mq4Print")]
+	void Mq4Print(params object[] parameters)
+	{
+		Print(string.Join(string.Empty, parameters));
+	}

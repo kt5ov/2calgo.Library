@@ -11,7 +11,7 @@
     void IndicatorDigits(double digits) { }
 	
 	[Conditional("SetIndexDrawBegin")]
-    void SetIndexDrawBegin(int index, int begin) { }
+    void SetIndexDrawBegin(int index, object begin) { }
 
 	[Conditional("SetLevelValue")]
 	void SetLevelValue(int level, double value) { }
