@@ -76,17 +76,11 @@
 	//}
 
 	[Conditional("iClose")]
-	//{
     Mq4Double iClose(string symbol, int timeframe, int shift)
     {
 		return GetSeries(timeframe).Close.FromEnd(shift);
     }
 
-    Mq4Double iClose(string symbol, string timeframe, int shift)
-    {
-		return iClose(symbol, 0, shift);
-    }
-	//}
 	[Conditional("iHigh")]
     Mq4Double iHigh(string symbol, int timeframe, int shift)
     {
@@ -100,17 +94,10 @@
     }
 
 	[Conditional("iOpen")]
-	//{
     Mq4Double iOpen(string symbol, int timeframe, int shift)
     {	
 		return GetSeries(timeframe).Open.FromEnd(shift);
     }
-
-    Mq4Double iOpen(string symbol, string timeframe, int shift)
-    {	
-		return iOpen(symbol, 0, shift);
-    }
-	//}
 
 	[Conditional("iVolume")]
     Mq4Double iVolume(string symbol, int timeframe, int shift)
@@ -126,7 +113,6 @@
     }
 
 	[Conditional("iBarShift")]
-	//{
     int iBarShift(string symbol, int timeframe, int time, bool exact = false)
     {
 		var marketSeries = GetSeries(timeframe);
@@ -140,12 +126,6 @@
 		}
 		return -1;
     }
-
-	int iBarShift(int symbol, int timeframe, int time, bool exact = false)
-	{
-		return iBarShift(NULL, timeframe, time, exact);
-	}
-	//}
 
 	[Conditional("iBars")]
 	int iBars(string symbol, int timeframe)

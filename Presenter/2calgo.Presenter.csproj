@@ -52,6 +52,7 @@
     <Compile Include="StringResourceReader.cs" />
     <Compile Include="TemplateOptimizer.cs" />
     <Resource Include="Templates\Indicator\Mq4Double.cs" />
+    <Resource Include="Templates\Indicator\Mq4Null.cs" />
     <Compile Include="Words.cs" />
   </ItemGroup>
   <ItemGroup>

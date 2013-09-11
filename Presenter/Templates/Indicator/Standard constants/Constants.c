@@ -2,7 +2,7 @@
     const bool False = false;
     const bool TRUE = true;
     const bool FALSE = false;                
-    const string NULL = null;
+    Mq4Null NULL;
     const int EMPTY = -1;
     const double EMPTY_VALUE = double.NaN;
     const int WHOLE_ARRAY = 0;

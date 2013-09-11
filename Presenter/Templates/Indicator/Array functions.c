@@ -69,7 +69,7 @@
 		return result;
 	}
 	
-	int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, string symbol = NULL, int timeframe = 0)
+	int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, string symbol = null, int timeframe = 0)
 	{
 		var dataSeries = ToMarketSeries(timeframe, seriesIndex);
 		for (var i = 0; i < dataSeries.Count - 1; i++)
