@@ -1,12 +1,12 @@
 	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
     int GetHighestIndex(DataSeries dataSeries, int count, int invertedStart)
     {
-		var start = dataSeries.InvertIndex(invertedStart);
+		var start = invertedStart;
 		var maxIndex = start;
-		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + maxIndex - 1);
+		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + start - 1);
 		for (var i = start; i <= endIndex; i++)
 		{
-			if (dataSeries[i] > dataSeries[maxIndex])
+			if (dataSeries.FromEnd(i) > dataSeries.FromEnd(maxIndex))
 				maxIndex = i;
 		}
 		return maxIndex;
@@ -15,12 +15,12 @@
 	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
 	int GetLowestIndex(DataSeries dataSeries, int count, int invertedStart)
 	{
-		var start = dataSeries.InvertIndex(invertedStart);
+		var start = invertedStart;
 		var minIndex = start;
-		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + minIndex - 1);
+		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + start - 1);
 		for (var i = start; i <= endIndex; i++)
 		{
-			if (dataSeries[i] < dataSeries[minIndex])
+			if (dataSeries.FromEnd(i) < dataSeries.FromEnd(minIndex))
 				minIndex = i;
 		}
 		return minIndex;
