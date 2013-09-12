@@ -22,7 +22,7 @@
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateiMA(series, period, ma_method, shift);
         }       
@@ -65,7 +65,7 @@
 #region iRSI
         private double iRSI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateRsi(series, period, shift);
         }       
@@ -98,7 +98,7 @@
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateBands(series, period, deviation, mode, shift);
         }       
@@ -186,7 +186,7 @@
 #region iMACD
         private double iMACD(string symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
         {
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateMACD(series, fast_ema_period, slow_ema_period, signal_period, mode, shift);
         }       
@@ -212,7 +212,7 @@
 #region iCCI
         private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
         {
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateCCI(series, period, shift);
         }       
@@ -282,7 +282,7 @@
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToMarketSeries(timeframe, applied_price);
+            var series = ToAppliedPrice(timeframe, applied_price);
       
             return CalculateiStdDev(series, ma_period, ma_shift, ma_method, shift);
         }       

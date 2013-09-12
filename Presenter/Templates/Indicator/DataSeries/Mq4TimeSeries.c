@@ -1,18 +1,12 @@
     internal class Mq4TimeSeries
     {
         private readonly TimeSeries _timeSeries;
-        private int _currentIndex;
         private static readonly DateTime StartDateTime = new DateTime(1970, 1, 1);
 
         public Mq4TimeSeries(TimeSeries timeSeries)
         { 
             _timeSeries = timeSeries;
         }
-
-        public void SetCurrentIndex(int index)
-        {
-            _currentIndex = index;
-        }       
 
         public static int ToInteger(DateTime dateTime)
         {
@@ -31,7 +25,7 @@
                 if (index < 0 || index >= _timeSeries.Count)
                   return 0;
                   
-                DateTime dateTime = _timeSeries[_currentIndex - index];
+                DateTime dateTime = _timeSeries[_timeSeries.Count - 1 - index];
 
                 return ToInteger(dateTime); 
             }
