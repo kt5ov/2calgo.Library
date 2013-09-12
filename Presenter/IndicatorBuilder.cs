@@ -14,6 +14,7 @@ namespace _2calgo.Presenter
         public readonly StringBuilder InitialzeBuffers = new StringBuilder();
         public readonly StringBuilder InvertedBuffersDeclarations = new StringBuilder();
         public readonly StringBuilder BuffersSetCurrentIndex = new StringBuilder();        
+        public readonly StringBuilder ColorParameters = new StringBuilder();        
         public string IsDrawingOnChartWindow { get; set; }
 
         public string BuildIndicator()
@@ -26,6 +27,7 @@ namespace _2calgo.Presenter
             code = code.Replace("#Initialize_buffers_PLACE_HOLDER#", InitialzeBuffers.ToString());
             code = code.Replace("#Inverted_buffers_declarations_PLACE_HOLDER#", InvertedBuffersDeclarations.ToString());
             code = code.Replace("#Buffers_SetCurrentIndex_PLACE_HOLDER#", BuffersSetCurrentIndex.ToString());
+            code = code.Replace("#ColorParameters_PLACE_HOLDER#", ColorParameters.ToString());
             code = code.Replace("#Mq4Functions_PLACE_HOLDER#", Mq4Functions);
 
             code = code.Replace("#IsDrawingOnChartWindow_PLACE_HOLDER#", IsDrawingOnChartWindow);

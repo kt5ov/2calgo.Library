@@ -28,7 +28,7 @@
         {
             get 
             { 
-                if (index >= _timeSeries.Count)
+                if (index < 0 || index >= _timeSeries.Count)
                   return 0;
                   
                 DateTime dateTime = _timeSeries[_currentIndex - index];

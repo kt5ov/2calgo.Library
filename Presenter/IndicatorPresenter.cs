@@ -36,6 +36,8 @@ namespace _2calgo.Presenter
                 var buffer = indicator.Buffers[index];
 
                 AddLineDeclaration(indicator, template, index, buffer);
+                if (indicator.Colors[index] != null)
+                    template.ColorParameters.AppendFormat("int indicator_color{0} = {1};\n", index + 1, indicator.Colors[index]);
                 
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);

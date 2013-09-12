@@ -40,6 +40,8 @@ namespace cAlgo.Indicators
 #Mq4Fields_PLACE_HOLDER#
 
 #Mq4Functions_PLACE_HOLDER#
+
+#ColorParameters_PLACE_HOLDER#
         
         protected override void Initialize()
         {
