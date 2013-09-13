@@ -93,7 +93,8 @@ namespace _2calgo.Parser
                     break;
 
                 var bodyWithAroundingBrackets = code.GetBodyWithAroundingBrackets(match.Index);
-                code = code.Replace(bodyWithAroundingBrackets, string.Empty);
+                var indexOfBody = code.IndexOf(bodyWithAroundingBrackets);
+                code = code.Remove(indexOfBody, bodyWithAroundingBrackets.Length);
                 code = code.Replace(match.Value, string.Empty);
             } while (true);
 
