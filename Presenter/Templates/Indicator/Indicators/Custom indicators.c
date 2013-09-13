@@ -2,7 +2,7 @@
 	void IndicatorBuffers(int count) {}
 
 	[Conditional("SetIndexStyle")]
-    void SetIndexStyle(int index, int type, int style=EMPTY, int width=EMPTY, int clr=CLR_NONE) { }
+    void SetIndexStyle(int index, int type, int style = EMPTY, int width = EMPTY, int clr = CLR_NONE) { }
 
 	[Conditional("IndicatorDigits")]
     void IndicatorDigits(int digits) { }
@@ -15,6 +15,9 @@
 
 	[Conditional("SetLevelValue")]
 	void SetLevelValue(int level, double value) { }
+
+	[Conditional("SetLevelStyle")]	
+	void SetLevelStyle(int drawStyle, int width, int clr = CLR_NONE) { }
 
 	[Conditional("SetIndexBuffer")]
     bool SetIndexBuffer(int index, Mq4OutputDataSeries dataSeries) 
