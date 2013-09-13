@@ -63,6 +63,26 @@ namespace _2calgo.Parser.CodeAdapter
             }
         }
 
+        public static void RenameStandardFunctions(this IndicatorCode indicatorCode)
+        {
+            var startInvocationRegex = new Regex(@"(?<!\w)start\s*\(\s*\)");
+            var initInvocationRegex = new Regex(@"(?<!\w)init\s*\(\s*\)");
+            foreach (var function in indicatorCode.Functions)
+            {
+                switch (function.Name)
+                {
+                    case "start":
+                        function.Name = "Mq4Start";
+                        break;
+                    case "init":
+                        function.Name = "Mq4Init";
+                        break;
+                }
+                function.Body = startInvocationRegex.Replace(function.Body, "Mq4Start()");
+                function.Body = initInvocationRegex.Replace(function.Body, "Mq4Init()");
+            }
+        }
+
         public static string RenameTimeFrameParameter(this string code)
         {
             return code.Replace("TimeFrame", "TimeFrameParameter");

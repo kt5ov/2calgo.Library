@@ -51,20 +51,5 @@ namespace _2calgo.Parser.CodeAdapter
 
             return new Function(function.ReturnType, function.Name, function.Parameters, body);
         }
-
-        public static Function RenameStandardFunctions(this Function function)
-        {
-            var name = function.Name;
-            switch (name)
-            {
-                case "start":
-                    name = "Mq4Start";
-                    break;
-                case "init":
-                    name = "Mq4Init";
-                    break;
-            }
-            return new Function(function.ReturnType, name, function.Parameters, function.Body);
-        }
     }
 }

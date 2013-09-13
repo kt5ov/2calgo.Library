@@ -43,8 +43,9 @@ namespace _2calgo.Parser
 
             indicator.Code.ExtractStaticVariablesToFields();
             indicator.Code.ReplaceSimpleTypesToMq4Double();
+            indicator.Code.RenameStandardFunctions();
             indicator.Code.AddMq4InitFunctionIfDoesNotExist();
-            
+
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }
         
@@ -79,7 +80,7 @@ namespace _2calgo.Parser
 
         private void HandleInit(Indicator indicator, IEnumerable<Function> mq4Functions, ParsingErrors parsingErrors)
         {
-            var initFunction = mq4Functions.FirstOrDefault(function => function.Name == "Mq4Init");
+            var initFunction = mq4Functions.FirstOrDefault(function => function.Name == "init");
 
             if (initFunction == null)
                 return;
