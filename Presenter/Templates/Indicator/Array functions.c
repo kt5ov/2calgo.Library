@@ -71,9 +71,41 @@
 	
 	int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, string symbol = null, int timeframe = 0)
 	{
-		var dataSeries = ToMarketSeries(timeframe, seriesIndex);
-		for (var i = 0; i < dataSeries.Count - 1; i++)
-			mq4Array[i] = dataSeries.FromEnd(i);
+		var marketSeries = GetSeries(timeframe);
+		if (seriesIndex != MODE_TIME)
+		{
+			DataSeries dataSeries = null;
+			switch (seriesIndex)
+			{
+				case MODE_OPEN:
+					dataSeries = marketSeries.Open;
+					break;
+				case MODE_HIGH:
+					dataSeries = marketSeries.High;
+					break;
+				case MODE_LOW:
+					dataSeries = marketSeries.Low;
+					break;
+				case MODE_CLOSE:
+					dataSeries = marketSeries.Close;
+					break;
+				case MODE_VOLUME:
+					dataSeries = marketSeries.TickVolume;   
+					break;
+				default:
+					throw new NotImplementedException("Series index " + seriesIndex + " isn't supported in ArrayCopySeries");
+			}
+			for (var i = 0; i < dataSeries.Count - 1; i++)
+				mq4Array[i] = dataSeries.FromEnd(i);
 		
-		return dataSeries.Count;
+			return dataSeries.Count;
+		}
+		else
+		{
+			var mq4TimeSeries = new Mq4TimeSeries(marketSeries.OpenTime);
+			for (var i = 0; i < marketSeries.OpenTime.Count - 1; i++)
+				mq4Array[i] = mq4TimeSeries[i];
+		
+			return marketSeries.OpenTime.Count;
+		}
 	}

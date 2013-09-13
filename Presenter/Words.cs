@@ -27,7 +27,6 @@ namespace _2calgo.Presenter
 
         public bool Contains(string word)
         {
-//            return true;
             return _words.Contains(word);
         }
     }
