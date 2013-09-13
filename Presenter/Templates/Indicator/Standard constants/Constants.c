@@ -204,6 +204,7 @@
     const int RosyBrown = 9408444;
     const int Tomato = 4678655;
     const int DarkSeaGreen = 9419919;
+    const int Cyan = 16776960;
     const int MediumAquamarine = 11193702;
     const int GreenYellow = 3145645;
     const int MediumOrchid = 13850042;

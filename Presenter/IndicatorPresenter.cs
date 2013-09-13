@@ -30,6 +30,7 @@ namespace _2calgo.Presenter
                     + "_backfield = " + parameter.Name + "_parameter; return " + parameter.Name + "_backfield;	} set { " + parameter.Name + "_backfield = value; } }");
                 template.Parameters.AppendLine();
             }
+            template.ColorParameters.AppendFormat("int indicator_buffers = {0};\n", indicator.BuffersCount);
 
             for (var index = 0; index < indicator.Buffers.Length; index++)
             {
