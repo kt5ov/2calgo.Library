@@ -53,6 +53,7 @@
     <Compile Include="TemplateOptimizer.cs" />
     <Resource Include="Templates\Indicator\Mq4Double.cs" />
     <Resource Include="Templates\Indicator\Mq4Null.cs" />
+    <Resource Include="Templates\Indicator\Mq4String.c" />
     <Compile Include="Words.cs" />
   </ItemGroup>
   <ItemGroup>

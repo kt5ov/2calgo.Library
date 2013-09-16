@@ -113,7 +113,7 @@
     }
 
 	[Conditional("iBarShift")]
-    int iBarShift(string symbol, int timeframe, int time, bool exact = false)
+    int iBarShift(Mq4String symbol, int timeframe, int time, bool exact = false)
     {
 		var marketSeries = GetSeries(timeframe);
 		var dateTime = Mq4TimeSeries.ToDateTime(time);
