@@ -7,13 +7,11 @@ namespace _2calgo.Parser.Errors
     {
         private static readonly List<string> PossibleMultiTimeFrameMethods = new List<string>
             {
-                "iTime",
                 "iBarShift",
                 "iHighest",
                 "iLowest",
                 "Highest",
                 "Lowest",
-                "iMA",
                 "iRSI",
                 "iBands",
                 "iADX",

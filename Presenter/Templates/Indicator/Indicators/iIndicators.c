@@ -22,7 +22,7 @@
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateiMA(series, period, ma_method, shift);
         }       

@@ -108,8 +108,10 @@
 	[Conditional("iTime")]
     int iTime(string symbol, int timeframe, int shift)
     {
-		var openTime = GetSeries(timeframe).OpenTime.FromEnd(shift);
-		return Mq4TimeSeries.ToInteger(openTime);
+		var timeSeries = GetSeries(symbol, timeframe).OpenTime;
+		if (shift >= 0 && shift < timeSeries.Count)
+			return Mq4TimeSeries.ToInteger(timeSeries.FromEnd(shift));
+		return 0;
     }
 
 	[Conditional("iBarShift")]
