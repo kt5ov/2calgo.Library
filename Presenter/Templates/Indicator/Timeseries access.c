@@ -74,35 +74,35 @@
       return iLowest(symbol, timeframe, type, count, start);
     }
 	//}
-
-	[Conditional("iClose")]
-    Mq4Double iClose(string symbol, int timeframe, int shift)
-    {
-		return GetSeries(timeframe).Close.FromEnd(shift);
+	
+	[Conditional("iOpen")]
+    Mq4Double iOpen(Mq4String symbol, int timeframe, int shift)
+    {	
+		return GetSeries(symbol, timeframe).Open.FromEnd(shift);
     }
 
 	[Conditional("iHigh")]
     Mq4Double iHigh(string symbol, int timeframe, int shift)
     {
-		return GetSeries(timeframe).High.FromEnd(shift);
+		return GetSeries(symbol, timeframe).High.FromEnd(shift);
     }
 
 	[Conditional("iLow")]
     Mq4Double iLow(string symbol, int timeframe, int shift)
     {
-		return GetSeries(timeframe).Low.FromEnd(shift);
+		return GetSeries(symbol, timeframe).Low.FromEnd(shift);
     }
-
-	[Conditional("iOpen")]
-    Mq4Double iOpen(string symbol, int timeframe, int shift)
-    {	
-		return GetSeries(timeframe).Open.FromEnd(shift);
+		
+	[Conditional("iClose")]
+    Mq4Double iClose(string symbol, int timeframe, int shift)
+    {
+		return GetSeries(symbol, timeframe).Close.FromEnd(shift);
     }
-
+	
 	[Conditional("iVolume")]
     Mq4Double iVolume(string symbol, int timeframe, int shift)
     {
-		return GetSeries(timeframe).TickVolume.FromEnd(shift);
+		return GetSeries(symbol, timeframe).TickVolume.FromEnd(shift);
     }
 
 	[Conditional("iTime")]

@@ -193,6 +193,14 @@ namespace cAlgo.Indicators
 		return MarketData.GetSeries(timeFrame);
 	}
 
+	MarketSeries GetSeries(string symbol, int period)
+	{
+		var timeFrame = PeriodToTimeFrame(period);
+		if (symbol == "0" || string.IsNullOrEmpty(symbol))
+			symbol = Symbol.Code;
+		return MarketData.GetSeries(symbol, timeFrame);
+	}
+
 	private DataSeries ToAppliedPrice(int timeframe, int constant)
     {
 		var series = GetSeries(timeframe);

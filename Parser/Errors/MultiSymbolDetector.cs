@@ -7,11 +7,6 @@ namespace _2calgo.Parser.Errors
     {
         private static readonly List<string> PossibleMultiTimeFrameMethods = new List<string>
             {
-                "iOpen",
-                "iHigh",
-                "iLow",
-                "iClose",
-                "iVolume",
                 "iTime",
                 "iBarShift",
                 "iHighest",
@@ -41,7 +36,7 @@ namespace _2calgo.Parser.Errors
                 if (PossibleMultiTimeFrameMethods.Any(m => m == methodCall.MethodName))
                 {
                     var symbol = methodCall.Parameters[0];
-                    if (symbol != "Symbol()" && symbol != "NULL")
+                    if (symbol != "Symbol()" && symbol != "NULL" && symbol != "0")
                     {
                         yield return new ParsingError(ErrorType.NotSupportedError, "MultiSymbol", symbol);
                     }
