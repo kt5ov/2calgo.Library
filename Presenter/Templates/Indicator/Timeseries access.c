@@ -27,9 +27,9 @@
 	}
 
 	[Conditional("iHighest", "iLowest", "Lowest", "Highest")]
-    int GetExtremeIndex(Func<DataSeries, int, int, int> extremeFunc, int timeframe, int type, int count, int start)
+    int GetExtremeIndex(Func<DataSeries, int, int, int> extremeFunc, string symbol, int timeframe, int type, int count, int start)
     {
-		var marketSeries = GetSeries(timeframe);
+		var marketSeries = GetSeries(symbol, timeframe);
 		switch (type)
 		{
 			case MODE_OPEN:
@@ -51,12 +51,12 @@
 
 	[Conditional("iHighest", "Highest")]
     //{
-	int iHighest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+	int iHighest(Mq4String symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
-      return GetExtremeIndex(GetHighestIndex, timeframe, type, count, start);
+      return GetExtremeIndex(GetHighestIndex, symbol, timeframe, type, count, start);
     }
 	
-    int Highest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+    int Highest(Mq4String symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return iHighest(symbol, timeframe, type, count, start);
     }
@@ -64,12 +64,12 @@
 
 	[Conditional("iLowest", "Lowest")]
 	//{
-    int iLowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+    int iLowest(Mq4String symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
-      return GetExtremeIndex(GetLowestIndex, timeframe, type, count, start);
+      return GetExtremeIndex(GetLowestIndex, symbol, timeframe, type, count, start);
     }
 
-    int Lowest(string symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
+    int Lowest(Mq4String symbol, int timeframe, int type, int count = WHOLE_ARRAY, int start = 0)
     {
       return iLowest(symbol, timeframe, type, count, start);
     }
@@ -82,31 +82,31 @@
     }
 
 	[Conditional("iHigh")]
-    Mq4Double iHigh(string symbol, int timeframe, int shift)
+    Mq4Double iHigh(Mq4String symbol, int timeframe, int shift)
     {
 		return GetSeries(symbol, timeframe).High.FromEnd(shift);
     }
 
 	[Conditional("iLow")]
-    Mq4Double iLow(string symbol, int timeframe, int shift)
+    Mq4Double iLow(Mq4String symbol, int timeframe, int shift)
     {
 		return GetSeries(symbol, timeframe).Low.FromEnd(shift);
     }
 		
 	[Conditional("iClose")]
-    Mq4Double iClose(string symbol, int timeframe, int shift)
+    Mq4Double iClose(Mq4String symbol, int timeframe, int shift)
     {
 		return GetSeries(symbol, timeframe).Close.FromEnd(shift);
     }
 	
 	[Conditional("iVolume")]
-    Mq4Double iVolume(string symbol, int timeframe, int shift)
+    Mq4Double iVolume(Mq4String symbol, int timeframe, int shift)
     {
 		return GetSeries(symbol, timeframe).TickVolume.FromEnd(shift);
     }
 
 	[Conditional("iTime")]
-    int iTime(string symbol, int timeframe, int shift)
+    int iTime(Mq4String symbol, int timeframe, int shift)
     {
 		var timeSeries = GetSeries(symbol, timeframe).OpenTime;
 		if (shift >= 0 && shift < timeSeries.Count)
