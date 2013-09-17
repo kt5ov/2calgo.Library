@@ -63,9 +63,9 @@
 		[Conditional("iRSI", "iRSIOnArray")]
 		//{
 #region iRSI
-        private double iRSI(string symbol, int timeframe, int period, int applied_price, int shift)
+        private double iRSI(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
         {
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateRsi(series, period, shift);
         }       
@@ -93,12 +93,12 @@
 		[Conditional("iBands", "iBandsOnArray")]
 		//{
 #region iBands
-        private double iBands(string symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
+        private double iBands(Mq4String symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
         {
             if (bands_shift != 0)
                 throw new NotImplementedException(NotSupportedBandsShift);
             
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateBands(series, period, deviation, mode, shift);
         }       
@@ -134,12 +134,12 @@
 		[Conditional("iADX")]
 		//{
 #region iADX
-        private Mq4Double iADX(string symbol, int timeframe, int period, int applied_price, int mode, int shift)
+        private Mq4Double iADX(Mq4String symbol, int timeframe, int period, int applied_price, int mode, int shift)
         {
             if (applied_price != PRICE_CLOSE)            
               throw new NotImplementedException(AdxSupportsOnlyClosePrice);            
 
-			var marketSeries = GetSeries(timeframe);
+			var marketSeries = GetSeries(symbol, timeframe);
       
             return CalculateAdx(marketSeries, period, mode, shift);
         }      
@@ -165,9 +165,9 @@
 		[Conditional("iATR")]
 		//{
 #region iATR
-        private double iATR(string symbol, int timeframe, int period, int shift)
+        private double iATR(Mq4String symbol, int timeframe, int period, int shift)
         {
-			var series = GetSeries(timeframe);
+			var series = GetSeries(symbol, timeframe);
             return CalculateATR(series, period, shift);
         }       
                 
@@ -184,9 +184,9 @@
 		[Conditional("iMACD")]
 		//{
 #region iMACD
-        private double iMACD(string symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
+        private double iMACD(Mq4String symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
         {
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateMACD(series, fast_ema_period, slow_ema_period, signal_period, mode, shift);
         }       
@@ -210,9 +210,9 @@
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
 #region iCCI
-        private double iCCI(string symbol, int timeframe, int period, int applied_price, int shift)
+        private double iCCI(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
         {
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateCCI(series, period, shift);
         }       
@@ -277,12 +277,12 @@
 		[Conditional("iStdDev", "iStdDevOnArray")]
 		//{
 #region iStdDev
-        private double iStdDev(string symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
+        private double iStdDev(Mq4String symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
         {
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
 
-            var series = ToAppliedPrice(timeframe, applied_price);
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateiStdDev(series, ma_period, ma_shift, ma_method, shift);
         }       
@@ -308,9 +308,9 @@
 		[Conditional("iWPR")]
 		//{
 #region iWPR
-        private double iWPR(string symbol, int timeframe, int period, int shift)
+        private double iWPR(Mq4String symbol, int timeframe, int period, int shift)
         {
-			var marketSeries = GetSeries(timeframe);
+			var marketSeries = GetSeries(symbol, timeframe);
             var indicator = _cashedStandardIndicators.WilliamsPctR(marketSeries, period);
 
             return indicator.Result.FromEnd(shift);
@@ -321,9 +321,9 @@
 		[Conditional("iSAR")]
 		//{
 #region iSAR
-        private double iSAR(string symbol, int timeframe, double step, double maximum, int shift)
+        private double iSAR(Mq4String symbol, int timeframe, double step, double maximum, int shift)
         {
-			var series = GetSeries(timeframe);
+			var series = GetSeries(symbol, timeframe);
             var indicator = _cashedStandardIndicators.ParabolicSAR(series, step, maximum);
 
             return indicator.Result.FromEnd(shift);
@@ -333,10 +333,10 @@
 
 [Conditional("iFractals")]
 //{
-	private Mq4Double iFractals(string symbol, int timeframe, int mode, int shift)
+	private Mq4Double iFractals(Mq4String symbol, int timeframe, int mode, int shift)
 	{
 		var index = _currentIndex - shift;
-		var marketSeries = GetSeries(timeframe);
+		var marketSeries = GetSeries(symbol, timeframe);
 		if (mode == MODE_UPPER)
 		{
 			if (IsUpFractal(marketSeries, index))
@@ -397,11 +397,11 @@
 [Conditional("iStochastic")]
 //{
 
-	Mq4Double iStochastic(string symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
+	Mq4Double iStochastic(Mq4String symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
 	{
 		var maType = ToMaType(method);   
 		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;		
-		var marketSeries = GetSeries(timeframe);
+		var marketSeries = GetSeries(symbol, timeframe);
         var index = marketSeries.Close.Count - 1 - shift;
 
 		var stochasticValues = CalculateStochastic(marketSeries, kperiod, dperiod, slowing, maType, stochasticMode, index);

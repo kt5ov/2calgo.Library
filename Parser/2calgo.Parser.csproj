@@ -66,7 +66,6 @@
     <Compile Include="Errors\ErrorType.cs" />
     <Compile Include="Errors\InvokesNotSupportedMethodsDetector.cs" />
     <Compile Include="Errors\MethodError.cs" />
-    <Compile Include="Errors\MultiSymbolDetector.cs" />
     <Compile Include="Errors\ParsingError.cs" />
     <Compile Include="CodeAdapter\Defines.cs" />
     <Compile Include="CodeAdapter\DrawingShapeStyles.cs" />

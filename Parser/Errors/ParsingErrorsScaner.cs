@@ -26,8 +26,6 @@ namespace _2calgo.Parser.Errors
                 new ContainsStringErrorDetector("DRAW_ZIGZAG", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_BACK", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_RAY", ErrorType.NotSupportedWarning),
-
-                new MultiSymbolDetector()
             };
     }
 }

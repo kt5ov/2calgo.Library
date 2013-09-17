@@ -69,9 +69,9 @@
 		return result;
 	}
 	
-	int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, string symbol = null, int timeframe = 0)
+	int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, Mq4String symbol = null, int timeframe = 0)
 	{
-		var marketSeries = GetSeries(timeframe);
+		var marketSeries = GetSeries(symbol, timeframe);
 		if (seriesIndex != MODE_TIME)
 		{
 			DataSeries dataSeries = null;

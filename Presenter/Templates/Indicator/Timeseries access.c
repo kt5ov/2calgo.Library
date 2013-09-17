@@ -130,9 +130,9 @@
     }
 
 	[Conditional("iBars")]
-	int iBars(string symbol, int timeframe)
+	int iBars(Mq4String symbol, int timeframe)
 	{
-		return GetSeries(timeframe).Close.Count;
+		return GetSeries(symbol, timeframe).Close.Count;
 	}
 
 	
