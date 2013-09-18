@@ -142,7 +142,8 @@ namespace _2calgo.Parser
                     levels[levelIndex] = value;
             }
 
-            indicator.Levels = levels.Select(pair => pair.Value).ToArray();
+            var levelValues = levels.Select(pair => pair.Value);
+            indicator.Levels.AddRange(levelValues);
         }
 
         private static void HandleProperties(string code, Indicator result)
@@ -160,6 +161,14 @@ namespace _2calgo.Parser
             {
                 var index = int.Parse(property.Name["indicator_color".Length].ToString());
                 result.Colors[index - 1] = GetKnownColor(property.Value);
+            }
+
+            var levelProperties = properties.Where(property => property.Name.StartsWith("indicator_level"));
+            foreach (var property in levelProperties)
+            {
+                double levelValue;
+                if (double.TryParse(property.Value, out  levelValue))
+                    result.Levels.Add(levelValue);
             }
         }
         

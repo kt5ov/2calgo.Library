@@ -12,7 +12,7 @@ namespace _2calgo.Model
 
         public string[] Buffers = new string[0];
 
-        public double[] Levels = new double[0];
+        public readonly List<double> Levels = new List<double>();
 
         public IEnumerable<Parameter> Parameters { get; set; } 
 

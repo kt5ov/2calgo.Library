@@ -24,6 +24,8 @@ namespace cAlgo.Indicators
 	[Levels(#Levels_PLACE_HOLDER#)]
     public class ConvertedIndicator : Indicator
     {
+#Mq4Functions_PLACE_HOLDER#
+
 [Conditional("SendMail")]
 //{
 		[Parameter("Email from", DefaultValue = "your_email@gmail.com")]
@@ -38,10 +40,10 @@ namespace cAlgo.Indicators
 #Lines_declarations_PLACE_HOLDER#
      
 #Mq4Fields_PLACE_HOLDER#
-
-#Mq4Functions_PLACE_HOLDER#
-
+		
 #ColorParameters_PLACE_HOLDER#
+
+#LevelParameters_PLACE_HOLDER#
         
         protected override void Initialize()
         {
