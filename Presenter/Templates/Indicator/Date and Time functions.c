@@ -34,7 +34,7 @@
       return Server.Time.Second;
     }
 
-	[Conditional("TimeCurrent", "CurTime")]
+	[Conditional("TimeCurrent", "CurTime", "MarketInfo")]
     int TimeCurrent()
     {
       return Mq4TimeSeries.ToInteger(Server.Time);

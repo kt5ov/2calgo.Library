@@ -187,12 +187,19 @@ namespace cAlgo.Indicators
         }
     }
 
+	Symbol GetSymbol(string symbolCode)
+	{
+		if (symbolCode == "0" || string.IsNullOrEmpty(symbolCode))
+			symbolCode = Symbol.Code;
+		return MarketData.GetSymbol(symbolCode);
+	}
+
 	MarketSeries GetSeries(string symbol, int period)
 	{
 		var timeFrame = PeriodToTimeFrame(period);
-		if (symbol == "0" || string.IsNullOrEmpty(symbol))
-			symbol = Symbol.Code;
-		return MarketData.GetSeries(symbol, timeFrame);
+		var symbolObject = GetSymbol(symbol);
+
+		return MarketData.GetSeries(symbolObject.Code, timeFrame);
 	}
 
 	private DataSeries ToAppliedPrice(string symbol, int timeframe, int constant)

@@ -1,14 +1,37 @@
 [Conditional("MarketInfo")]
 Mq4Double MarketInfo(string symbol, int type)
 {
+	var symbolObject = GetSymbol(symbol);
 	switch (type)
 	{
+		case MODE_LOW:
+			return GetSeries(symbol, PERIOD_D1).Low.LastValue;
+		case MODE_HIGH:
+			return GetSeries(symbol, PERIOD_D1).High.LastValue;
 		case MODE_DIGITS:
-			return Digits;
+			return symbolObject.Digits;
+		case MODE_TIME:
+			return TimeCurrent();
 		case MODE_ASK:
-			return Ask;
+			return symbolObject.Ask;
 		case MODE_BID:
-			return Bid;
+			return symbolObject.Bid;
+		case MODE_SPREAD:
+			return symbolObject.Spread / symbolObject.PointSize;
+		case MODE_PROFITCALCMODE:
+			return 0;
+		case MODE_FREEZELEVEL:
+			return 0;
+		case MODE_TRADEALLOWED:
+			return 1;
+		case MODE_POINT:
+			return symbolObject.PointSize;
+		case MODE_TICKSIZE:
+			return symbolObject.PointSize;
+		case MODE_SWAPTYPE:
+			return 0;
+		case MODE_MARGINCALCMODE:
+			return 0;
 	}
 	return 0;
 }
