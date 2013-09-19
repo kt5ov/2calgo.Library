@@ -75,6 +75,12 @@
     {
       return Mq4TimeSeries.ToInteger(Server.Time);
     }
+
+	[Conditional("LocalTime")]
+    int LocalTime()
+    {
+      return Mq4TimeSeries.ToInteger(Server.Time);
+    }
         
 	[Conditional("TimeMinute")]
     int TimeMinute(int time)
