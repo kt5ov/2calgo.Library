@@ -1,0 +1,10 @@
+const int OBJ_PERIOD_M1 = 0x0001;
+const int OBJ_PERIOD_M5 = 0x0002;
+const int OBJ_PERIOD_M15 = 0x0004;
+const int OBJ_PERIOD_M30 = 0x0008;
+const int OBJ_PERIOD_H1 = 0x0010;
+const int OBJ_PERIOD_H4 = 0x0020;
+const int OBJ_PERIOD_D1 = 0x0040;
+const int OBJ_PERIOD_W1 = 0x0080;
+const int OBJ_PERIOD_MN1 = 0x0100;
+const int OBJ_ALL_PERIODS = 0x01FF;

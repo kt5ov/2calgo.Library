@@ -44,6 +44,7 @@ namespace _2calgo.Presenter
 
                 StandardConstants + "/Constants.c",
                 StandardConstants + "/Trade operations.c",
+                StandardConstants + "/ObjectVisibility.c",
                 
                 ChartObjects + "/Mq4ChartObjects.c",
                 ChartObjects + "/Mq4Object.c",
