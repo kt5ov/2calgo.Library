@@ -106,6 +106,13 @@ namespace _2calgo.Parser
                 }
                 var drawingShapeStyle = methodCall.Parameters[1].ToDrawingShapeStyle();
                 indexesStyles[index] = drawingShapeStyle;
+
+                if (methodCall.Parameters.Length >= 4)
+                {
+                    int width;
+                    if (int.TryParse(methodCall.Parameters[3], out width))
+                        indicator.Widths[index] = width;
+                }
             }
             foreach (var keyValuePair in indexesStyles)
             {
@@ -161,6 +168,16 @@ namespace _2calgo.Parser
             {
                 var index = int.Parse(property.Name["indicator_color".Length].ToString());
                 result.Colors[index - 1] = GetKnownColor(property.Value);
+            }
+
+            var widthProperties = properties.Where(property => property.Name.StartsWith("indicator_width"));
+            foreach (var property in widthProperties)
+            {
+                int index;
+                int width;
+                if (int.TryParse(property.Name["indicator_width".Length].ToString(), out index) 
+                    && int.TryParse(property.Value, out  width))
+                    result.Widths[index - 1] = width;
             }
 
             var levelProperties = properties.Where(property => property.Name.StartsWith("indicator_level"));

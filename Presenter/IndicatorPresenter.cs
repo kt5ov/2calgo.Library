@@ -61,6 +61,11 @@ namespace _2calgo.Presenter
                 template.LevelParameters.AppendLine(string.Format("Mq4Double indicator_level{0} = {1};", i + 1,
                                                                   indicator.Levels[i]));
             }
+            for (var i = 0; i < indicator.Widths.Length; i++)
+            {
+                template.WidthParameters.AppendLine(string.Format("Mq4Double indicator_width{0} = {1};", i + 1,
+                                                                  indicator.Widths[i]));
+            }
             template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
 

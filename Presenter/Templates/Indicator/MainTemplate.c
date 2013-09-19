@@ -42,6 +42,8 @@ namespace cAlgo.Indicators
 #Mq4Fields_PLACE_HOLDER#
 		
 #ColorParameters_PLACE_HOLDER#
+				
+#WidthParameters_PLACE_HOLDER#
 
 #LevelParameters_PLACE_HOLDER#
         

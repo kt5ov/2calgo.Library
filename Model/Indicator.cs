@@ -19,6 +19,7 @@ namespace _2calgo.Model
         public readonly string[] Colors = new string[8];
 
         public readonly DrawingShapeStyle[] Styles;
+        public readonly int[] Widths;
 
         public IndicatorCode Code { get; private set; }
 
@@ -27,8 +28,13 @@ namespace _2calgo.Model
             Code = new IndicatorCode();
 
             Styles = new DrawingShapeStyle[8];
+            Widths = new int[8];
             for (var i = 0; i < 8; i++)
+            {
                 Styles[i] = DrawingShapeStyle.Line;
+                Widths[i] = 1;
+            }
+
 
             Parameters = new Parameter[0];
         }
