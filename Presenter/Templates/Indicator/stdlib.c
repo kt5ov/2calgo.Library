@@ -14,3 +14,10 @@
 			}
 		return error_string;
 	}
+
+	[Conditional("CompareDoubles")]
+	bool CompareDoubles(double number1, double number2)
+	{
+		return Math.Abs(number1 - number2) < 0.00000001;
+	}
+
