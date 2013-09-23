@@ -22,4 +22,9 @@ bool IsStopped()
 	return false;
 }
 
+[Conditional("UninitializeReason")]
+int UninitializeReason()
+{
+	return REASON_REMOVE;
+}
 
