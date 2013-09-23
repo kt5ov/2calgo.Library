@@ -14,7 +14,7 @@
             }
         }
 
-		[Conditional("iMA", "iMAOnArray")]
+		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower")]
 		//{
 #region iMA
         private double iMA(string symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
@@ -540,5 +540,19 @@
 
 		return indicator.Calculate(index);
 	}	
-
 //}
+[Conditional("iBearsPower")]
+Mq4Double iBearsPower(string symbol, int timeframe, int period, int applied_price, int shift)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+		
+	return marketSeries.Low.FromEnd(shift) - iMA(symbol, timeframe, period, 0, MODE_EMA, applied_price, shift);
+}
+
+[Conditional("iBullsPower")]
+Mq4Double iBullsPower(string symbol, int timeframe, int period, int applied_price, int shift)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+		
+	return marketSeries.High.FromEnd(shift) - iMA(symbol, timeframe, period, 0, MODE_EMA, applied_price, shift);
+}

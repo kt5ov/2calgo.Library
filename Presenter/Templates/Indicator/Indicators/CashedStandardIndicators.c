@@ -7,7 +7,7 @@
             _indicatorsAccessor = indicatorsAccessor;
         }
 
-		[Conditional("iMA", "iMAOnArray")]
+		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower")]
 		//{
 #region iMA
         private struct MAParameters
