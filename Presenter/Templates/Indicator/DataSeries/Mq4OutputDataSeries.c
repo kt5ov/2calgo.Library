@@ -59,9 +59,10 @@
         {
             get 
             { 
-                if (index >= _originalValues.Count)
-                  return 0;
-                        
+                var indexToGetFrom = _currentIndex - index + _shift;
+                if (indexToGetFrom < 0 || indexToGetFrom >= _originalValues.Count)
+                    return 0;
+
                 return _originalValues[_currentIndex - index + _shift];
             }
             set 

@@ -545,7 +545,7 @@
 	}	
 //}
 [Conditional("iBearsPower")]
-Mq4Double iBearsPower(string symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iBearsPower(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 		
@@ -553,7 +553,7 @@ Mq4Double iBearsPower(string symbol, int timeframe, int period, int applied_pric
 }
 
 [Conditional("iBullsPower")]
-Mq4Double iBullsPower(string symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iBullsPower(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 		
@@ -561,9 +561,19 @@ Mq4Double iBullsPower(string symbol, int timeframe, int period, int applied_pric
 }
 
 [Conditional("iMomentum")]
-double iMomentum(string symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iMomentum(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
 {
 	var series = ToAppliedPrice(symbol, timeframe, applied_price);
 
 	return _cachedStandardIndicators.MomentumOscillator(series, period).Result.FromEnd(shift);
 }
+
+[Conditional("iForce")]
+//{
+Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int applied_price, int shift)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+	return marketSeries.TickVolume.FromEnd(shift) * 
+		(iMA(symbol, timeframe, period, 0, ma_method, applied_price, shift) - iMA(symbol, timeframe, period, 0, ma_method, applied_price, shift + 1));
+}
+//}

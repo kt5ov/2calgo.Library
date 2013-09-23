@@ -63,7 +63,8 @@ namespace cAlgo.Indicators
             _cachedStandardIndicators = new CachedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
 			_mq4ArrayToDataSeriesConverterFactory = new Mq4ArrayToDataSeriesConverterFactory(() => CreateDataSeries());
-            Debug.Initialize(m => Print(m)); 
+            Debug.Deactivate();
+			Debug.Initialize(m => Print(m));			
         }
 
         int _currentIndex;
