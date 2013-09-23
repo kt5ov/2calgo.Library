@@ -87,3 +87,9 @@ void Mq4Print(params object[] parameters)
 {
 	Print(string.Join(string.Empty, parameters));
 }
+
+[Conditional("GetTickCount")]
+int GetTickCount()
+{
+	return Environment.TickCount;
+}
