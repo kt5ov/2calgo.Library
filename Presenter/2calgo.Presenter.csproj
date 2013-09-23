@@ -144,7 +144,7 @@
     <Resource Include="Templates\Indicator\ChartObjects\Object functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Indicators\CashedStandardIndicators.c" />
+    <Resource Include="Templates\Indicator\Indicators\CachedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtremums.c" />

@@ -41,7 +41,7 @@ namespace _2calgo.Presenter
                 "stdlib.c",
 
                 Indicators + "/iIndicators.c",
-                Indicators + "/CashedStandardIndicators.c",
+                Indicators + "/CachedStandardIndicators.c",
                 Indicators + "/Custom indicators.c",
 
                 StandardConstants + "/Constants.c",

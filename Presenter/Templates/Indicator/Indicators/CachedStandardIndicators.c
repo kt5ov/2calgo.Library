@@ -1,8 +1,8 @@
-	class CashedStandardIndicators
+	class CachedStandardIndicators
     {
         private readonly IIndicatorsAccessor _indicatorsAccessor;
 
-        public CashedStandardIndicators(IIndicatorsAccessor indicatorsAccessor)
+        public CachedStandardIndicators(IIndicatorsAccessor indicatorsAccessor)
         {
             _indicatorsAccessor = indicatorsAccessor;
         }
@@ -280,4 +280,27 @@
             return indicator;
         }
 //}
-    }
+
+[Conditional("iMomentum")]
+//{
+        private struct MomentumParameters
+        {
+			public DataSeries DataSeries;
+			public int Period;
+        }
+    
+        private Dictionary<MomentumParameters, MomentumOscillator> _momentumIndicators = new Dictionary<MomentumParameters, MomentumOscillator>();
+
+        public MomentumOscillator MomentumOscillator(DataSeries dataSeries, int period)
+        {
+            var parameters = new MomentumParameters { DataSeries = dataSeries, Period = period };
+            if (_momentumIndicators.ContainsKey(parameters))
+                return _momentumIndicators[parameters];
+
+            var indicator = _indicatorsAccessor.MomentumOscillator(dataSeries, period);
+            _momentumIndicators.Add(parameters, indicator);
+
+            return indicator;
+        }
+//}
+}

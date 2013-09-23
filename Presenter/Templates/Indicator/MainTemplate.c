@@ -60,14 +60,14 @@ namespace cAlgo.Indicators
             Median = new Mq4MarketDataSeries(MarketSeries.Median);
             Time = new Mq4TimeSeries(MarketSeries.OpenTime);
 
-            _cashedStandardIndicators = new CashedStandardIndicators(Indicators);
+            _cachedStandardIndicators = new CachedStandardIndicators(Indicators);
             _mq4ChartObjects = new Mq4ChartObjects(ChartObjects, MarketSeries.OpenTime);
 			_mq4ArrayToDataSeriesConverterFactory = new Mq4ArrayToDataSeriesConverterFactory(() => CreateDataSeries());
             Debug.Initialize(m => Print(m)); 
         }
 
         int _currentIndex;
-        CashedStandardIndicators _cashedStandardIndicators;
+        CachedStandardIndicators _cachedStandardIndicators;
         Mq4ChartObjects _mq4ChartObjects;
 #Inverted_buffers_declarations_PLACE_HOLDER#
         Mq4MarketDataSeries Open;

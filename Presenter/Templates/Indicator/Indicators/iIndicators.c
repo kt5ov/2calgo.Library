@@ -46,14 +46,14 @@
             }
 
             var maType = ToMaType(ma_method);            
-            var indicator = _cashedStandardIndicators.MovingAverage(dataSeries, period, maType);
+            var indicator = _cachedStandardIndicators.MovingAverage(dataSeries, period, maType);
 
             return indicator.Result.FromEnd(shift);
         }        
         
         private double CalculateWellesWilderSmoothing(DataSeries dataSeries, int period, int shift)
         {
-            var indicator = _cashedStandardIndicators.WellesWilderSmoothing(dataSeries, period);
+            var indicator = _cachedStandardIndicators.WellesWilderSmoothing(dataSeries, period);
             
             return indicator.Result.FromEnd(shift);
         }
@@ -83,7 +83,7 @@
         
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
         {     
-            var indicator = _cashedStandardIndicators.RelativeStrengthIndex(dataSeries, period);
+            var indicator = _cachedStandardIndicators.RelativeStrengthIndex(dataSeries, period);
             return indicator.Result.FromEnd(shift);
         }
 
@@ -113,7 +113,7 @@
         
         private double CalculateBands(DataSeries dataSeries, int period, int deviation, int mode, int shift)
         {     
-            var indicator = _cashedStandardIndicators.BollingerBands(dataSeries, period, deviation, MovingAverageType.Simple);
+            var indicator = _cachedStandardIndicators.BollingerBands(dataSeries, period, deviation, MovingAverageType.Simple);
 
             switch (mode)
             {
@@ -146,7 +146,7 @@
         
         private Mq4Double CalculateAdx(MarketSeries marketSeries, int period, int mode, int shift)
         {     
-            var indicator = _cashedStandardIndicators.DirectionalMovementSystem(marketSeries, period);            
+            var indicator = _cachedStandardIndicators.DirectionalMovementSystem(marketSeries, period);            
             switch (mode)
             {
               case MODE_MAIN:
@@ -173,7 +173,7 @@
                 
         private double CalculateATR(MarketSeries series, int period, int shift)
         {     
-            var indicator = _cashedStandardIndicators.ATR(series, period);
+            var indicator = _cachedStandardIndicators.ATR(series, period);
 
             return indicator.Result.FromEnd(shift);            
         }
@@ -193,7 +193,7 @@
         
         private double CalculateMACD(DataSeries series, int fast_ema_period, int slow_ema_period, int signal_period, int mode, int shift)
         {     
-            var indicator = _cashedStandardIndicators.MACD(series, fast_ema_period, slow_ema_period, signal_period);
+            var indicator = _cachedStandardIndicators.MACD(series, fast_ema_period, slow_ema_period, signal_period);
 
             switch (mode)
             {
@@ -298,7 +298,7 @@
                 throw new Exception(NotSupportedMaShift);
 
             var maType = ToMaType(ma_method);            
-            var indicator = _cashedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
+            var indicator = _cachedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
 
             return indicator.Result.FromEnd(shift);
         }        
@@ -311,7 +311,7 @@
         private double iWPR(Mq4String symbol, int timeframe, int period, int shift)
         {
 			var marketSeries = GetSeries(symbol, timeframe);
-            var indicator = _cashedStandardIndicators.WilliamsPctR(marketSeries, period);
+            var indicator = _cachedStandardIndicators.WilliamsPctR(marketSeries, period);
 
             return indicator.Result.FromEnd(shift);
         }        
@@ -324,7 +324,7 @@
         private double iSAR(Mq4String symbol, int timeframe, double step, double maximum, int shift)
         {
 			var series = GetSeries(symbol, timeframe);
-            var indicator = _cashedStandardIndicators.ParabolicSAR(series, step, maximum);
+            var indicator = _cachedStandardIndicators.ParabolicSAR(series, step, maximum);
 
             return indicator.Result.FromEnd(shift);
         }        
@@ -555,4 +555,12 @@ Mq4Double iBullsPower(string symbol, int timeframe, int period, int applied_pric
 	var marketSeries = GetSeries(symbol, timeframe);
 		
 	return marketSeries.High.FromEnd(shift) - iMA(symbol, timeframe, period, 0, MODE_EMA, applied_price, shift);
+}
+
+[Conditional("iMomentum")]
+double iMomentum(string symbol, int timeframe, int period, int applied_price, int shift)
+{
+	var series = ToAppliedPrice(symbol, timeframe, applied_price);
+
+	return _cachedStandardIndicators.MomentumOscillator(series, period).Result.FromEnd(shift);
 }
