@@ -1,4 +1,4 @@
-    struct Mq4Double
+struct Mq4Double : IComparable, IComparable<Mq4Double>
     {
       private readonly double _value;
 
@@ -101,4 +101,14 @@
       {
 		return _value.ToString();
       }
-    }   
+
+      public int CompareTo(object obj)
+      {
+          return _value.CompareTo(obj);
+      }
+
+      public int CompareTo(Mq4Double obj)
+      {
+          return _value.CompareTo(obj);
+      }
+}   

@@ -15,8 +15,10 @@ namespace _2calgo.Presenter
         private static readonly IEnumerable<string> OuterParts = new[]
             {
                 "Mq4Double.cs",
+                "Mq4DoubleComparer.cs",
                 "Mq4String.c",
                 "Mq4Null.cs",
+                "Comparers.cs",
                  DataSeries + "/DataSeriesExtensions.c",
                  DataSeries + "/TimeSeriesExtensions.c",
             };

@@ -285,3 +285,6 @@
 	const int SYMBOL_THUMBSDOWN = 68;	
 	const int SYMBOL_CHECKSIGN = 25;
 	*/
+
+	const int MODE_ASCEND = 1;
+	const int MODE_DESCEND = 2;

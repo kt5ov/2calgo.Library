@@ -54,6 +54,8 @@
     <Resource Include="Templates\Indicator\Mq4Double.cs" />
     <Resource Include="Templates\Indicator\Mq4Null.cs" />
     <Resource Include="Templates\Indicator\Mq4String.c" />
+    <Resource Include="Templates\Indicator\Mq4DoubleComparer.cs" />
+    <Resource Include="Templates\Indicator\Comparers.cs" />
     <Compile Include="Words.cs" />
   </ItemGroup>
   <ItemGroup>

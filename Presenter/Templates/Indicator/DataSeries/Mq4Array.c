@@ -37,7 +37,7 @@
 		}
 
 		public void Resize(int newSize)
-		{
+		{ 
 			while (newSize < _data.Count)
 				_data.RemoveAt(_data.Count - 1);
 
@@ -66,7 +66,31 @@
 				_data[index] = value;
 				Changed.Raise(index, value);
 			}
+		}	
+
+		[Conditional("ArraySort")]
+		//{
+		public void Sort(int count, int start, int sort_dir)
+		{
+			start = Math.Max(0, start);
+			if (count == WHOLE_ARRAY)
+				count = _data.Count - start;
+			else
+				count = Math.Min(_data.Count - start, count);
+			
+			var comparer = Comparers.GetComparer<T>();
+			_data.Sort(start, count, comparer);
+			if (sort_dir == MODE_DESCEND)
+			{				
+				for (var i = start; i < start + count / 2; i++)
+				{
+					var x = _data[i];
+					_data[i] = _data[start + count - 1 - i];
+					_data[start + count - 1 - i] = x;
+				}
+			}
 		}
+		//}
 
 		public event Action<int, T> Changed;
 	}
