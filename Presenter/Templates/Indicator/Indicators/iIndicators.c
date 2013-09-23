@@ -567,7 +567,6 @@ Mq4Double iMomentum(Mq4String symbol, int timeframe, int period, int applied_pri
 
 	return _cachedStandardIndicators.MomentumOscillator(series, period).Result.FromEnd(shift);
 }
-
 [Conditional("iForce")]
 //{
 Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int applied_price, int shift)
@@ -575,5 +574,37 @@ Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int
 	var marketSeries = GetSeries(symbol, timeframe);
 	return marketSeries.TickVolume.FromEnd(shift) * 
 		(iMA(symbol, timeframe, period, 0, ma_method, applied_price, shift) - iMA(symbol, timeframe, period, 0, ma_method, applied_price, shift + 1));
+}
+//}
+[Conditional("iRVI")]
+//{
+Mq4Double CalculateRvi(Mq4String symbol, int timeframe, int period, int shift)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+	var close = marketSeries.Close;
+	var open = marketSeries.Open;
+	var high = marketSeries.High;
+	var low = marketSeries.Low;
+	
+	var v1sum = 0d;
+	var v2sum = 0d;
+	for (var i = shift; i < shift + period; i++)
+	{
+		var v1 = ((close.FromEnd(i + 0) - open.FromEnd(i + 0)) + 2 * (close.FromEnd(i + 1) - open.FromEnd(i + 1)) + 2 * (close.FromEnd(i + 2) - open.FromEnd(i + 2)) + (close.FromEnd(i + 3) - open.FromEnd(i + 3))) / 6;
+		var v2 = ((high.FromEnd(i + 0) - low.FromEnd(i + 0)) + 2 * (high.FromEnd(i + 1) - low.FromEnd(i + 1)) + 2 * (high.FromEnd(i + 2)- low.FromEnd(i + 2)) + (high.FromEnd(i + 3) - low.FromEnd(i + 3))) / 6;
+		v1sum += v1;
+		v2sum += v2;
+	}
+
+	return v1sum / v2sum;
+}
+
+Mq4Double iRVI(Mq4String symbol, int timeframe, int period, int mode, int shift)
+{
+	if (mode == MODE_MAIN)
+		return CalculateRvi(symbol, timeframe, period, shift);
+
+	return (CalculateRvi(symbol, timeframe, period, shift) + 2 * CalculateRvi(symbol, timeframe, period, shift + 1) + 2 * CalculateRvi(symbol, timeframe, period, shift + 2) +
+		 CalculateRvi(symbol, timeframe, period, shift + 3)) / 6;
 }
 //}
