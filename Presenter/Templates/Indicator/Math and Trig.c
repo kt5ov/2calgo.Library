@@ -93,3 +93,25 @@
     {
       return Math.Atan(x);
     }
+	
+	[Conditional("MathRand", "MathSrand")]
+	//{
+	Random _rnd = new Random();
+
+    Mq4Double MathRand()
+    {		
+		return _rnd.Next(32768);
+    }
+
+    void MathSrand(int seed)
+    {		
+		if (seed == 1)
+		{
+			_rnd = new Random();
+		}
+		else
+		{
+			_rnd = new Random(seed);
+		}
+    }
+	//}

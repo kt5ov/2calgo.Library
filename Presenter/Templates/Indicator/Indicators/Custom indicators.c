@@ -42,6 +42,8 @@
         {
             switch (code) 
 			{
+				case 0:
+					return string.Empty;
                 case 32:
                     return " ";
                 case 33:
