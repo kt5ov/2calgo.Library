@@ -276,3 +276,12 @@
 
 	const int SYMBOL_LEFTPRICE = 5;
 	const int SYMBOL_RIGHTPRICE = 6;
+	
+	const int SYMBOL_ARROWUP = 241;
+	const int SYMBOL_ARROWDOWN = 242;
+	const int SYMBOL_STOPSIGN = 251;
+	/*
+	const int SYMBOL_THUMBSUP = 67;
+	const int SYMBOL_THUMBSDOWN = 68;	
+	const int SYMBOL_CHECKSIGN = 25;
+	*/
