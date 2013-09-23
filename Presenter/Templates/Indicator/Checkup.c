@@ -16,4 +16,10 @@ bool IsTesting()
 	return false;
 }
 
+[Conditional("IsStopped")]
+bool IsStopped()
+{
+	return false;
+}
+
 
