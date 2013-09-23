@@ -166,15 +166,15 @@
             public int Periods;
         }
     
-        private Dictionary<MacdParameters, MacdHistogram> _macdIndicators = new Dictionary<MacdParameters, MacdHistogram>();
+        private Dictionary<MacdParameters, MacdCrossOver> _macdIndicators = new Dictionary<MacdParameters, MacdCrossOver>();
         
-        public MacdHistogram MACD(DataSeries series, int shortPeriod, int longPeriod, int periods)
+        public MacdCrossOver MacdCrossOver(DataSeries series, int shortPeriod, int longPeriod, int periods)
         {
             var parameters = new MacdParameters { LongPeriod = longPeriod, ShortPeriod = shortPeriod, Periods = periods, Series = series };
             if (_macdIndicators.ContainsKey(parameters))
                 return _macdIndicators[parameters];
 
-            var indicator = _indicatorsAccessor.MacdHistogram(longPeriod, shortPeriod, periods);
+            var indicator = _indicatorsAccessor.MacdCrossOver(longPeriod, shortPeriod, periods);
             _macdIndicators.Add(parameters, indicator);
 
             return indicator;
@@ -280,7 +280,6 @@
             return indicator;
         }
 //}
-
 [Conditional("iMomentum")]
 //{
         private struct MomentumParameters
@@ -303,4 +302,5 @@
             return indicator;
         }
 //}
+
 }

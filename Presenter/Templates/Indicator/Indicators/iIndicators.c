@@ -181,31 +181,34 @@
 #endregion //iATR   
 		//}
 
-		[Conditional("iMACD")]
-		//{
-#region iMACD
+[Conditional("iMACD")]
+//{
         private double iMACD(Mq4String symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
-            return CalculateMACD(series, fast_ema_period, slow_ema_period, signal_period, mode, shift);
-        }       
-        
-        private double CalculateMACD(DataSeries series, int fast_ema_period, int slow_ema_period, int signal_period, int mode, int shift)
-        {     
-            var indicator = _cachedStandardIndicators.MACD(series, fast_ema_period, slow_ema_period, signal_period);
+            var indicator = _cachedStandardIndicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
 
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.Histogram.FromEnd(shift);
+                return indicator.MACD.FromEnd(shift);
               default:
                 return indicator.Signal.FromEnd(shift);
             }
-        }
+        }       
+//}
+[Conditional("iOsMA")]
+//{
+        private double iOsMA(Mq4String symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int shift)
+        {
+            var series = ToAppliedPrice(symbol, timeframe, applied_price);
+      
+            var indicator = _cachedStandardIndicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
 
-#endregion //iMACD 
-		//}
+            return indicator.Histogram.FromEnd(shift);
+        }       
+//}
 
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
