@@ -25,7 +25,9 @@ namespace _2calgo.Presenter
 
         private static readonly IEnumerable<string> InnerParts = new[]
             {
+#if DEBUG
                 "Debug.c",
+#endif
                 "Predefined variables.c",
                 "Math and Trig.c",
                 "Conversion functions.c",

@@ -19,6 +19,7 @@ namespace _2calgo.Presenter
         public readonly StringBuilder ColorParameters = new StringBuilder();
         public readonly StringBuilder LevelParameters = new StringBuilder();        
         public readonly StringBuilder WidthParameters = new StringBuilder();        
+        public readonly StringBuilder DebugActions = new StringBuilder();        
         public string IsDrawingOnChartWindow { get; set; }
 
         public string BuildIndicator()
@@ -41,6 +42,7 @@ namespace _2calgo.Presenter
             code = code.Replace("#Levels_PLACE_HOLDER#", Levels);
             code = code.Replace("#LevelParameters_PLACE_HOLDER#", LevelParameters.ToString());
             code = code.Replace("#WidthParameters_PLACE_HOLDER#", WidthParameters.ToString());
+            code = code.Replace("#DebugActions_PLACE_HOLDER#", DebugActions.ToString());
 
             return code;
         }   
