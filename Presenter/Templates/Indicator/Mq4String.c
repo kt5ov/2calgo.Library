@@ -31,7 +31,66 @@ class Mq4String
 	{
 		return new Mq4String(mq4Double.ToString());
 	}
+
+	public static bool operator <(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) == -1;
+	}
+		
+	public static bool operator >(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) == 1;
+	}
 	
+	public static bool operator <(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) == -1;
+	}
+		
+	public static bool operator >(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) == 1;
+	}
+	public static bool operator <=(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) <= 0;
+	}
+		
+	public static bool operator >=(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) >= 0;
+	}
+	
+	public static bool operator <=(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) <= 0;
+	}
+		
+	public static bool operator >=(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) >= 0;
+	}
+			
+	public static bool operator ==(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) == 0;
+	}
+			
+	public static bool operator !=(Mq4String x, Mq4String y)
+	{
+		return string.Compare(x._value, y._value) != 0;
+	}
+				
+	public static bool operator ==(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) == 0;
+	}
+			
+	public static bool operator !=(Mq4String x, string y)
+	{
+		return string.Compare(x._value, y) != 0;
+	}
+		
 	public override string ToString()
 	{
 		return _value.ToString();
