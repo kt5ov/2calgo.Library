@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Text.RegularExpressions;
 using _2calgo.Model;
 using _2calgo.Presenter.Extensions;
 
@@ -13,6 +14,8 @@ namespace _2calgo.Presenter
         {
             var template = new IndicatorBuilder();
             template.Mq4Code = indicator.Mq4Code;
+
+            template.IndicatorName = GetIndicatorName(indicator.Mq4Code);
 
             foreach (var parameter in indicator.Parameters)
             {
@@ -73,6 +76,16 @@ namespace _2calgo.Presenter
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
 
             return template.BuildIndicator();
+        }
+
+        private static readonly Regex IndicatorNameRegex = new Regex(@"(?<name>.*)\.mq4");
+        private string GetIndicatorName(string mq4Code)
+        {
+            var match = IndicatorNameRegex.Match(mq4Code);
+            if (!match.Success)
+                return "ConvertedIndicator";
+
+            return AlgoNameProvider.GetSimplifiedName(match.Groups["name"].Value);
         }
 
         private static string GetFunctions(IEnumerable<Function> functions)

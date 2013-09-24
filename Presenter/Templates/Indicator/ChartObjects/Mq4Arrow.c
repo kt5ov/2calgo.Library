@@ -45,7 +45,7 @@
 					arrowString = Price1.ToString();
 					break;
 				default:
-					arrowString = ConvertedIndicator.GetArrowByCode(ArrowCode);
+					arrowString = #IndicatorName_PLACE_HOLDER#.GetArrowByCode(ArrowCode);
 					horizontalAlignment = HorizontalAlignment.Center;
 					break;
 			}				

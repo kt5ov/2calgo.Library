@@ -22,7 +22,7 @@ namespace cAlgo.Indicators
 {
     [Indicator(ScalePrecision = 5, AutoRescale = false, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
 	[Levels(#Levels_PLACE_HOLDER#)]
-    public class ConvertedIndicator : Indicator
+	public class #IndicatorName_PLACE_HOLDER# : Indicator
     {
 #Mq4Functions_PLACE_HOLDER#
 

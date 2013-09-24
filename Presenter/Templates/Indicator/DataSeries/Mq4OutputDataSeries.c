@@ -9,11 +9,11 @@
         private readonly ChartObjects _chartObjects;
 		private readonly int _style;
 		private readonly int _bufferIndex;
-		private readonly ConvertedIndicator _indicator;
+		private readonly #IndicatorName_PLACE_HOLDER# _indicator;
 		private readonly Colors? _color;
 
         public Mq4OutputDataSeries(
-			ConvertedIndicator indicator, 
+			#IndicatorName_PLACE_HOLDER# indicator, 
 			IndicatorDataSeries outputDataSeries, 
 			DataSeriesExtremums closeExtremums, 
 			ChartObjects chartObjects, 
