@@ -19,6 +19,7 @@ namespace _2calgo.Parser
             var parsingErrors = new ParsingErrors();
 
             var indicator = new Indicator{Mq4Code = code};
+            string[] customIndicators;
 
             code = code
                 .RemoveComments()
@@ -34,7 +35,8 @@ namespace _2calgo.Parser
                 .ReplaceColorToInt()
                 .RenameTimeFrameParameter()
                 .ReplacePrintToMq4Print()
-                .AddRefModifiers();
+                .AddRefModifiers()
+                .AddTypeParameterToICustom(out customIndicators);
 
             HandleProperties(code, indicator);
             HandleParameters(code, indicator);
@@ -45,6 +47,7 @@ namespace _2calgo.Parser
             indicator.Code.ReplaceSimpleTypesToMq4Double();
             indicator.Code.RenameStandardFunctions();
             indicator.Code.AddMq4InitFunctionIfDoesNotExist();
+            indicator.CustomIndicators = customIndicators;
 
             return new IndicatorParsingResult(indicator, parsingErrors.Errors);
         }

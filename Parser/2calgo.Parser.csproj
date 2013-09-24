@@ -45,10 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlgoNameProvider.cs" />
     <Compile Include="CodeAdapter\Arrays.cs" />
     <Compile Include="CodeAdapter\Colors.cs" />
     <Compile Include="CodeAdapter\Comments.cs" />
     <Compile Include="CodeAdapter\CAlgoCodeAdapter.cs" />
+    <Compile Include="CodeAdapter\ICustom.cs" />
     <Compile Include="CodeAdapter\KeyWords.cs" />
     <Compile Include="CodeAdapter\MethodCallsPresenter.cs" />
     <Compile Include="CodeAdapter\Mq4Replacer.cs" />

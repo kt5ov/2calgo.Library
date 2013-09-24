@@ -146,6 +146,8 @@ namespace cAlgo.Indicators
 #InnerParts_PLACE_HOLDER#
 	}
 
+	//Custom Indicators Place Holder
+
 #OuterParts_PLACE_HOLDER#
 
 	static class Mq4LineStyles
@@ -187,5 +189,5 @@ namespace cAlgo.Indicators
 			if (action != null)
 				action(arg1, arg2);
 		}
-	}
+	}	
 }

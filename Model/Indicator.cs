@@ -19,9 +19,12 @@ namespace _2calgo.Model
         public readonly string[] Colors = new string[8];
 
         public readonly DrawingShapeStyle[] Styles;
+        
         public readonly int[] Widths;
 
         public IndicatorCode Code { get; private set; }
+
+        public string[] CustomIndicators { get; set; }
 
         public Indicator()
         {

@@ -44,7 +44,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlgoNameProvider.cs" />
     <Compile Include="Extensions\DrawingShapeStyleExtensions.cs" />
     <Compile Include="IndicatorBuilder.cs" />
     <Compile Include="IndicatorPresenter.cs" />

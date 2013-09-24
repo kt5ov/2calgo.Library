@@ -5,7 +5,6 @@ using System.Linq;
 using _2calgo.Model;
 using _2calgo.Parser.CodeAdapter;
 using _2calgo.Parser.Extensions;
-using _2calgo.Parser.InnerStructures;
 
 namespace _2calgo.Parser
 {

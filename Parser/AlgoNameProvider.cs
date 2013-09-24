@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace _2calgo.Presenter
+namespace _2calgo.Parser
 {
     public static class AlgoNameProvider
     {

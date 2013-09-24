@@ -7,6 +7,13 @@ namespace _2calgo.Library
 {
     public static class CAlgoConverter
     {
+        private const string CustomIndicatorTemplate = @"
+            public class CustomIndicatorName : Indicator
+            {
+                public override void Calculate(int index) {}
+            }
+        ";
+
         public static ConvertionResult Convert(string code)
         {
             var parser = new IndicatorParser();
@@ -22,7 +29,13 @@ namespace _2calgo.Library
             CompilerError[] compilerErrors;
             try
             {
-                compilerErrors = compiler.Compile(calgoCode, fileName);
+                var codeToCompile = calgoCode;
+                var indexToInsert = codeToCompile.IndexOf("//Custom Indicators Place Holder");
+                foreach (var customIndicatorName in indicator.CustomIndicators)
+                {
+                    codeToCompile = codeToCompile.Insert(indexToInsert, CustomIndicatorTemplate.Replace("CustomIndicatorName", customIndicatorName));
+                }
+                compilerErrors = compiler.Compile(codeToCompile, fileName);
             }
             finally 
             {
