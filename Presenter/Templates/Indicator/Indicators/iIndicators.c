@@ -671,6 +671,22 @@ private object[] CastParameters<T>(object[] parameters)
 		.ToArray();
 }
 
+private static object[] AddEmailParametersIfNeeded<T>(object[] parameters)
+{
+	var needed = typeof(T)
+			.GetProperties()
+			.Where(info => info.GetCustomAttributes(typeof (ParameterAttribute), false).Any())
+			.Any(p => p.Name == "EmailAddressFrom");
+
+	var result = new List<object>();
+	result.AddRange(parameters);
+	if (needed)	
+	{
+		result.Insert(0, string.Empty);
+		result.Insert(0, string.Empty);
+	}
+	return result.ToArray();
+}
 
 private readonly Dictionary<CustomIndicatorParameters, List<DataSeries>> _customIndicatorsCache = new Dictionary<CustomIndicatorParameters, List<DataSeries>>();
 
@@ -678,6 +694,7 @@ Mq4Double iCustom<T>(Mq4String symbol, int timeframe, string name, params object
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	var indicatorParameters = CastParameters<T>(parameters.Take(parameters.Length - 2).ToArray());	
+	indicatorParameters = AddEmailParametersIfNeeded<T>(indicatorParameters);
 		
 	var customIndicatorParameters = new CustomIndicatorParameters{ MarketSeries = marketSeries, Parameters = indicatorParameters};
 	List<DataSeries> outputSeries;
