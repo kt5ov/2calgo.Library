@@ -1,5 +1,5 @@
 	[Conditional("WindowFind")]
-    int WindowFind(string name)
+    int WindowFind(Mq4String name)
     {
         return 0;
     }

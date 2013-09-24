@@ -1,5 +1,5 @@
 [Conditional("StringConcatenate")]
-string StringConcatenate(params object[] parameters)
+Mq4String StringConcatenate(params object[] parameters)
 {
 	var stringBuilder = new StringBuilder();
 	foreach (var parameter in parameters)
@@ -8,54 +8,54 @@ string StringConcatenate(params object[] parameters)
 }
 
 [Conditional("StringFind")]
-int StringFind(string text, string matched_text, int start = 0)
+int StringFind(Mq4String text, string matched_text, int start = 0)
 {
-	return text.IndexOf(matched_text, start);
+	return ((string)text).IndexOf(matched_text, start);
 }
 
 [Conditional("StringLen")]
-int StringLen(string text)
+int StringLen(Mq4String text)
 {
-	return text.Length;
+	return ((string)text).Length;
 }
 
 [Conditional("StringSubstr")]
-string StringSubstr(string text, int start, int length = 0)
+Mq4String StringSubstr(Mq4String text, int start, int length = 0)
 {	
-	if (length == 0 || length > text.Length - start)
-		return text.Substring(start, text.Length - start);
+	if (length == 0 || length > ((string)text).Length - start)
+		return ((string)text).Substring(start, ((string)text).Length - start);
 
-	return text.Substring(start, length);
+	return ((string)text).Substring(start, length);
 }
 
 [Conditional("StringTrimLeft")]
-string StringTrimLeft(string text)
+Mq4String StringTrimLeft(Mq4String text)
 {
-	return text.TrimStart();
+	return ((string)text).TrimStart();
 }
 
 [Conditional("StringTrimRight")]
-string StringTrimRight(string text)
+Mq4String StringTrimRight(Mq4String text)
 {
-	return text.TrimEnd();
+	return ((string)text).TrimEnd();
 }
 	
 [Conditional("StringSetChar")]
 //{
-string StringSetChar(string text, int pos, char value)
+Mq4String StringSetChar(Mq4String text, int pos, char value)
 {
-	return text
+	return ((string)text)
 			.Remove(pos, 1)
 			.Insert(pos, value.ToString());
 }	
-string StringSetChar(string text, int pos, int value)
+Mq4String StringSetChar(Mq4String text, int pos, int value)
 {
 	return StringSetChar(text, pos, (char)value);
 }
 //}
 	
 [Conditional("StringGetChar")]
-char StringGetChar(string text, int pos)
+char StringGetChar(Mq4String text, int pos)
 {
-	return text[pos];
+	return ((string)text)[pos];
 }

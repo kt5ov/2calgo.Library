@@ -1,5 +1,5 @@
 [Conditional("MarketInfo")]
-Mq4Double MarketInfo(string symbol, int type)
+Mq4Double MarketInfo(Mq4String symbol, int type)
 {
 	var symbolObject = GetSymbol(symbol);
 	switch (type)
@@ -71,13 +71,13 @@ void Sleep(int milliseconds)
 }
 
 [Conditional("PlaySound")]
-void PlaySound(string fileName)
+void PlaySound(Mq4String fileName)
 {
     Notifications.PlaySound(fileName);
 }
 	
 [Conditional("SendMail")]
-void SendMail(string subject, string text)
+void SendMail(Mq4String subject, string text)
 {
     Notifications.SendEmail(EmailAddressFrom, EmailAddressTo, subject, text);
 }

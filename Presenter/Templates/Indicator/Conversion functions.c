@@ -1,11 +1,11 @@
 	[Conditional("CharToStr")]        
-	string CharToStr(int code)
+	Mq4String CharToStr(int code)
 	{
 		return ((char)code).ToString();
 	}
 
 	[Conditional("DoubleToStr")]        
-    string DoubleToStr(double value, int digits)
+    Mq4String DoubleToStr(double value, int digits)
     {
       return value.ToString("F" + digits);
     }
@@ -17,19 +17,19 @@
     }
 
 	[Conditional("StrToDouble")]
-    Mq4Double StrToDouble(string value)
+    Mq4Double StrToDouble(Mq4String value)
     {
       return double.Parse(value);
     }
 
 	[Conditional("StrToInteger")]
-    Mq4Double StrToInteger(string value)
+    Mq4Double StrToInteger(Mq4String value)
     {
       return int.Parse(value);
     }
 
 	[Conditional("TimeToStr")]
-    string TimeToStr(int value, int mode = TIME_DATE|TIME_MINUTES)
+    Mq4String TimeToStr(int value, int mode = TIME_DATE|TIME_MINUTES)
     {
       var formatString = "";
       if ((mode & TIME_DATE) != 0)
@@ -44,7 +44,7 @@
     }
 		
 	[Conditional("StrToTime")]
-	int StrToTime(string value)
+	int StrToTime(Mq4String value)
 	{
 		var dateTime = StrToDateTime(value);
 		return Mq4TimeSeries.ToInteger(dateTime);
@@ -53,7 +53,7 @@
 	[Conditional("StrToDateTime", "StrToTime")]
 	//{
 	private static readonly Regex TimeRegex = new Regex(@"((?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}\s*((?<hour>\d+)\:(?<minute>\d+)){0,1}", RegexOptions.Compiled);
-	DateTime StrToDateTime(string value)
+	DateTime StrToDateTime(Mq4String value)
 	{
 		var dateTime = Server.Time.Date;
 

@@ -6,7 +6,7 @@ class Mq4String
 	{
 		_value = value;
 	}
-	
+
 	public static implicit operator Mq4String(string value)
 	{
 		return new Mq4String(value);

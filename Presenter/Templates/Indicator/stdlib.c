@@ -1,5 +1,5 @@
 	[Conditional("ErrorDescription")]
-    string ErrorDescription(int code)
+    Mq4String ErrorDescription(int code)
 	{
 		string error_string;
 		switch (code)

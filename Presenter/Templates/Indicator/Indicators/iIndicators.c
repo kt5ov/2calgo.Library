@@ -17,7 +17,7 @@
 		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower", "iForce")]
 		//{
 #region iMA
-        private double iMA(string symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
+        private double iMA(Mq4String symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
         {
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
@@ -690,7 +690,7 @@ private static object[] AddEmailParametersIfNeeded<T>(object[] parameters)
 
 private readonly Dictionary<CustomIndicatorParameters, List<DataSeries>> _customIndicatorsCache = new Dictionary<CustomIndicatorParameters, List<DataSeries>>();
 
-Mq4Double iCustom<T>(Mq4String symbol, int timeframe, string name, params object[] parameters) where T : Indicator
+Mq4Double iCustom<T>(Mq4String symbol, int timeframe, Mq4String name, params object[] parameters) where T : Indicator
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	var indicatorParameters = CastParameters<T>(parameters.Take(parameters.Length - 2).ToArray());	

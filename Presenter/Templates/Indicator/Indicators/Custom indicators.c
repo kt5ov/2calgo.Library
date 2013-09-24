@@ -26,7 +26,7 @@
     }
 
 	[Conditional("IndicatorShortName")]
-    void IndicatorShortName(string name) { }
+    void IndicatorShortName(Mq4String name) { }
 
 	[Conditional("SetIndexLabel")]
     void SetIndexLabel(int index, string text) { }
