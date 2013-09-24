@@ -14,7 +14,7 @@
             }
         }
 
-		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower")]
+		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower", "iForce")]
 		//{
 #region iMA
         private double iMA(string symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)

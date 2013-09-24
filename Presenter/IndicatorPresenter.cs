@@ -75,6 +75,10 @@ namespace _2calgo.Presenter
             }
             template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
+            foreach (var customIndicator in indicator.CustomIndicators)
+            {
+                template.References.AppendLine(string.Format("//#reference: {0}.algo", customIndicator));
+            }
 #if DEBUG
             template.DebugActions.AppendLine("Debug.Activate();");
             template.DebugActions.AppendLine("Debug.Initialize(m => Print(m));");

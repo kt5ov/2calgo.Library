@@ -7,7 +7,7 @@
             _indicatorsAccessor = indicatorsAccessor;
         }
 
-		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower")]
+		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower", "iForce")]
 		//{
 #region iMA
         private struct MAParameters
@@ -155,7 +155,7 @@
 #endregion //iATR
 		//}
 
-		[Conditional("iMACD")]
+		[Conditional("iMACD", "iOsMA")]
 		//{
 #region iMACD
         private struct MacdParameters
