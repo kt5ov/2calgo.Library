@@ -1,4 +1,4 @@
-public static class Comparers
+static class Comparers
 {
     public static IComparer<T> GetComparer<T>()
     {

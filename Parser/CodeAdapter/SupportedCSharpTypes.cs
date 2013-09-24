@@ -11,6 +11,7 @@ namespace _2calgo.Parser.CodeAdapter
                 "string",
                 "bool",
                 "Mq4Double",
+                "Mq4String",
             };
 
          public static bool IsSupported(this string type)
@@ -22,6 +23,8 @@ namespace _2calgo.Parser.CodeAdapter
         {
             if (type == "Mq4Double")
                 return "double";
+            if (type == "Mq4String")
+                return "string";
             return type;
         }
     }

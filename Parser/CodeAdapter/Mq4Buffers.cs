@@ -9,7 +9,7 @@ namespace _2calgo.Parser.CodeAdapter
 
         public static string RemoveMq4Buffers(this string code, string[] buffers)
         {
-            code = code.ReplaceSimpleTypesToMq4Double();
+            code = code.ReplaceSimpleTypesToMq4Types();
             foreach (var match in DoubleBufferRegex.Matches(code).OfType<Match>())
             {
                 if (buffers.All(b => b != match.Groups["name"].Value))

@@ -17,7 +17,7 @@ namespace _2calgo.Parser
         {
             foreach (var match in ParameterRegex.Matches(code).OfType<Match>())
             {
-                var type = match.Groups["type"].Value.ReplaceSimpleTypesToMq4Double();
+                var type = match.Groups["type"].Value.ReplaceSimpleTypesToMq4Types();
                 
                 var parametersPart = GetParametersPart(code, match.Index + match.Length);
                 var parameters = parametersPart.SplitByComma();

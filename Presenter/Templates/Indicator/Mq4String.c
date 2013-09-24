@@ -26,9 +26,16 @@ class Mq4String
 	{
 		return mq4String._value;
 	}
+			
+	public static implicit operator Mq4String(Mq4Double mq4Double)
+	{
+		return new Mq4String(mq4Double.ToString());
+	}
 	
 	public override string ToString()
 	{
 		return _value.ToString();
 	}
+	
+	public static readonly Mq4String Empty = new Mq4String(string.Empty);
 }

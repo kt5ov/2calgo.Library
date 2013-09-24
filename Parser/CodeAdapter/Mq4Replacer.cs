@@ -16,25 +16,26 @@ namespace _2calgo.Parser.CodeAdapter
             return ReplaceType(code, "color", "int");
         }
 
-        public static string ReplaceSimpleTypesToMq4Double(this string code)
+        public static string ReplaceSimpleTypesToMq4Types(this string code)
         {
             return code
                 .ReplaceType("double", "Mq4Double")
                 .ReplaceType("int", "Mq4Double")
-                .ReplaceType("bool", "Mq4Double");
+                .ReplaceType("bool", "Mq4Double")
+                .ReplaceType("string", "Mq4String");
         }
 
-        public static void ReplaceSimpleTypesToMq4Double(this IndicatorCode indicatorCode)
+        public static void ReplaceSimpleTypesToMq4Types(this IndicatorCode indicatorCode)
         {
-            indicatorCode.FieldsDeclarations = indicatorCode.FieldsDeclarations.ReplaceSimpleTypesToMq4Double();
+            indicatorCode.FieldsDeclarations = indicatorCode.FieldsDeclarations.ReplaceSimpleTypesToMq4Types();
             foreach (var function in indicatorCode.Functions)
             {
-                function.ReturnType = function.ReturnType.ReplaceSimpleTypesToMq4Double();
-                function.Body = function.Body.ReplaceSimpleTypesToMq4Double();
+                function.ReturnType = function.ReturnType.ReplaceSimpleTypesToMq4Types();
+                function.Body = function.Body.ReplaceSimpleTypesToMq4Types();
                 for (var i = 0; i < function.Parameters.Length; i++)
                 {
                     if (function.Parameters[i].DefaultValue == string.Empty)
-                        function.Parameters[i].Type = function.Parameters[i].Type.ReplaceSimpleTypesToMq4Double();
+                        function.Parameters[i].Type = function.Parameters[i].Type.ReplaceSimpleTypesToMq4Types();
                 }
             }
         }

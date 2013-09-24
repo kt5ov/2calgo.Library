@@ -44,7 +44,7 @@ namespace _2calgo.Parser
             HandleFields(code, indicator);
 
             indicator.Code.ExtractStaticVariablesToFields();
-            indicator.Code.ReplaceSimpleTypesToMq4Double();
+            indicator.Code.ReplaceSimpleTypesToMq4Types();
             indicator.Code.RenameStandardFunctions();
             indicator.Code.AddMq4InitFunctionIfDoesNotExist();
             indicator.CustomIndicators = customIndicators;
