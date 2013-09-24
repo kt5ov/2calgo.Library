@@ -608,3 +608,22 @@ Mq4Double iRVI(Mq4String symbol, int timeframe, int period, int mode, int shift)
 		 CalculateRvi(symbol, timeframe, period, shift + 3)) / 6;
 }
 //}
+[Conditional("iCustom")]
+//{
+private List<DataSeries> GetAllOutputDataSeries(object indicatorInstance)
+{
+	var propertyInfo = indicatorInstance.GetType().GetProperty("AllOutputDataSeries");
+    return (List<DataSeries>)propertyInfo.GetValue(indicatorInstance, null);
+}
+
+Mq4Double iCustom<T>(Mq4String symbol, int timeframe, string name, params object[] parameters) where T : Indicator
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+	var indicatorParameters = parameters.Take(parameters.Length - 2).ToArray();
+	var customIndicator = Indicators.GetIndicator<T>(marketSeries, indicatorParameters);
+	var mode = (int)parameters[parameters.Length - 2];
+	var shift = (int)parameters[parameters.Length - 1];
+	var allDataSeries = GetAllOutputDataSeries(customIndicator);
+    return allDataSeries[mode].FromEnd(shift);
+}
+//}

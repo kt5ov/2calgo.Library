@@ -51,6 +51,7 @@ namespace cAlgo.Indicators
         {
             _closeExtremums = new DataSeriesExtremums(MarketSeries.Close);
 #Initialize_buffers_PLACE_HOLDER#
+#Initialize_AllOutputDataSeries_PLACE_HOLDER#
 
             Open = new Mq4MarketDataSeries(MarketSeries.Open);
             High = new Mq4MarketDataSeries(MarketSeries.High);
@@ -83,6 +84,7 @@ namespace cAlgo.Indicators
         readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
 		Mq4ArrayToDataSeriesConverterFactory _mq4ArrayToDataSeriesConverterFactory;
 
+		public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
 
 	private bool _initialized;
     public override void Calculate(int index)

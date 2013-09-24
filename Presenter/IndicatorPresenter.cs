@@ -116,6 +116,8 @@ namespace _2calgo.Presenter
             }
             template.LinesDeclarations.AppendFormat("public IndicatorDataSeries {0}_AlgoOutputDataSeries {1}\n", bufferName,
                                                     "{ get; set; }");
+
+            template.InitialzeAllOutputDataSeries.AppendLine(string.Format("AllOutputDataSeries.Add({0}_AlgoOutputDataSeries);", bufferName));
         }
 
         private static bool IsLineVisible(Indicator indicator, int bufferIndex)

@@ -12,6 +12,7 @@ namespace _2calgo.Presenter
         public readonly StringBuilder Parameters = new StringBuilder();
         public readonly StringBuilder LinesDeclarations = new StringBuilder();
         public readonly StringBuilder InitialzeBuffers = new StringBuilder();
+        public readonly StringBuilder InitialzeAllOutputDataSeries = new StringBuilder();
         public readonly StringBuilder InvertedBuffersDeclarations = new StringBuilder();
         public readonly StringBuilder BuffersSetCurrentIndex = new StringBuilder();        
         public readonly StringBuilder ColorParameters = new StringBuilder();
@@ -27,6 +28,7 @@ namespace _2calgo.Presenter
             code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());
             code = code.Replace("#Initialize_buffers_PLACE_HOLDER#", InitialzeBuffers.ToString());
+            code = code.Replace("#Initialize_AllOutputDataSeries_PLACE_HOLDER#", InitialzeAllOutputDataSeries.ToString());
             code = code.Replace("#Inverted_buffers_declarations_PLACE_HOLDER#", InvertedBuffersDeclarations.ToString());
             code = code.Replace("#Buffers_SetCurrentIndex_PLACE_HOLDER#", BuffersSetCurrentIndex.ToString());
             code = code.Replace("#ColorParameters_PLACE_HOLDER#", ColorParameters.ToString());
