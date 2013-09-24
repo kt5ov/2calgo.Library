@@ -610,20 +610,86 @@ Mq4Double iRVI(Mq4String symbol, int timeframe, int period, int mode, int shift)
 //}
 [Conditional("iCustom")]
 //{
+internal class CustomIndicatorParameters
+{
+    public MarketSeries MarketSeries { get; set; }
+    public object[] Parameters { get; set; }
+
+    protected bool Equals(CustomIndicatorParameters other)
+    {
+        if (Parameters.Length != other.Parameters.Length)
+            return false;
+        for (var i = 0; i < Parameters.Length; i++)
+        {
+            if (!Equals(Parameters[i], other.Parameters[i]))
+                return false;
+        }
+
+        return Equals(MarketSeries, other.MarketSeries);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((CustomIndicatorParameters) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return (MarketSeries != null ? MarketSeries.GetHashCode() : 0);
+    }
+}
+
 private List<DataSeries> GetAllOutputDataSeries(object indicatorInstance)
 {
-	var propertyInfo = indicatorInstance.GetType().GetProperty("AllOutputDataSeries");
-    return (List<DataSeries>)propertyInfo.GetValue(indicatorInstance, null);
+	var fieldInfo = indicatorInstance.GetType().GetField("AllOutputDataSeries");
+    return (List<DataSeries>)fieldInfo.GetValue(indicatorInstance);
 }
+
+private object CastParameter(object parameter)
+{
+	if (parameter is Mq4Double)
+	{
+		var mq4Double = (Mq4Double)parameter;
+		if (Math.Abs(mq4Double - (int)mq4Double) < Symbol.PointSize)
+			return (int)mq4Double;
+		return (double)mq4Double;
+	}
+	if (parameter is string || parameter is Mq4String)
+	{
+		return (string)parameter;
+	}
+	return parameter;
+}
+
+private object[] CastParameters<T>(object[] parameters)
+{
+	return parameters
+		.Select(CastParameter)
+		.ToArray();
+}
+
+
+private readonly Dictionary<CustomIndicatorParameters, List<DataSeries>> _customIndicatorsCache = new Dictionary<CustomIndicatorParameters, List<DataSeries>>();
 
 Mq4Double iCustom<T>(Mq4String symbol, int timeframe, string name, params object[] parameters) where T : Indicator
 {
 	var marketSeries = GetSeries(symbol, timeframe);
-	var indicatorParameters = parameters.Take(parameters.Length - 2).ToArray();
-	var customIndicator = Indicators.GetIndicator<T>(marketSeries, indicatorParameters);
-	var mode = (int)parameters[parameters.Length - 2];
-	var shift = (int)parameters[parameters.Length - 1];
-	var allDataSeries = GetAllOutputDataSeries(customIndicator);
-    return allDataSeries[mode].FromEnd(shift);
+	var indicatorParameters = CastParameters<T>(parameters.Take(parameters.Length - 2).ToArray());	
+		
+	var customIndicatorParameters = new CustomIndicatorParameters{ MarketSeries = marketSeries, Parameters = indicatorParameters};
+	List<DataSeries> outputSeries;
+	if (!_customIndicatorsCache.TryGetValue(customIndicatorParameters, out outputSeries))
+	{
+		var customIndicator = Indicators.GetIndicator<T>(marketSeries, indicatorParameters);	
+		outputSeries = GetAllOutputDataSeries(customIndicator);
+		_customIndicatorsCache[customIndicatorParameters] = outputSeries;
+	}	
+		
+	var mode = (int)CastParameter(parameters[parameters.Length - 2]);
+	var shift = (int)CastParameter(parameters[parameters.Length - 1]);
+    return outputSeries[mode].FromEnd(shift);
 }
 //}

@@ -88,20 +88,28 @@ namespace cAlgo.Indicators
 	private bool _initialized;
     public override void Calculate(int index)
     {
-        _currentIndex = index;
-#Buffers_SetCurrentIndex_PLACE_HOLDER#
+		try
+		{
+			_currentIndex = index;
+			#Buffers_SetCurrentIndex_PLACE_HOLDER#
 
-        if (IsLastBar) 
-        {   
-			if (_initialized)
-			{
-				Mq4Init();
-				_initialized = true;
-			}
+			if (IsLastBar) 
+			{   
+				if (_initialized)
+				{
+					Mq4Init();
+					_initialized = true;
+				}
         
-			Mq4Start();       
-            _indicatorCounted = index;
-        }
+				Mq4Start();       
+				_indicatorCounted = index;
+			}
+		}
+		catch(Exception e)
+		{
+			#HandleException_PLACE_HOLDER#
+			throw;
+		}
     }
 	
 	Symbol GetSymbol(string symbolCode)

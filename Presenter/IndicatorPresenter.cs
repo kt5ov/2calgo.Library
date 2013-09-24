@@ -76,8 +76,15 @@ namespace _2calgo.Presenter
             template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
             template.Mq4Functions = GetFunctions(indicator.Code.Functions);
 #if DEBUG
-            template.DebugActions.AppendLine("Debug.Deactivate();");
+            template.DebugActions.AppendLine("Debug.Activate();");
             template.DebugActions.AppendLine("Debug.Initialize(m => Print(m));");
+            template.HandleException.AppendLine(@"
+
+			var exceptionReportDir = @""D:\2calgo"";
+			Directory.CreateDirectory(exceptionReportDir);
+			var fileName = Path.Combine(exceptionReportDir, ""last exception.txt"");
+			File.WriteAllText(fileName, e.ToString());
+            ");
 #endif
 
             return template.BuildIndicator();

@@ -10,6 +10,8 @@ namespace _2calgo.Library
         private const string CustomIndicatorTemplate = @"
             public class CustomIndicatorName : Indicator
             {
+                public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
+
                 public override void Calculate(int index) {}
             }
         ";
