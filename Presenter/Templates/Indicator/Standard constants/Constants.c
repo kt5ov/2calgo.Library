@@ -68,6 +68,8 @@
     const int OBJ_VLINE = 0;
         const int OBJ_HLINE = 1;
         const int OBJ_TREND = 2;
+        const int OBJ_FIBO = 10;
+
         /*const int OBJ_TRENDBYANGLE = 3;
         const int OBJ_REGRESSION = 4;
         const int OBJ_CHANNEL = 5;
@@ -75,7 +77,6 @@
         const int OBJ_GANNLINE = 7;
         const int OBJ_GANNFAN = 8;
         const int OBJ_GANNGRID = 9;
-        const int OBJ_FIBO = 10;
         const int OBJ_FIBOTIMES = 11;
         const int OBJ_FIBOFAN = 12;
         const int OBJ_FIBOARC = 13;

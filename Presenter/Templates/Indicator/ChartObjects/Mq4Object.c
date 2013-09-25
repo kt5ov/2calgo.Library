@@ -52,7 +52,7 @@
 					if (intColor != CLR_NONE)
 						return Mq4Colors.GetColorByInteger(intColor);
 
-					return Colors.Blue;      
+					return Colors.Yellow;      
                 }
             }
 

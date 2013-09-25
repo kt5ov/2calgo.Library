@@ -95,7 +95,7 @@ namespace cAlgo.Indicators
 
 			if (IsLastBar) 
 			{   
-				if (_initialized)
+				if (!_initialized)
 				{
 					Mq4Init();
 					_initialized = true;

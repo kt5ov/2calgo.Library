@@ -51,6 +51,11 @@
 				//{
 				case OBJ_ARROW:
 					return _mq4ObjectByName.Values.OfType<Mq4Arrow>().Count();                                     
+				//}			
+				[Conditional("OBJ_FIBO")] 
+				//{
+				case OBJ_FIBO:
+					return _mq4ObjectByName.Values.OfType<Mq4Fibo>().Count();                                     
 				//}
 				[Conditional("EMPTY")] 
 				//{
@@ -66,7 +71,7 @@
 									double price2, int time3, double price3)
 		{
 			Mq4Object mq4Object = null;
-			[Conditional("OBJ_VLINE", "OBJ_HLINE", "OBJ_TEXT", "OBJ_LABEL", "OBJ_TREND", "OBJ_RECTANGLE", "OBJ_ARROW")] 
+			[Conditional("OBJ_VLINE", "OBJ_HLINE", "OBJ_TEXT", "OBJ_LABEL", "OBJ_TREND", "OBJ_RECTANGLE", "OBJ_ARROW", "OBJ_FIBO")] 
 			switch (type)
 			{
 				[Conditional("OBJ_VLINE")] 
@@ -109,6 +114,12 @@
 				//{
 				case OBJ_ARROW:
 					mq4Object = new Mq4Arrow(name, type, _algoChartObjects, _timeSeries);
+					break;                                        
+				//}		
+				[Conditional("OBJ_FIBO")] 
+				//{
+				case OBJ_FIBO:
+					mq4Object = new Mq4Fibo(name, type, _algoChartObjects, _timeSeries);
 					break;                                        
 				//}
 			}

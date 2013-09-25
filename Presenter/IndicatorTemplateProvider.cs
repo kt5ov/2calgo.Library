@@ -60,6 +60,7 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4TrendLine.c",
                 ChartObjects + "/Mq4Rectangle.c",
                 ChartObjects + "/Mq4Arrow.c",
+                ChartObjects + "/Mq4Fibo.c",
                 ChartObjects + "/Object functions.c",
                 
                 DataSeries + "/DataSeriesExtremums.c",

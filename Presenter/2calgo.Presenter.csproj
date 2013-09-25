@@ -197,6 +197,9 @@
   <ItemGroup>
     <Resource Include="Templates\Indicator\Standard constants\Uninitialize reason codes.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Indicator\ChartObjects\Mq4Fibo.c" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
