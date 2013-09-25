@@ -52,13 +52,14 @@ namespace _2calgo.Presenter
                 template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = CreateDataSeries();\n", buffer);
 
                 var style = indicator.Styles[index];
-                if (style != DrawingShapeStyle.Arrow && !IsLineVisible(indicator, index))
+                if (style != DrawingShapeStyle.Arrow && style != DrawingShapeStyle.Histogram && !IsLineVisible(indicator, index))
                     style =  DrawingShapeStyle.None;
                 
                 var color = indicator.Colors[index] != null ? "Colors." + indicator.Colors[index] : "null";
+                var lineWidth = indicator.Widths[index];
 
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, () => CreateDataSeries(), {3});\n", buffer, (int)style, index, color);
-                template.InitialzeBuffers.AppendFormat("_allBuffers.Add({0});\n", buffer);
+                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, () => CreateDataSeries(), {3}, {4});\n", buffer, (int)style, index, lineWidth, color);
+                template.InitialzeBuffers.AppendFormat("AllBuffers.Add({0});\n", buffer);
             }
 
             template.Fields = indicator.Code.FieldsDeclarations;
@@ -151,7 +152,9 @@ namespace _2calgo.Presenter
 
         private static bool IsLineVisible(Indicator indicator, int bufferIndex)
         {
-            return indicator.Colors[bufferIndex] != null && indicator.Styles[bufferIndex] != DrawingShapeStyle.Arrow;
+            return indicator.Colors[bufferIndex] != null 
+                && indicator.Styles[bufferIndex] != DrawingShapeStyle.Arrow 
+                && !(indicator.IsDrawingOnChartWindow && indicator.Styles[bufferIndex] == DrawingShapeStyle.Histogram);
         }
     }
 }

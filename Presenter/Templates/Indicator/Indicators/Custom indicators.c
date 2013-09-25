@@ -336,13 +336,13 @@
 	[Conditional("SetIndexShift")]
     void SetIndexShift(int index, int shift) 
     {
-      _allBuffers[index].SetShift(shift);
+		AllBuffers[index].SetShift(shift);
     }
         
 	[Conditional("SetIndexEmptyValue")]
     void SetIndexEmptyValue(int index, double value)
     {
-      _allBuffers[index].SetEmptyValue(value);
+		AllBuffers[index].SetEmptyValue(value);
     }
 	    
     private int _indicatorCounted;

@@ -10,8 +10,7 @@
 		private readonly int _style;
 		private readonly int _bufferIndex;
 		private readonly #IndicatorName_PLACE_HOLDER# _indicator;
-		private readonly Colors? _color;
-
+		
         public Mq4OutputDataSeries(
 			#IndicatorName_PLACE_HOLDER# indicator, 
 			IndicatorDataSeries outputDataSeries, 
@@ -20,6 +19,7 @@
 			int style, 
 			int bufferIndex,
 			Func<IndicatorDataSeries> dataSeriesFactory,
+			int lineWidth,
 			Colors? color = null)
         {
             OutputDataSeries = outputDataSeries;
@@ -28,9 +28,13 @@
 			_style = style;
 			_bufferIndex = bufferIndex;
 			_indicator = indicator;
-			_color = color;
+			Color = color;
 			_originalValues = dataSeriesFactory();
+			LineWidth = lineWidth;
         }
+
+		public int LineWidth { get; private set; }
+		public Colors? Color { get; private set; }
 
         public int Length
         {
@@ -86,7 +90,9 @@
                     if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
                         return;
                 }
-					
+				
+                OutputDataSeries[indexToSet] = valueToSet; 
+
 				switch (_style)
 				{
 					case DRAW_ARROW:
@@ -95,21 +101,39 @@
 							_chartObjects.RemoveObject(arrowName);
 						else
 						{
-							var color = _color.HasValue ? _color.Value : Colors.Red;
+							var color = Color.HasValue ? Color.Value : Colors.Red;
 							_chartObjects.DrawText(arrowName , _indicator.ArrowByIndex[_bufferIndex], indexToSet, valueToSet, VerticalAlignment.Center, HorizontalAlignment.Center, color);
 						}
 						break;
-				}
+					case DRAW_HISTOGRAM:
+						if (#IsDrawingOnChartWindow_PLACE_HOLDER#)
+						{
+							var anotherLine = _indicator.AllBuffers.FirstOrDefault(b => b.LineWidth == LineWidth && b != this);
+							if (anotherLine != null)
+							{				
+								var name = GetNameOfHistogramLineOnChartWindow(indexToSet);
+								Colors color;
+								if (this[index] > anotherLine[index])
+									color = Color ?? Colors.Green;
+								else
+									color = anotherLine.Color ?? Colors.Green;
+								var lineWidth = LineWidth;
+								if (lineWidth != 1 && lineWidth < 5)
+									lineWidth = 5;
 
-                OutputDataSeries[indexToSet] = valueToSet; 
+								_chartObjects.DrawLine(name, indexToSet, this[index], indexToSet, anotherLine[index], color, lineWidth);
+							}
+						}
+						break;
+				}
             }
         }
 		
-        private string GetOverlapLineName(int startIndex)
+		private string GetNameOfHistogramLineOnChartWindow(int index)
         {
-            return string.Format("Overlapline {0} {1}", GetHashCode(), startIndex);
-        }
-		
+			return string.Format("Histogram on chart window {0} {1}", LineWidth, index);
+		}
+
         private string GetArrowName(int index)
         {
             return string.Format("Arrow {0} {1}", GetHashCode(), index);

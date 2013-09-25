@@ -80,7 +80,7 @@ namespace cAlgo.Indicators
         Mq4TimeSeries Time;
 
         DataSeriesExtremums _closeExtremums;
-        readonly List<Mq4OutputDataSeries> _allBuffers = new List<Mq4OutputDataSeries>();
+        List<Mq4OutputDataSeries> AllBuffers = new List<Mq4OutputDataSeries>();
 		Mq4ArrayToDataSeriesConverterFactory _mq4ArrayToDataSeriesConverterFactory;
 
 		public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();

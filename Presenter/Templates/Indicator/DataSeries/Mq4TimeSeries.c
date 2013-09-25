@@ -1,4 +1,4 @@
-    internal class Mq4TimeSeries
+    class Mq4TimeSeries
     {
         private readonly TimeSeries _timeSeries;
         private static readonly DateTime StartDateTime = new DateTime(1970, 1, 1);
