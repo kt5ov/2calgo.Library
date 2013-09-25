@@ -100,7 +100,7 @@
         const int OBJPROP_COLOR = 6;
         const int OBJPROP_STYLE = 7;
         const int OBJPROP_WIDTH = 8;
-        //const int OBJPROP_BACK = 9;
+        const int OBJPROP_BACK = 9;
         const int OBJPROP_RAY = 10;
         const int OBJPROP_ELLIPSE = 11;
         //const int OBJPROP_SCALE = 12;

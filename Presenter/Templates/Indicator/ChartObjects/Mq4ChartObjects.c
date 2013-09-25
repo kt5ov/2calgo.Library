@@ -278,15 +278,15 @@
 			mq4Fibo.SetLevelDescription(index, text);
 		}
 
-		public string GetFiboDescription(int index)
+		public string GetFiboDescription(string name, int index)
 		{
 			Mq4Object mq4Object;
 			if (!_mq4ObjectByName.TryGetValue(name, out mq4Object))
-				return;
+				return string.Empty;
 			var mq4Fibo = mq4Object as Mq4Fibo;
 			if (mq4Fibo == null)
-				return;
+				return string.Empty;
 
-			return mq4Fibo.GetLevelDescription(index, text);
+			return mq4Fibo.GetLevelDescription(index);
 		}
 	}
