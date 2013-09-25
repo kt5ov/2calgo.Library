@@ -266,6 +266,7 @@
 			return mq4Object.Type;
 		}
 
+		[Conditional("ObjectSetFiboDescription")] 
 		public void SetFiboDescription(string name, int index, string text)
 		{
 			Mq4Object mq4Object;
@@ -278,6 +279,7 @@
 			mq4Fibo.SetLevelDescription(index, text);
 		}
 
+		[Conditional("ObjectGetFiboDescription")] 
 		public string GetFiboDescription(string name, int index)
 		{
 			Mq4Object mq4Object;

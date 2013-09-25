@@ -106,7 +106,7 @@
         //const int OBJPROP_SCALE = 12;
         //const int OBJPROP_ANGLE = 13;
         const int OBJPROP_ARROWCODE = 14;
-        //const int OBJPROP_TIMEFRAMES = 15;
+        const int OBJPROP_TIMEFRAMES = 15;
         //const int OBJPROP_DEVIATION = 16;
         const int OBJPROP_FONTSIZE = 100;
         const int OBJPROP_CORNER = 101;
