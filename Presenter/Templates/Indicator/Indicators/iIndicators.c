@@ -710,3 +710,58 @@ Mq4Double iCustom<T>(Mq4String symbol, int timeframe, Mq4String name, params obj
     return outputSeries[mode].FromEnd(shift);
 }
 //}
+[Conditional("iAD")]
+//{
+
+private readonly Dictionary<MarketSeries, AdIndicator> _adCache = new Dictionary<MarketSeries, AdIndicator>();
+
+class AdIndicator
+{
+	private readonly DataSeries _volume;
+	private readonly DataSeries _high;
+	private readonly DataSeries _low;
+	private readonly DataSeries _close;
+	private readonly IndicatorDataSeries _values;
+
+	public AdIndicator(MarketSeries marketSeries, Func<IndicatorDataSeries> dataSeriesFactory)
+	{
+		_volume = marketSeries.TickVolume;
+		_high = marketSeries.High;
+		_low = marketSeries.Low;
+		_close = marketSeries.Close;
+		_values = dataSeriesFactory();
+	}
+
+	public double Calculate(int index)
+	{
+		if (index < 0)
+			return 0;
+
+		_values[index] = _close[index] - _low[index] - (_high[index] - _close[index]);
+		if (_values[index] != 0)
+		{
+			if (_high[index] != _low[index])
+				_values[index] = _values[index] / (_high[index] - _low[index]) * _volume[index];
+			else
+				_values[index] = 0;				
+		}
+		if (!double.IsNaN(_values[index - 1]))
+			_values[index] += _values[index - 1];
+		return _values[index];
+	}
+}
+	
+Mq4Double iAD(Mq4String symbol, int timeframe, int shift)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+	AdIndicator indicator;
+	if (!_adCache.TryGetValue(marketSeries, out indicator))
+	{	
+		indicator = new AdIndicator(marketSeries, () => CreateDataSeries());
+		_adCache[marketSeries] = indicator;
+	}
+
+	return indicator.Calculate(marketSeries.Close.InvertIndex(shift));
+}
+
+//}
