@@ -1,13 +1,11 @@
     [Conditional("OBJ_TEXT")] 
 	class Mq4Text : Mq4Object
     {
-        private readonly ChartObjects _chartObjects;
         private readonly TimeSeries _timeSeries;
 
         public Mq4Text(string name, int type, ChartObjects chartObjects, TimeSeries timeSeries) 
-            : base(name, type)
+            : base(name, type, chartObjects)
         {
-            _chartObjects = chartObjects;
             _timeSeries = timeSeries;
         }
             
@@ -28,6 +26,6 @@
 
         public override void Draw()
         {       
-            _chartObjects.DrawText(Name, Text, _index, Price1, VerticalAlignment.Center, HorizontalAlignment.Center, Color);
+            DrawText(Name, Text, _index, Price1, VerticalAlignment.Center, HorizontalAlignment.Center, Color);
         }
     }

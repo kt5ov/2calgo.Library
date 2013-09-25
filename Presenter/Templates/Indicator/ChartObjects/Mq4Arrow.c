@@ -1,13 +1,11 @@
     class Mq4Arrow : Mq4Object
     {
-        private readonly ChartObjects _chartObjects;
         private readonly TimeSeries _timeSeries;
 		private int _index;
 
         public Mq4Arrow(string name, int type, ChartObjects chartObjects, TimeSeries timeSeries) 
-            : base(name, type)
+            : base(name, type, chartObjects)
         {
-            _chartObjects = chartObjects;
             _timeSeries = timeSeries;
         }
             
@@ -49,6 +47,6 @@
 					horizontalAlignment = HorizontalAlignment.Center;
 					break;
 			}				
-			_chartObjects.DrawText(Name, arrowString, _index, Price1, VerticalAlignment.Center, horizontalAlignment, Color);
+			DrawText(Name, arrowString, _index, Price1, VerticalAlignment.Center, horizontalAlignment, Color);
         }
     }

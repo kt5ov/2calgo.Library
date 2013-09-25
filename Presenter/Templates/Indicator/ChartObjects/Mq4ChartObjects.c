@@ -184,9 +184,13 @@
 		[Conditional("ObjectDelete", "ObjectsDeleteAll")] 
 		public void Delete(string name)
 		{
+			Mq4Object mq4Object;
+			if (!_mq4ObjectByName.TryGetValue(name, out mq4Object))
+				return;
+			
+			mq4Object.Dispose();
 			_mq4ObjectByName.Remove(name);
 			_mq4ObjectNameByIndex.Remove(name);
-			_algoChartObjects.RemoveObject(name);
 		}
 
 		[Conditional("ObjectsDeleteAll")] 

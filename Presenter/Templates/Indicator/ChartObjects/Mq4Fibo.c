@@ -1,14 +1,12 @@
 	[Conditional("OBJ_FIBO")] 
 	class Mq4Fibo : Mq4Object
 	{
-		private readonly ChartObjects _chartObjects;
 		private readonly TimeSeries _timeSeries;
 		private readonly string _chartObjectName;
 
 		public Mq4Fibo(string name, int type, ChartObjects chartObjects, TimeSeries timeSeries) 
-			: base(name, type)
+			: base(name, type, chartObjects)
 		{
-			_chartObjects = chartObjects;
 			_timeSeries = timeSeries;
 			_chartObjectName = "FIBO " + Name;
 		}
@@ -26,10 +24,10 @@
 				var price = Price2 + (Price1 - Price2) * level / 100;
 				var lineName = _chartObjectName + "level" + level;
 
-				_chartObjects.DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, Color);
-				_chartObjects.DrawText(_chartObjectName + "label" + level, level.ToString("0.#"), Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, Color);
+				DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, Color);
+				DrawText(_chartObjectName + "label" + level, level.ToString("0.#"), Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, Color);
 			}
 
-			_chartObjects.DrawLine(_chartObjectName + "direction line", index1, Price1, index2, Price2, Colors.Red, 1, LineStyle.Lines);
+			DrawLine(_chartObjectName + "direction line", index1, Price1, index2, Price2, Colors.Red, 1, LineStyle.Lines);
 		}
 	}       

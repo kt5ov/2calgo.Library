@@ -1,13 +1,11 @@
     [Conditional("OBJ_TREND")] 
 	class Mq4TrendLine : Mq4Object
     {
-        private readonly ChartObjects _chartObjects;
 		private readonly TimeSeries _timeSeries;
 
         public Mq4TrendLine(string name, int type, ChartObjects chartObjects, TimeSeries timeSeries) 
-            : base(name, type)
+            : base(name, type, chartObjects)
         {
-            _chartObjects = chartObjects;
 			_timeSeries = timeSeries;
         }
             
@@ -16,7 +14,7 @@
 			bool isRay = Get(OBJPROP_RAY);
             if (!isRay)
 			{
-                _chartObjects.DrawLine(Name, Time1, Price1, Time2, Price2, Color, Width, Mq4LineStyles.ToLineStyle(Style));
+                DrawLine(Name, Time1, Price1, Time2, Price2, Color, Width, Mq4LineStyles.ToLineStyle(Style));
 			}
 			else
 			{
@@ -28,14 +26,14 @@
 					var index3 = index1 + indexDistance;
 					var price3 = (-1 * index1 * Price1 + index2 * Price1 - indexDistance * Price1 + indexDistance * Price2)/(index2 - index1);
 
-					_chartObjects.DrawLine(Name, index1, Price1, index3, price3, Color, Width, Mq4LineStyles.ToLineStyle(Style));
+					DrawLine(Name, index1, Price1, index3, price3, Color, Width, Mq4LineStyles.ToLineStyle(Style));
 				}
 				if (index2 < index1)
 				{
 					var index3 = index2 - indexDistance;
 					var price3 = (indexDistance * Price1 - index1 * Price2 + index2 * Price2 - indexDistance * Price2)/(index2 - index1);
 
-					_chartObjects.DrawLine(Name, index1, Price1, index3, price3, Color, Width, Mq4LineStyles.ToLineStyle(Style));
+					DrawLine(Name, index1, Price1, index3, price3, Color, Width, Mq4LineStyles.ToLineStyle(Style));
 				}
 			}
         }

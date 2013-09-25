@@ -1,12 +1,9 @@
 	[Conditional("OBJ_LABEL")] 
 	class Mq4Label : Mq4Object
     {
-        private readonly ChartObjects _chartObjects;
-
         public Mq4Label(string name, int type, ChartObjects chartObjects) 
-            : base(name, type)
+            : base(name, type, chartObjects)
         {
-            _chartObjects = chartObjects;
         }
 
         public string Text { get; set; }
@@ -64,16 +61,16 @@
 			switch(Corner)
 			{
 				case 0:
-					_chartObjects.DrawText(Name, ySpaces + xSpaces + Text, StaticPosition.TopLeft, Color);
+					DrawText(Name, ySpaces + xSpaces + Text, StaticPosition.TopLeft, Color);
 				break;
 				case 1:
-					_chartObjects.DrawText(Name, ySpaces + Text + xSpaces + '.', StaticPosition.TopRight, Color);
+					DrawText(Name, ySpaces + Text + xSpaces + '.', StaticPosition.TopRight, Color);
 				break;          
 				case 2:
-					_chartObjects.DrawText(Name, xSpaces + Text + ySpaces, StaticPosition.BottomLeft, Color);
+					DrawText(Name, xSpaces + Text + ySpaces, StaticPosition.BottomLeft, Color);
 				break;          
 				case 3:
-					_chartObjects.DrawText(Name, Text + xSpaces + '.' + ySpaces, StaticPosition.BottomRight, Color);
+					DrawText(Name, Text + xSpaces + '.' + ySpaces, StaticPosition.BottomRight, Color);
 				break;  
 			}
         }
