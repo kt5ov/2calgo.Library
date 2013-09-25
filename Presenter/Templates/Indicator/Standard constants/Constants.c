@@ -104,7 +104,7 @@
         const int OBJPROP_RAY = 10;
         const int OBJPROP_ELLIPSE = 11;
         //const int OBJPROP_SCALE = 12;
-        //const int OBJPROP_ANGLE = 13;
+        const int OBJPROP_ANGLE = 13;//angle for text rotation
         const int OBJPROP_ARROWCODE = 14;
         const int OBJPROP_TIMEFRAMES = 15;
         //const int OBJPROP_DEVIATION = 16;
