@@ -220,7 +220,7 @@
 		public int Find(string name)
 		{
 			if (_mq4ObjectByName.ContainsKey(name))
-				return 0;
+				return 0;//index of window
 			return -1;
 		}
 
@@ -264,5 +264,29 @@
 			
 			var mq4Object = _mq4ObjectByName[name];
 			return mq4Object.Type;
+		}
+
+		public void SetFiboDescription(string name, int index, string text)
+		{
+			Mq4Object mq4Object;
+			if (!_mq4ObjectByName.TryGetValue(name, out mq4Object))
+				return;
+			var mq4Fibo = mq4Object as Mq4Fibo;
+			if (mq4Fibo == null)
+				return;
+
+			mq4Fibo.SetLevelDescription(index, text);
+		}
+
+		public string GetFiboDescription(int index)
+		{
+			Mq4Object mq4Object;
+			if (!_mq4ObjectByName.TryGetValue(name, out mq4Object))
+				return;
+			var mq4Fibo = mq4Object as Mq4Fibo;
+			if (mq4Fibo == null)
+				return;
+
+			return mq4Fibo.GetLevelDescription(index, text);
 		}
 	}

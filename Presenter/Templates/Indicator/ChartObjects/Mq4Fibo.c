@@ -10,6 +10,27 @@
 			_timeSeries = timeSeries;
 			_chartObjectName = "FIBO " + Name;
 		}
+
+		private double[] GetLevels()
+		{
+			var levelsCount = (int)Get(OBJPROP_FIBOLEVELS);
+			var levels = new double[levelsCount];
+			for (var i = 0; i < levelsCount; i++)
+				levels[i] = Get(OBJPROP_FIRSTLEVEL + i);
+			return levels;
+		}
+
+		private Colors LevelColor
+		{
+	        get
+	        {                    
+				int intColor = Get(OBJPROP_LEVELCOLOR);
+				if (intColor != CLR_NONE)
+					return Mq4Colors.GetColorByInteger(intColor);
+
+				return Colors.Yellow;      
+	        }
+		}
 						
 		public override void Draw()
 		{
@@ -18,16 +39,34 @@
 
 			var extendedIndex2 = Math.Min(index1, index2) + Math.Abs(index1 - index2) * 3;
 			
-			var levels = new [] {0, 23.6, 38.2, 50.0, 61.8, 100, 161.8, 261.8, 423.6};
-			foreach (var level in levels)
+			var levels = GetLevels();
+			for (var i = 0; i < levels.Length; i++)
 			{
-				var price = Price2 + (Price1 - Price2) * level / 100;
+				var level = levels[i];
+				var price = Price2 + (Price1 - Price2) * level;
 				var lineName = _chartObjectName + "level" + level;
 
-				DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, Color);
-				DrawText(_chartObjectName + "label" + level, level.ToString("0.#"), Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, Color);
+				DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, LevelColor);
+				var description = GetLevelDescription(i);
+				DrawText(_chartObjectName + "label" + level, description, Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, LevelColor);
 			}
 
 			DrawLine(_chartObjectName + "direction line", index1, Price1, index2, Price2, Colors.Red, 1, LineStyle.Lines);
+		}
+
+		private Dictionary<int, string> _levelDescriptions = new Dictionary<int, string>();
+
+		public void SetLevelDescription(int index, string text)
+		{			
+			_levelDescriptions[index] = text;
+		}
+
+		public string GetLevelDescription(int index)
+		{
+			string result;
+			if (!_levelDescriptions.TryGetValue(index, out result))
+				return (GetLevels()[index] * 100).ToString("0.#");
+			
+			return result;
 		}
 	}       

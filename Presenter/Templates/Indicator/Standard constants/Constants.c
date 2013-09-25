@@ -89,7 +89,7 @@
         const int OBJ_CYCLES = 20;*/
         const int OBJ_TEXT = 21;
         const int OBJ_ARROW = 22;
-        const int OBJ_LABEL = 23;
+    const int OBJ_LABEL = 23;
         
         const int OBJPROP_TIME1 = 0;
         const int OBJPROP_PRICE1 = 1;
@@ -100,22 +100,23 @@
         const int OBJPROP_COLOR = 6;
         const int OBJPROP_STYLE = 7;
         const int OBJPROP_WIDTH = 8;
-        const int OBJPROP_BACK = 9;
+        //const int OBJPROP_BACK = 9;
         const int OBJPROP_RAY = 10;
         const int OBJPROP_ELLIPSE = 11;
-        const int OBJPROP_SCALE = 12;
-        const int OBJPROP_ANGLE = 13;
+        //const int OBJPROP_SCALE = 12;
+        //const int OBJPROP_ANGLE = 13;
         const int OBJPROP_ARROWCODE = 14;
-        const int OBJPROP_TIMEFRAMES = 15;
-        const int OBJPROP_DEVIATION = 16;
+        //const int OBJPROP_TIMEFRAMES = 15;
+        //const int OBJPROP_DEVIATION = 16;
         const int OBJPROP_FONTSIZE = 100;
         const int OBJPROP_CORNER = 101;
         const int OBJPROP_XDISTANCE = 102;
         const int OBJPROP_YDISTANCE = 103;
         const int OBJPROP_FIBOLEVELS = 200;
         const int OBJPROP_LEVELCOLOR = 201;
-        const int OBJPROP_LEVELSTYLE = 202;
-        const int OBJPROP_LEVELWIDTH = 203;
+        /*const int OBJPROP_LEVELSTYLE = 202;
+        const int OBJPROP_LEVELWIDTH = 203;*/
+		const int OBJPROP_FIRSTLEVEL = 210;
 
         const int PERIOD_M1 = 1;
     const int PERIOD_M5 = 5;

@@ -79,8 +79,18 @@ abstract class Mq4Object : IDisposable
 
     private readonly Dictionary<int, Mq4Double> _properties = new Dictionary<int, Mq4Double>
         {
-        {OBJPROP_WIDTH, new Mq4Double(1)},
-        {OBJPROP_COLOR, new Mq4Double(CLR_NONE)},
+			{OBJPROP_WIDTH, new Mq4Double(1)},
+			{OBJPROP_COLOR, new Mq4Double(CLR_NONE)},
+			{OBJPROP_FIBOLEVELS, new Mq4Double(9)},
+			{OBJPROP_FIRSTLEVEL + 0, new Mq4Double(0)},
+			{OBJPROP_FIRSTLEVEL + 1, new Mq4Double(0.236)},
+			{OBJPROP_FIRSTLEVEL + 2, new Mq4Double(0.382)},
+			{OBJPROP_FIRSTLEVEL + 3, new Mq4Double(0.5)},
+			{OBJPROP_FIRSTLEVEL + 4, new Mq4Double(0.618)},
+			{OBJPROP_FIRSTLEVEL + 5, new Mq4Double(1)},
+			{OBJPROP_FIRSTLEVEL + 6, new Mq4Double(1.618)},
+			{OBJPROP_FIRSTLEVEL + 7, new Mq4Double(2.618)},
+			{OBJPROP_FIRSTLEVEL + 8, new Mq4Double(4.236)},
         };
 
     public virtual void Set(int index, Mq4Double value)
