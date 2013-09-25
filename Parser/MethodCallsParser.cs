@@ -17,16 +17,14 @@ namespace _2calgo.Parser
             {
                 var openBracketIndex = match.Groups["open"].Index;
                 var parameters = new StringBuilder();
-                var openedBracketsCount = 0;
+                var innerStructures = new InnerStructures.InnerStructures();
                 int j;
                 for (j = openBracketIndex; j < code.Length; j++)
                 {
+                    innerStructures.Handle(code[j]);
                     parameters.Append(code[j]);
-                    if (code[j] == '(')
-                        openedBracketsCount++;
-                    if (code[j] == ')')
-                        openedBracketsCount--;
-                    if (openedBracketsCount == 0)
+
+                    if (!innerStructures.IsInsideSomeStructure)
                         break;
                 }
 
