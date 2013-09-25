@@ -34,6 +34,9 @@
 						
 		public override void Draw()
 		{
+			var levelStyle = Mq4LineStyles.ToLineStyle(Get(OBJPROP_LEVELSTYLE));
+			var levelWidth = Get(OBJPROP_LEVELWIDTH);
+
 			var index1 = _timeSeries.GetIndexByTime(Time1);
 			var index2 = _timeSeries.GetIndexByTime(Time2);
 
@@ -46,7 +49,7 @@
 				var price = Price2 + (Price1 - Price2) * level;
 				var lineName = _chartObjectName + "level" + level;
 
-				DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, LevelColor);
+				DrawLine(lineName, Math.Min(index1, index2), price, extendedIndex2, price, LevelColor, levelWidth, levelStyle);
 				var description = GetLevelDescription(i);
 				DrawText(_chartObjectName + "label" + level, description, Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, LevelColor);
 			}

@@ -114,8 +114,8 @@
         const int OBJPROP_YDISTANCE = 103;
         const int OBJPROP_FIBOLEVELS = 200;
         const int OBJPROP_LEVELCOLOR = 201;
-        /*const int OBJPROP_LEVELSTYLE = 202;
-        const int OBJPROP_LEVELWIDTH = 203;*/
+        const int OBJPROP_LEVELSTYLE = 202;
+        const int OBJPROP_LEVELWIDTH = 203;
 		const int OBJPROP_FIRSTLEVEL = 210;
 
         const int PERIOD_M1 = 1;
