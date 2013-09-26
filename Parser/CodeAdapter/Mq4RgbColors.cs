@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Linq;
+using _2calgo.Parser.Extensions;
 
 namespace _2calgo.Parser.CodeAdapter
 {
@@ -14,9 +15,9 @@ namespace _2calgo.Parser.CodeAdapter
         {
             foreach (var match in RgbRegex.Matches(code).OfType<Match>().ToArray())
             {
-                var red = GetValue(match, "red");
-                var green = GetValue(match, "green");
-                var blue = GetValue(match, "blue");
+                var red = match.GetIntValue("red");
+                var green = match.GetIntValue("green");
+                var blue = match.GetIntValue("blue");
 
                 if (red == null || green == null || blue == null)
                     continue;
@@ -44,15 +45,7 @@ namespace _2calgo.Parser.CodeAdapter
             }
             return result;
         }
-
-        private static int? GetValue(Match match, string groupName)
-        {
-            int result;
-            if (!int.TryParse(match.Groups[groupName].Value, out result))
-                return null;
-            return result;
-        }
-
+        
         private static readonly Color[] SupportedColors = new[]
             {
                 Color.White,
