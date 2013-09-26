@@ -41,6 +41,7 @@ namespace _2calgo.Presenter
                 "Alert.cs",
                 "Checkup.c",
                 "stdlib.c",
+                "Global variables.c",
 
                 Indicators + "/iIndicators.c",
                 Indicators + "/CachedStandardIndicators.c",

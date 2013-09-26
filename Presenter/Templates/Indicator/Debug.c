@@ -8,10 +8,10 @@ static class Debug
         _printAction = printAction;
     }
 
-    public static void WriteLine(string message)
+    public static void WriteLine(object message)
     {
         if (_isActive)
-            _printAction(message);
+            _printAction(message.ToString());
     }
 
     public static void WriteLine(string format, params object[] args)

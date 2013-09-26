@@ -54,7 +54,7 @@
 				DrawText(_chartObjectName + "label" + level, description, Math.Max(index1, index2), price, VerticalAlignment.Top, HorizontalAlignment.Right, LevelColor);
 			}
 
-			DrawLine(_chartObjectName + "direction line", index1, Price1, index2, Price2, Colors.Red, 1, LineStyle.Lines);
+			DrawLine(_chartObjectName + "direction line", index1, Price1, index2, Price2, Colors.Red, 1, cAlgo.API.LineStyle.Lines);
 		}
 
 		private Dictionary<int, string> _levelDescriptions = new Dictionary<int, string>();
