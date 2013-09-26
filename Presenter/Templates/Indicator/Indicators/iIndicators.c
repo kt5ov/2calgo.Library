@@ -220,7 +220,7 @@
             return CalculateCCI(series, period, shift);
         }       
                 
-        private double iCCIOnArray(Mq4OutputDataSeries invertedDataSeries, int period, int shift) 
+        private double iCCIOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int shift) 
         {            
             return CalculateCCI(invertedDataSeries.OutputDataSeries, period, shift);
         }
@@ -560,13 +560,22 @@ Mq4Double iBullsPower(Mq4String symbol, int timeframe, int period, int applied_p
 	return marketSeries.High.FromEnd(shift) - iMA(symbol, timeframe, period, 0, MODE_EMA, applied_price, shift);
 }
 
-[Conditional("iMomentum")]
+[Conditional("iMomentum", "iMomentumOnArray")]
+//{
+private double iMomentumOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int shift) 
+{
+    var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
+
+    return _cachedStandardIndicators.MomentumOscillator(dataSeries, period).Result.FromEnd(shift);
+}
+
 Mq4Double iMomentum(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
 {
-	var series = ToAppliedPrice(symbol, timeframe, applied_price);
+	var dataSeries = ToAppliedPrice(symbol, timeframe, applied_price);
 
-	return _cachedStandardIndicators.MomentumOscillator(series, period).Result.FromEnd(shift);
+	return _cachedStandardIndicators.MomentumOscillator(dataSeries, period).Result.FromEnd(shift);
 }
+//}
 [Conditional("iForce")]
 //{
 Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int applied_price, int shift)
