@@ -259,48 +259,71 @@
 
 [Conditional("iSAR")]
 //{
-        private struct SarParameters
-        {
-            public double Step;
-			public double Maximum;
-			public MarketSeries Series;
-        }
-    
-        private Dictionary<SarParameters, ParabolicSAR> _sarIndicators = new Dictionary<SarParameters, ParabolicSAR>();
+    private struct SarParameters
+    {
+        public double Step;
+    	public double Maximum;
+    	public MarketSeries Series;
+    }
 
-        public ParabolicSAR ParabolicSAR(MarketSeries series, double step, double maximum)
-        {
-            var sarParameters = new SarParameters { Step = step, Maximum = maximum, Series = series };
-            if (_sarIndicators.ContainsKey(sarParameters))
-                return _sarIndicators[sarParameters];
+    private Dictionary<SarParameters, ParabolicSAR> _sarIndicators = new Dictionary<SarParameters, ParabolicSAR>();
 
-            var indicator = _indicatorsAccessor.ParabolicSAR(step, maximum);
-            _sarIndicators.Add(sarParameters, indicator);
+    public ParabolicSAR ParabolicSAR(MarketSeries series, double step, double maximum)
+    {
+        var sarParameters = new SarParameters { Step = step, Maximum = maximum, Series = series };
+        if (_sarIndicators.ContainsKey(sarParameters))
+            return _sarIndicators[sarParameters];
 
-            return indicator;
-        }
+        var indicator = _indicatorsAccessor.ParabolicSAR(step, maximum);
+        _sarIndicators.Add(sarParameters, indicator);
+
+        return indicator;
+    }
 //}
-[Conditional("iMomentum")]
-//{
-        private struct MomentumParameters
-        {
-			public DataSeries DataSeries;
-			public int Period;
-        }
-    
-        private Dictionary<MomentumParameters, MomentumOscillator> _momentumIndicators = new Dictionary<MomentumParameters, MomentumOscillator>();
+    [Conditional("iMomentum")]
+    //{
+    private struct MomentumParameters
+    {
+    	public DataSeries DataSeries;
+    	public int Period;
+    }
 
-        public MomentumOscillator MomentumOscillator(DataSeries dataSeries, int period)
-        {
-            var parameters = new MomentumParameters { DataSeries = dataSeries, Period = period };
-            if (_momentumIndicators.ContainsKey(parameters))
-                return _momentumIndicators[parameters];
+    private Dictionary<MomentumParameters, MomentumOscillator> _momentumIndicators = new Dictionary<MomentumParameters, MomentumOscillator>();
 
-            var indicator = _indicatorsAccessor.MomentumOscillator(dataSeries, period);
-            _momentumIndicators.Add(parameters, indicator);
+    public MomentumOscillator MomentumOscillator(DataSeries dataSeries, int period)
+    {
+        var parameters = new MomentumParameters { DataSeries = dataSeries, Period = period };
+        if (_momentumIndicators.ContainsKey(parameters))
+            return _momentumIndicators[parameters];
 
-            return indicator;
-        }
-//}
+        var indicator = _indicatorsAccessor.MomentumOscillator(dataSeries, period);
+        _momentumIndicators.Add(parameters, indicator);
 
+        return indicator;
+    }
+    //}
+    [Conditional("iIchimoku")]
+    //{
+    struct IchimokuParameters
+    {
+        public MarketSeries MarketSeries;
+        public int TenkanSenPeriods;
+        public int KijunSenPeriods;
+        public int SenkouSpanBPeriods;
+    }
+
+    private Dictionary<IchimokuParameters, IchimokuKinkoHyo> _ichimokuIndicators = new Dictionary<IchimokuParameters, IchimokuKinkoHyo>();
+
+    public IchimokuKinkoHyo IchimokuKinkoHyo(MarketSeries marketSeries, int tenkanSenPeriods, int kijunSenPeriods, int senkouSpanBPeriods)
+    {
+        var parameters = new IchimokuParameters { MarketSeries = marketSeries, TenkanSenPeriods = tenkanSenPeriods, KijunSenPeriods = kijunSenPeriods, SenkouSpanBPeriods = senkouSpanBPeriods };
+        if (_ichimokuIndicators.ContainsKey(parameters))
+            return _ichimokuIndicators[parameters];
+
+        var indicator = _indicatorsAccessor.IchimokuKinkoHyo(marketSeries, tenkanSenPeriods, kijunSenPeriods, senkouSpanBPeriods);
+        _ichimokuIndicators.Add(parameters, indicator);
+
+        return indicator;
+    }
+    //}
 }

@@ -763,5 +763,25 @@ Mq4Double iAD(Mq4String symbol, int timeframe, int shift)
 
 	return indicator.Calculate(marketSeries.Close.InvertIndex(shift));
 }
-
 //}
+[Conditional("iIchimoku")]
+private Mq4Double iIchimoku(Mq4String symbol, int timeframe, int tenkan_sen, int kijun_sen, int senkou_span_b, int mode, int shift)
+{
+    var marketSeries = GetSeries(symbol, timeframe);
+       
+    var indicator = _cachedStandardIndicators.IchimokuKinkoHyo(marketSeries, tenkan_sen, kijun_sen, senkou_span_b);            
+    switch (mode)
+    {
+      case MODE_TENKANSEN:
+        return indicator.TenkanSen.FromEnd(shift);
+      case MODE_KIJUNSEN:
+        return indicator.KijunSen.FromEnd(shift);
+      case MODE_SENKOUSPANA:
+        return indicator.SenkouSpanA.FromEnd(shift);
+      case MODE_SENKOUSPANB:
+        return indicator.SenkouSpanB.FromEnd(shift);
+      case MODE_CHINKOUSPAN:
+        return indicator.ChikouSpan.FromEnd(shift);
+    }
+    return 0;
+}
