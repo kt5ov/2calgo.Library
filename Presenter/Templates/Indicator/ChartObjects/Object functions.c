@@ -82,3 +82,15 @@ Mq4String ObjectGetFiboDescription(Mq4String name, int index)
 	return _mq4ChartObjects.GetFiboDescription(name, index);
 }
 
+[Conditional("ObjectGetValueByShift")] 
+Mq4Double ObjectGetValueByShift(Mq4String name, int shift)
+{
+	return _mq4ChartObjects.ObjectGetValueByShift(name, shift);
+}
+
+[Conditional("ObjectDescription")] 
+Mq4String ObjectDescription(Mq4String name)
+{
+	return _mq4ChartObjects.ObjectDescription(name);
+}
+

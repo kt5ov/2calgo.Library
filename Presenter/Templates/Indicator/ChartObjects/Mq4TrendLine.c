@@ -37,4 +37,16 @@
 				}
 			}
         }
+
+        public double GetValueByShift(int shift)
+        {
+        	var index = _timeSeries.InvertIndex(shift);
+        	var index1 = _timeSeries.GetIndexByTime(Time1);
+			var index2 = _timeSeries.GetIndexByTime(Time2);
+
+			if (index2 == index1)
+				return 0;
+			
+			return (index - index1) * (Price2 - Price1) / (index2 - index1) + Price1;
+        }
     }
