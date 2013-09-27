@@ -58,7 +58,7 @@ namespace _2calgo.Presenter
                 var color = indicator.Colors[index] != null ? "Colors." + indicator.Colors[index] : "null";
                 var lineWidth = indicator.Widths[index];
 
-                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, _closeExtremums, ChartObjects, {1}, {2}, () => CreateDataSeries(), {3}, {4});\n", buffer, (int)style, index, lineWidth, color);
+                template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, ChartObjects, {1}, {2}, () => CreateDataSeries(), {3}, {4});\n", buffer, (int)style, index, lineWidth, color);
                 template.InitialzeBuffers.AppendFormat("AllBuffers.Add({0});\n", buffer);
             }
 

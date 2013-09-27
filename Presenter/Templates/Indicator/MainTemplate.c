@@ -50,7 +50,6 @@ namespace cAlgo.Indicators
         
         protected override void Initialize()
         {
-            _closeExtremums = new DataSeriesExtremums(MarketSeries.Close);
 #Initialize_buffers_PLACE_HOLDER#
 #Initialize_AllOutputDataSeries_PLACE_HOLDER#
 
@@ -80,7 +79,6 @@ namespace cAlgo.Indicators
         Mq4MarketDataSeries Volume;
         Mq4TimeSeries Time;
 
-        DataSeriesExtremums _closeExtremums;
         List<Mq4OutputDataSeries> AllBuffers = new List<Mq4OutputDataSeries>();
 		Mq4ArrayToDataSeriesConverterFactory _mq4ArrayToDataSeriesConverterFactory;
 

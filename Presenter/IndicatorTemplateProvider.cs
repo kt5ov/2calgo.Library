@@ -64,7 +64,6 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Mq4Fibo.c",
                 ChartObjects + "/Object functions.c",
                 
-                DataSeries + "/DataSeriesExtremums.c",
                 DataSeries + "/Mq4MarketDataSeries.c",
                 DataSeries + "/Mq4OutputDataSeries.c",
                 DataSeries + "/Mq4TimeSeries.c",

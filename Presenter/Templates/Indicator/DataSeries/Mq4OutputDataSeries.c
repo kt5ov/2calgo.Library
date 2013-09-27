@@ -5,7 +5,6 @@
         private int _currentIndex;
         private int _shift;
         private double _emptyValue = double.NaN;
-        private readonly DataSeriesExtremums _closeExtremums;
         private readonly ChartObjects _chartObjects;
 		private readonly int _style;
 		private readonly int _bufferIndex;
@@ -14,7 +13,6 @@
         public Mq4OutputDataSeries(
 			#IndicatorName_PLACE_HOLDER# indicator, 
 			IndicatorDataSeries outputDataSeries, 
-			DataSeriesExtremums closeExtremums, 
 			ChartObjects chartObjects, 
 			int style, 
 			int bufferIndex,
@@ -23,7 +21,6 @@
 			Colors? color = null)
         {
             OutputDataSeries = outputDataSeries;
-            _closeExtremums = closeExtremums;
             _chartObjects = chartObjects;
 			_style = style;
 			_bufferIndex = bufferIndex;
@@ -83,13 +80,6 @@
 
                 if (indexToSet < 0)
                   return;
-
-                if (#IsDrawingOnChartWindow_PLACE_HOLDER#)
-                {
-                    var validRange = _closeExtremums.Max - _closeExtremums.Min;                
-                    if (value > _closeExtremums.Max + validRange || value < _closeExtremums.Min - validRange)
-                        return;
-                }
 				
                 OutputDataSeries[indexToSet] = valueToSet; 
 

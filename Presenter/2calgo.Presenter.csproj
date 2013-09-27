@@ -147,9 +147,6 @@
     <Resource Include="Templates\Indicator\Indicators\CachedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtremums.c" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Templates\Indicator\DataSeries\Mq4MarketDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
