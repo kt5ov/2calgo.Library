@@ -19,23 +19,20 @@
 #region iMA
         private double iMA(Mq4String symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
         {
-            if (ma_shift != 0)
-                throw new NotImplementedException(NotSupportedMaShift);
-
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
-            return CalculateiMA(series, period, ma_method, shift);
+            return CalculateiMA(series, period, ma_method, shift + ma_shift);
         }       
                 
         private double iMAOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int ma_shift, int ma_method, int shift) 
         {
-          return CalculateiMA(invertedDataSeries.OutputDataSeries, period, ma_method, shift);
+          return CalculateiMA(invertedDataSeries.OutputDataSeries, period, ma_method, shift + ma_shift);
         } 
                 
         private double iMAOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
         {
 			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
-			return CalculateiMA(dataSeries, period, ma_method, shift);
+			return CalculateiMA(dataSeries, period, ma_method, shift + ma_shift);
         }
         
         private double CalculateiMA(DataSeries dataSeries, int period, int ma_method, int shift)
