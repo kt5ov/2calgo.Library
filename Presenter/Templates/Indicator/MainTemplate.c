@@ -1,5 +1,5 @@
-#References_PLACE_HOLDER#// ------------------------------------------------------------
-// Paste this code into your cAlgo editor
+#References_PLACE_HOLDER#// ------------------------------------------------------------                   
+// Paste this code into your cAlgo editor. 
 // -----------------------------------------------------------
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,9 @@ using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+// ---------------------------------------------------------------------------                   
+// Converted from MQ4 to cAlgo with http://2calgo.com
+// ---------------------------------------------------------------------------
 
 namespace cAlgo.Indicators
 {
