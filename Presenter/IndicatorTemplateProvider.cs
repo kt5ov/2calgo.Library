@@ -6,7 +6,7 @@
 
         public static string GetTemplate()
         {
-            var mainTemplate = StringResourceReader.Read(FolderPath + "Indicator/MainTemplate.c");
+            var mainTemplate = StringResourceReader.Read(FolderPath + "Indicator/IndicatorMainTemplate.c");
 
             return mainTemplate
                 .Replace("#Usings_PLACE_HOLDER#", StringResourceReader.Read(FolderPath + "Common/Usings.c"))
