@@ -43,7 +43,7 @@
 					arrowString = Price1.ToString();
 					break;
 				default:
-					arrowString = #IndicatorName_PLACE_HOLDER#.GetArrowByCode(ArrowCode);
+					arrowString = #AlgoName_PLACE_HOLDER#.GetArrowByCode(ArrowCode);
 					horizontalAlignment = HorizontalAlignment.Center;
 					break;
 			}				

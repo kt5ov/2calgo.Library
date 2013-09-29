@@ -8,10 +8,10 @@
         private readonly ChartObjects _chartObjects;
 		private readonly int _style;
 		private readonly int _bufferIndex;
-		private readonly #IndicatorName_PLACE_HOLDER# _indicator;
+		private readonly #AlgoName_PLACE_HOLDER# _indicator;
 		
         public Mq4OutputDataSeries(
-			#IndicatorName_PLACE_HOLDER# indicator, 
+			#AlgoName_PLACE_HOLDER# indicator, 
 			IndicatorDataSeries outputDataSeries, 
 			ChartObjects chartObjects, 
 			int style, 

@@ -45,17 +45,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DrawingShapeStyleExtensions.cs" />
-    <Compile Include="AlgoBuilder.cs" />
+    <Compile Include="IndicatorBuilder.cs" />
     <Compile Include="CAlgoPresenter.cs" />
     <Compile Include="IndicatorTemplateProvider.cs" />
+    <Compile Include="OuterPartsProvider.cs" />
+    <Compile Include="InnerPartsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringResourceReader.cs" />
     <Compile Include="TemplateOptimizer.cs" />
-    <Resource Include="Templates\Indicator\Mq4Double.cs" />
-    <Resource Include="Templates\Indicator\Mq4Null.cs" />
-    <Resource Include="Templates\Indicator\Mq4String.c" />
-    <Resource Include="Templates\Indicator\Mq4DoubleComparer.cs" />
-    <Resource Include="Templates\Indicator\Comparers.cs" />
+    <Resource Include="Templates\Common\OuterParts\Mq4Double.cs" />
+    <Resource Include="Templates\Common\OuterParts\Mq4Null.cs" />
+    <Resource Include="Templates\Common\OuterParts\Mq4String.c" />
+    <Resource Include="Templates\Common\OuterParts\Mq4DoubleComparer.cs" />
+    <Resource Include="Templates\Common\OuterParts\Comparers.cs" />
     <Compile Include="Words.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,136 +71,139 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Predefined variables.c" />
+    <Resource Include="Templates\Common\InnerParts\Predefined variables.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Indicator\MainTemplate.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Indicators\Custom indicators.c" />
+    <Resource Include="Templates\Common\InnerParts\Indicators\Custom indicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Debug.c" />
+    <Resource Include="Templates\Common\InnerParts\Debug.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4TimeSeries.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4TimeSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Standard constants\Constants.c" />
+    <Resource Include="Templates\Common\InnerParts\Standard constants\Constants.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Math and Trig.c" />
+    <Resource Include="Templates\Common\InnerParts\Math and Trig.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Conversion functions.c" />
+    <Resource Include="Templates\Common\InnerParts\Conversion functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Window functions.c" />
+    <Resource Include="Templates\Common\InnerParts\Window functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\String functions.c" />
+    <Resource Include="Templates\Common\InnerParts\String functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Date and Time functions.c" />
+    <Resource Include="Templates\Common\InnerParts\Date and Time functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Messages.c" />
+    <Resource Include="Templates\Common\InnerParts\Messages.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Timeseries access.c" />
+    <Resource Include="Templates\Common\InnerParts\Timeseries access.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Indicators\iIndicators.c" />
+    <Resource Include="Templates\Common\InnerParts\Indicators\iIndicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Common functions.c" />
+    <Resource Include="Templates\Common\InnerParts\Common functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Array functions.c" />
+    <Resource Include="Templates\Common\InnerParts\Array functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Object.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Object.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4ChartObjects.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4ChartObjects.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4VerticalLine.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4VerticalLine.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4HorizontalLine.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4HorizontalLine.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Text.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Text.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Label.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Label.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4TrendLine.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4TrendLine.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Rectangle.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Rectangle.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Object functions.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Object functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Indicators\CachedStandardIndicators.c" />
+    <Resource Include="Templates\Common\InnerParts\Indicators\CachedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4MarketDataSeries.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4MarketDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4OutputDataSeries.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4OutputDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Arrow.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Arrow.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\IMq4Array.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\IMq4Array.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4Array.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4Array.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\DefaultValues.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\DefaultValues.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Standard constants\Trade operations.c" />
+    <Resource Include="Templates\Common\InnerParts\Standard constants\Trade operations.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesConverter.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4ArrayToDataSeriesConverter.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\Mq4ArrayToDataSeriesConverterFactory.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4ArrayToDataSeriesConverterFactory.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Alert.cs" />
+    <Resource Include="Templates\Common\InnerParts\Alert.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Checkup.c" />
+    <Resource Include="Templates\Common\InnerParts\Checkup.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\stdlib.c" />
+    <Resource Include="Templates\Common\InnerParts\stdlib.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\DataSeriesExtensions.c" />
+    <Resource Include="Templates\Common\OuterParts\DataSeriesExtensions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\DataSeries\TimeSeriesExtensions.c" />
+    <Resource Include="Templates\Common\OuterParts\TimeSeriesExtensions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Standard constants\ObjectVisibility.c" />
+    <Resource Include="Templates\Common\InnerParts\Standard constants\ObjectVisibility.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Standard constants\Uninitialize reason codes.c" />
+    <Resource Include="Templates\Common\InnerParts\Standard constants\Uninitialize reason codes.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\ChartObjects\Mq4Fibo.c" />
+    <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Fibo.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Indicator\Global variables.c" />
+    <Resource Include="Templates\Common\InnerParts\Global variables.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Usings.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

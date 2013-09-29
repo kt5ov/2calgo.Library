@@ -2,7 +2,7 @@
 
 namespace _2calgo.Presenter
 {
-    public class AlgoBuilder
+    public class IndicatorBuilder
     {
         public string Fields { get; set; }
         public string Mq4Functions { get; set; }
@@ -24,12 +24,12 @@ namespace _2calgo.Presenter
         public readonly StringBuilder References = new StringBuilder();        
         public string IsDrawingOnChartWindow { get; set; }
 
-        public string BuildIndicator()
+        public string Build()
         {
             var code = IndicatorTemplateProvider.GetTemplate();
             code = TemplateOptimizer.RemoveUnusedCode(code, new Words(Mq4Code));
 
-            code = code.Replace("#IndicatorName_PLACE_HOLDER#", AlgoName);
+            code = code.Replace("#AlgoName_PLACE_HOLDER#", AlgoName);
             code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());
             code = code.Replace("#Initialize_buffers_PLACE_HOLDER#", InitialzeBuffers.ToString());
