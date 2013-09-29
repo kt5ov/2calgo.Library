@@ -203,7 +203,13 @@
     <Resource Include="Templates\Common\InnerParts\Global variables.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Usings.c" />
+    <Resource Include="Templates\Common\Usings.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\Mq4Colors.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\EventExtensions.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

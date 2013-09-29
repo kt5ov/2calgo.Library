@@ -17,6 +17,8 @@ namespace _2calgo.Presenter
                 "Comparers.cs",
                 "DataSeriesExtensions.c",
                 "TimeSeriesExtensions.c",
+                "Mq4Colors.c",
+                "EventExtensions.c",
             };
 
         public static string Get()
