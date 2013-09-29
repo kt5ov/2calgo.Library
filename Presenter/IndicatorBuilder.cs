@@ -17,10 +17,8 @@ namespace _2calgo.Presenter
 
         public string Build()
         {
-            var code = IndicatorTemplateProvider.GetTemplate();
-            code = TemplateOptimizer.RemoveUnusedCode(code, new Words(Mq4Code));
-
-            code = ReplaceAlgo(code);
+            var template = IndicatorTemplateProvider.GetTemplate();
+            var code = Build(template);
 
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());
             code = code.Replace("#Initialize_buffers_PLACE_HOLDER#", InitialzeBuffers.ToString());

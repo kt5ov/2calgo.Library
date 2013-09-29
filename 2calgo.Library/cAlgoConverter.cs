@@ -24,7 +24,7 @@ namespace _2calgo.Library
             var indicatorParsingResult = parser.Parse(code, algotype);
             var algo = indicatorParsingResult.Algo;
 
-            var presenter = new CAlgoPresenter();
+            var presenter = new IndicatorPresenter();
             var calgoCode = presenter.GenerateCodeFrom(algo);
 
             var compiler = new CSharpCompiler();

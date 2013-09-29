@@ -45,9 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlgoBuilder.cs" />
+    <Compile Include="AlgoPresenter.cs" />
     <Compile Include="Extensions\DrawingShapeStyleExtensions.cs" />
     <Compile Include="IndicatorBuilder.cs" />
-    <Compile Include="CAlgoPresenter.cs" />
+    <Compile Include="IndicatorPresenter.cs" />
     <Compile Include="IndicatorTemplateProvider.cs" />
     <Compile Include="OuterPartsProvider.cs" />
     <Compile Include="InnerPartsProvider.cs" />
