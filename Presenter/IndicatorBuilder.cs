@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using _2calgo.Model;
 
 namespace _2calgo.Presenter
 {
@@ -18,7 +17,7 @@ namespace _2calgo.Presenter
 
         public override string Build()
         {
-            var template = TemplateProvider.GetTemplate(AlgoType.Indicator);
+            var template = new IndicatorTemplateProvider().GetTemplate();
             var code = Build(template);
 
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());

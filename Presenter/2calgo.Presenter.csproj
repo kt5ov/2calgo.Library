@@ -49,9 +49,12 @@
     <Compile Include="Extensions\DrawingShapeStyleExtensions.cs" />
     <Compile Include="IndicatorBuilder.cs" />
     <Compile Include="IndicatorPresenter.cs" />
+    <Compile Include="IndicatorTemplateProvider.cs" />
+    <Compile Include="PartsProviders\IndicatorInnerPartsProvider.cs" />
+    <Compile Include="RobotTemplateProvider.cs" />
     <Compile Include="TemplateProvider.cs" />
-    <Compile Include="OuterPartsProvider.cs" />
-    <Compile Include="InnerPartsProvider.cs" />
+    <Compile Include="PartsProviders\OuterPartsProvider.cs" />
+    <Compile Include="PartsProviders\InnerPartsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotBuilder.cs" />
     <Compile Include="RobotPresenter.cs" />
@@ -156,7 +159,7 @@
     <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4MarketDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4OutputDataSeries.c" />
+    <Resource Include="Templates\Indicator\InnerParts\Mq4OutputDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Arrow.c" />

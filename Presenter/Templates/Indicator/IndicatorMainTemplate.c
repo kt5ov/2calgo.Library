@@ -71,6 +71,7 @@ namespace cAlgo.Indicators
     }	
 
 #InnerParts_PLACE_HOLDER#
+#IndicatorInnerParts_PLACE_HOLDER#
 	}
 
 	//Custom Indicators Place Holder

@@ -30,7 +30,6 @@ namespace cAlgo.Robots
 
     protected override void OnTick()
     {
-		#Buffers_SetCurrentIndex_PLACE_HOLDER#
 		Mq4Start();
     }
         

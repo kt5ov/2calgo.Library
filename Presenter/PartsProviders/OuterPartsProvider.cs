@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _2calgo.Presenter
+namespace _2calgo.Presenter.PartsProviders
 {
     public static class OuterPartsProvider
     {

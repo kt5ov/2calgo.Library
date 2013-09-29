@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace _2calgo.Presenter
+namespace _2calgo.Presenter.PartsProviders
 {
     public static class InnerPartsProvider
     {
@@ -57,7 +57,6 @@ namespace _2calgo.Presenter
                 ChartObjects + "/Object functions.c",
                 
                 DataSeries + "/Mq4MarketDataSeries.c",
-                DataSeries + "/Mq4OutputDataSeries.c",
                 DataSeries + "/Mq4TimeSeries.c",
                 DataSeries + "/IMq4Array.c",
                 DataSeries + "/Mq4Array.c",
