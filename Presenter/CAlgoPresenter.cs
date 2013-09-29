@@ -17,7 +17,6 @@ namespace _2calgo.Presenter
             template.Mq4Code = algo.Mq4Code;
 
             template.AlgoName = GetIndicatorName(algo.Mq4Code);
-
             foreach (var parameter in algo.Parameters)
             {
                 if (parameter.Type != "color")
