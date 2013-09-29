@@ -18,10 +18,10 @@ namespace _2calgo.Library
 
         public static ConvertionResult Convert(string code)
         {
-            var parser = new IndicatorParser();
+            var parser = new Mq4Parser();
             
             var indicatorParsingResult = parser.Parse(code);
-            var indicator = indicatorParsingResult.Indicator;
+            var indicator = indicatorParsingResult.Algo;
 
             var presenter = new IndicatorPresenter();
             var calgoCode = presenter.GenerateCodeFrom(indicator);

@@ -6,19 +6,18 @@ using _2calgo.Model;
 using _2calgo.Parser.CodeAdapter;
 using _2calgo.Parser.Errors;
 using cAlgo.API;
-using Indicator = _2calgo.Model.Indicator;
 using System;
 
 namespace _2calgo.Parser
 {
-    public class IndicatorParser
+    public class Mq4Parser
     {
-        public IndicatorParsingResult Parse(string code)
+        public ParsingResult Parse(string code)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var parsingErrors = new ParsingErrors();
 
-            var indicator = new Indicator{Mq4Code = code};
+            var algo = new Algo{Mq4Code = code};
             string[] customIndicators;
 
             code = code
@@ -39,50 +38,50 @@ namespace _2calgo.Parser
                 .AddRefModifiers()
                 .AddTypeParameterToICustom(out customIndicators);
 
-            HandleProperties(code, indicator);
-            HandleParameters(code, indicator);
-            HandleFunctions(code, indicator, parsingErrors);
-            HandleFields(code, indicator);
+            HandleProperties(code, algo);
+            HandleParameters(code, algo);
+            HandleFunctions(code, algo, parsingErrors);
+            HandleFields(code, algo);
 
-            indicator.Code.ExtractStaticVariablesToFields();
-            indicator.Code.ReplaceSimpleTypesToMq4Types();
-            indicator.Code.RenameStandardFunctions();
-            indicator.Code.AddMq4InitFunctionIfDoesNotExist();
-            indicator.CustomIndicators = customIndicators;
+            algo.Code.ExtractStaticVariablesToFields();
+            algo.Code.ReplaceSimpleTypesToMq4Types();
+            algo.Code.RenameStandardFunctions();
+            algo.Code.AddMq4InitFunctionIfDoesNotExist();
+            algo.CustomIndicators = customIndicators;
 
-            return new IndicatorParsingResult(indicator, parsingErrors.Errors);
+            return new ParsingResult(algo, parsingErrors.Errors);
         }
         
-        private void HandleFunctions(string code, Indicator indicator, ParsingErrors parsingErrors)
+        private void HandleFunctions(string code, Algo algo, ParsingErrors parsingErrors)
         {
             var withoutProperties = code.RemoveMq4Properies();
             var mq4Functions = FunctionsParser.Parse(withoutProperties).ToArray();
-            indicator.Code.Functions = mq4Functions.ToList();
-            HandleInit(indicator, mq4Functions, parsingErrors);
+            algo.Code.Functions = mq4Functions.ToList();
+            HandleInit(algo, mq4Functions, parsingErrors);
         }
 
-        private void HandleParameters(string code, Indicator indicator)
+        private void HandleParameters(string code, Algo algo)
         {
             var parameters = ParametersParser.Parse(code).ToArray();
 
-            indicator.Parameters = parameters;
+            algo.Parameters = parameters;
         }
 
-        private void HandleFields(string code, Indicator indicator)
+        private void HandleFields(string code, Algo algo)
         {
             var onlyFields = code
                 .RemoveMq4Properies()
                 .RemoveParameters()
                 .RemoveFunctions()
                 .SplitDeclarations()
-                .RemoveMq4Buffers(indicator.Buffers)
+                .RemoveMq4Buffers(algo.Buffers)
                 .RemoveReturnStatements()
                 .ReplaceArraysToMq4Arrays();
 
-            indicator.Code.FieldsDeclarations = onlyFields;
+            algo.Code.FieldsDeclarations = onlyFields;
         }
 
-        private void HandleInit(Indicator indicator, IEnumerable<Function> mq4Functions, ParsingErrors parsingErrors)
+        private void HandleInit(Algo algo, IEnumerable<Function> mq4Functions, ParsingErrors parsingErrors)
         {
             var initFunction = mq4Functions.FirstOrDefault(function => function.Name == "init");
 
@@ -91,12 +90,12 @@ namespace _2calgo.Parser
 
             var methodCalls = MethodCallsParser.Parse(initFunction.Body).ToArray();
 
-            HandleBufferIndexes(methodCalls, indicator);
-            HandleLevels(methodCalls, indicator);
-            HandleIndexStyles(methodCalls, indicator, parsingErrors);
+            HandleBufferIndexes(methodCalls, algo);
+            HandleLevels(methodCalls, algo);
+            HandleIndexStyles(methodCalls, algo, parsingErrors);
         }
 
-        private void HandleIndexStyles(MethodCall[] methodCalls, Indicator indicator, ParsingErrors parsingErrors)
+        private void HandleIndexStyles(MethodCall[] methodCalls, Algo algo, ParsingErrors parsingErrors)
         {
             var setIndexStyleCalls = methodCalls.Where(call => call.MethodName == "SetIndexStyle");
             var indexesStyles = new Dictionary<int, DrawingShapeStyle>();
@@ -115,16 +114,16 @@ namespace _2calgo.Parser
                 {
                     int width;
                     if (int.TryParse(methodCall.Parameters[3], out width))
-                        indicator.Widths[index] = width;
+                        algo.Widths[index] = width;
                 }
             }
             foreach (var keyValuePair in indexesStyles)
             {
-                indicator.Styles[keyValuePair.Key] = keyValuePair.Value;
+                algo.Styles[keyValuePair.Key] = keyValuePair.Value;
             }
         }
 
-        private void HandleBufferIndexes(IEnumerable<MethodCall> methodCalls, Indicator indicator)
+        private void HandleBufferIndexes(IEnumerable<MethodCall> methodCalls, Algo algo)
         {
             var setIndexBufferCalls = methodCalls.Where(call => call.MethodName == "SetIndexBuffer");
 
@@ -137,10 +136,10 @@ namespace _2calgo.Parser
                 indexesBuffers[index] = value;
             }
 
-            indicator.Buffers = indexesBuffers.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
+            algo.Buffers = indexesBuffers.OrderBy(pair => pair.Key).Select(pair => pair.Value).ToArray();
         }
 
-        private void HandleLevels(IEnumerable<MethodCall> methodCalls, Indicator indicator)
+        private void HandleLevels(IEnumerable<MethodCall> methodCalls, Algo algo)
         {
             var setLevelCalls = methodCalls.Where(call => call.MethodName == "SetLevelValue");
 
@@ -154,10 +153,10 @@ namespace _2calgo.Parser
             }
 
             var levelValues = levels.Select(pair => pair.Value);
-            indicator.Levels.AddRange(levelValues);
+            algo.Levels.AddRange(levelValues);
         }
 
-        private static void HandleProperties(string code, Indicator result)
+        private static void HandleProperties(string code, Algo result)
         {
             var properties = PropertiesParser.Parse(code).ToArray();
 

@@ -43,10 +43,10 @@
   <ItemGroup>
     <Compile Include="DrawingShapeStyle.cs" />
     <Compile Include="FunctionParameter.cs" />
-    <Compile Include="IndicatorCode.cs" />
+    <Compile Include="Code.cs" />
     <Compile Include="MethodCall.cs" />
     <Compile Include="Function.cs" />
-    <Compile Include="Indicator.cs" />
+    <Compile Include="Algo.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

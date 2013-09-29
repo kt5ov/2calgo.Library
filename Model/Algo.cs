@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace _2calgo.Model
 {
-    public class Indicator
+    public class Algo
     {
         public string Mq4Code { get; set; }
 
@@ -22,13 +22,13 @@ namespace _2calgo.Model
         
         public readonly int[] Widths;
 
-        public IndicatorCode Code { get; private set; }
+        public Code Code { get; private set; }
 
         public string[] CustomIndicators { get; set; }
 
-        public Indicator()
+        public Algo()
         {
-            Code = new IndicatorCode();
+            Code = new Code();
 
             Styles = new DrawingShapeStyle[8];
             Widths = new int[8];

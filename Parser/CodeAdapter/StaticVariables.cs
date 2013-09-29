@@ -9,7 +9,7 @@ namespace _2calgo.Parser.CodeAdapter
     {
         private static readonly Regex DeclarationRegex = new Regex(@"static\s+(?<declaration>[^;]+;)");
                                                                   
-        public static void ExtractStaticVariablesToFields(this IndicatorCode code)
+        public static void ExtractStaticVariablesToFields(this Code code)
         {
             foreach (var function in code.Functions)
             {

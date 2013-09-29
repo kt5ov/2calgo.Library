@@ -2,13 +2,13 @@
 
 namespace _2calgo.Model
 {
-    public class IndicatorCode
+    public class Code
     {
         public string FieldsDeclarations { get; set; }
 
         public List<Function> Functions { get; set; }
 
-        public IndicatorCode()
+        public Code()
         {
             Functions = new List<Function>();
         }

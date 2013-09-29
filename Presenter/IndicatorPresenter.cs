@@ -11,14 +11,14 @@ namespace _2calgo.Presenter
 {
     public class IndicatorPresenter
     {
-        public string GenerateCodeFrom(Indicator indicator)
+        public string GenerateCodeFrom(Algo algo)
         {
             var template = new IndicatorBuilder();
-            template.Mq4Code = indicator.Mq4Code;
+            template.Mq4Code = algo.Mq4Code;
 
-            template.IndicatorName = GetIndicatorName(indicator.Mq4Code);
+            template.IndicatorName = GetIndicatorName(algo.Mq4Code);
 
-            foreach (var parameter in indicator.Parameters)
+            foreach (var parameter in algo.Parameters)
             {
                 if (parameter.Type != "color")
                 {
@@ -34,49 +34,49 @@ namespace _2calgo.Presenter
                     + "_backfield = " + parameter.Name + "_parameter; return " + parameter.Name + "_backfield;	} set { " + parameter.Name + "_backfield = value; } }");
                 template.Parameters.AppendLine();
             }
-            template.ColorParameters.AppendFormat("int indicator_buffers = {0};\n", indicator.BuffersCount);
+            template.ColorParameters.AppendFormat("int indicator_buffers = {0};\n", algo.BuffersCount);
 
-            for (var index = 0; index < indicator.Colors.Length; index++)
+            for (var index = 0; index < algo.Colors.Length; index++)
             {
-                if (indicator.Colors[index] != null)
-                    template.ColorParameters.AppendFormat("int indicator_color{0} = {1};\n", index + 1, indicator.Colors[index]);
+                if (algo.Colors[index] != null)
+                    template.ColorParameters.AppendFormat("int indicator_color{0} = {1};\n", index + 1, algo.Colors[index]);
             }
-            for (var index = 0; index < indicator.Buffers.Length; index++)
+            for (var index = 0; index < algo.Buffers.Length; index++)
             {
-                var buffer = indicator.Buffers[index];
+                var buffer = algo.Buffers[index];
 
-                AddLineDeclaration(indicator, template, index, buffer);
+                AddLineDeclaration(algo, template, index, buffer);
                 
                 template.InvertedBuffersDeclarations.AppendFormat("private Mq4OutputDataSeries {0};\n", buffer);
                 template.BuffersSetCurrentIndex.AppendFormat("{0}.SetCurrentIndex(index);\n", buffer);
                 template.InitialzeBuffers.AppendFormat("if ({0}_AlgoOutputDataSeries == null) {0}_AlgoOutputDataSeries = CreateDataSeries();\n", buffer);
 
-                var style = indicator.Styles[index];
-                if (style != DrawingShapeStyle.Arrow && style != DrawingShapeStyle.Histogram && !IsLineVisible(indicator, index))
+                var style = algo.Styles[index];
+                if (style != DrawingShapeStyle.Arrow && style != DrawingShapeStyle.Histogram && !IsLineVisible(algo, index))
                     style =  DrawingShapeStyle.None;
                 
-                var color = indicator.Colors[index] != null ? "Colors." + indicator.Colors[index] : "null";
-                var lineWidth = indicator.Widths[index];
+                var color = algo.Colors[index] != null ? "Colors." + algo.Colors[index] : "null";
+                var lineWidth = algo.Widths[index];
 
                 template.InitialzeBuffers.AppendFormat("{0} = new Mq4OutputDataSeries(this, {0}_AlgoOutputDataSeries, ChartObjects, {1}, {2}, () => CreateDataSeries(), {3}, {4});\n", buffer, (int)style, index, lineWidth, color);
                 template.InitialzeBuffers.AppendFormat("AllBuffers.Add({0});\n", buffer);
             }
 
-            template.Fields = indicator.Code.FieldsDeclarations;
-            template.Levels = string.Join(", ", indicator.Levels);
-            for (var i = 0; i < indicator.Levels.Count; i++)
+            template.Fields = algo.Code.FieldsDeclarations;
+            template.Levels = string.Join(", ", algo.Levels);
+            for (var i = 0; i < algo.Levels.Count; i++)
             {
                 template.LevelParameters.AppendLine(string.Format("Mq4Double indicator_level{0} = {1};", i + 1,
-                                                                  indicator.Levels[i]));
+                                                                  algo.Levels[i]));
             }
-            for (var i = 0; i < indicator.Widths.Length; i++)
+            for (var i = 0; i < algo.Widths.Length; i++)
             {
                 template.WidthParameters.AppendLine(string.Format("Mq4Double indicator_width{0} = {1};", i + 1,
-                                                                  indicator.Widths[i]));
+                                                                  algo.Widths[i]));
             }
-            template.IsDrawingOnChartWindow = indicator.IsDrawingOnChartWindow ? "true" : "false";
-            template.Mq4Functions = GetFunctions(indicator.Code.Functions);
-            foreach (var customIndicator in indicator.CustomIndicators)
+            template.IsDrawingOnChartWindow = algo.IsDrawingOnChartWindow ? "true" : "false";
+            template.Mq4Functions = GetFunctions(algo.Code.Functions);
+            foreach (var customIndicator in algo.CustomIndicators)
             {
                 template.References.AppendLine(string.Format("//#reference: {0}.algo", customIndicator));
             }
@@ -130,17 +130,17 @@ namespace _2calgo.Presenter
             return parameter;
         }
 
-        private static void AddLineDeclaration(Indicator indicator, IndicatorBuilder template, int bufferIndex, string bufferName)
+        private static void AddLineDeclaration(Algo algo, IndicatorBuilder template, int bufferIndex, string bufferName)
         {
-            if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None && IsLineVisible(indicator, bufferIndex))
+            if (algo.Styles[bufferIndex] != DrawingShapeStyle.None && IsLineVisible(algo, bufferIndex))
             {
                 var colorPart = string.Empty;
-                if (indicator.Colors[bufferIndex] != null)
-                    colorPart = ", Color = Colors." + indicator.Colors[bufferIndex];
+                if (algo.Colors[bufferIndex] != null)
+                    colorPart = ", Color = Colors." + algo.Colors[bufferIndex];
 
                 var plotTypePart = string.Empty;
-                if (indicator.Styles[bufferIndex] != DrawingShapeStyle.None)
-                    plotTypePart = ", PlotType = PlotType." + indicator.Styles[bufferIndex].ToPlotTypeString();
+                if (algo.Styles[bufferIndex] != DrawingShapeStyle.None)
+                    plotTypePart = ", PlotType = PlotType." + algo.Styles[bufferIndex].ToPlotTypeString();
 
                 template.LinesDeclarations.AppendFormat("[Output(\"{0}\"{1}{2})]\n", bufferName, colorPart, plotTypePart);
             }
@@ -150,11 +150,11 @@ namespace _2calgo.Presenter
             template.InitialzeAllOutputDataSeries.AppendLine(string.Format("AllOutputDataSeries.Add({0}_AlgoOutputDataSeries);", bufferName));
         }
 
-        private static bool IsLineVisible(Indicator indicator, int bufferIndex)
+        private static bool IsLineVisible(Algo algo, int bufferIndex)
         {
-            return indicator.Colors[bufferIndex] != null 
-                && indicator.Styles[bufferIndex] != DrawingShapeStyle.Arrow 
-                && !(indicator.IsDrawingOnChartWindow && indicator.Styles[bufferIndex] == DrawingShapeStyle.Histogram);
+            return algo.Colors[bufferIndex] != null 
+                && algo.Styles[bufferIndex] != DrawingShapeStyle.Arrow 
+                && !(algo.IsDrawingOnChartWindow && algo.Styles[bufferIndex] == DrawingShapeStyle.Histogram);
         }
     }
 }

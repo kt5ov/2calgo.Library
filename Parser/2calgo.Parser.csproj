@@ -80,13 +80,13 @@
     <Compile Include="Errors\ParsingErrorsScaner.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FunctionsParser.cs" />
-    <Compile Include="IndicatorParsingResult.cs" />
+    <Compile Include="ParsingResult.cs" />
     <Compile Include="InnerStructures\StringStructure.cs" />
     <Compile Include="MethodCallsParser.cs" />
     <Compile Include="ParametersParser.cs" />
     <Compile Include="PropertiesParser.cs" />
     <Compile Include="Errors\ParsingErrors.cs" />
-    <Compile Include="IndicatorParser.cs" />
+    <Compile Include="Mq4Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

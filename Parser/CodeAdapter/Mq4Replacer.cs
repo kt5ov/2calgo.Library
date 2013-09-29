@@ -25,10 +25,10 @@ namespace _2calgo.Parser.CodeAdapter
                 .ReplaceType("string", "Mq4String");
         }
 
-        public static void ReplaceSimpleTypesToMq4Types(this IndicatorCode indicatorCode)
+        public static void ReplaceSimpleTypesToMq4Types(this Code code)
         {
-            indicatorCode.FieldsDeclarations = indicatorCode.FieldsDeclarations.ReplaceSimpleTypesToMq4Types();
-            foreach (var function in indicatorCode.Functions)
+            code.FieldsDeclarations = code.FieldsDeclarations.ReplaceSimpleTypesToMq4Types();
+            foreach (var function in code.Functions)
             {
                 function.ReturnType = function.ReturnType.ReplaceSimpleTypesToMq4Types();
                 function.Body = function.Body.ReplaceSimpleTypesToMq4Types();
@@ -56,19 +56,19 @@ namespace _2calgo.Parser.CodeAdapter
             }
         }
 
-        public static void AddMq4InitFunctionIfDoesNotExist(this IndicatorCode indicatorCode)
+        public static void AddMq4InitFunctionIfDoesNotExist(this Code code)
         {
-            if (!indicatorCode.Functions.Any(f => f.Name == "Mq4Init"))
+            if (!code.Functions.Any(f => f.Name == "Mq4Init"))
             {
-                indicatorCode.Functions.Add(new Function("void", "Mq4Init", new FunctionParameter[0], string.Empty));
+                code.Functions.Add(new Function("void", "Mq4Init", new FunctionParameter[0], string.Empty));
             }
         }
 
-        public static void RenameStandardFunctions(this IndicatorCode indicatorCode)
+        public static void RenameStandardFunctions(this Code code)
         {
             var startInvocationRegex = new Regex(@"(?<!\w)start\s*\(\s*\)");
             var initInvocationRegex = new Regex(@"(?<!\w)init\s*\(\s*\)");
-            foreach (var function in indicatorCode.Functions)
+            foreach (var function in code.Functions)
             {
                 switch (function.Name)
                 {
