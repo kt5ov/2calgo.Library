@@ -18,6 +18,7 @@ namespace _2calgo.Presenter
 #if DEBUG
                 "Debug.c",
 #endif
+                "Initialize.c",
                 "Predefined variables.c",
                 "Math and Trig.c",
                 "Conversion functions.c",
