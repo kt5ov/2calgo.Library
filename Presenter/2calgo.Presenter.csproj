@@ -49,10 +49,12 @@
     <Compile Include="Extensions\DrawingShapeStyleExtensions.cs" />
     <Compile Include="IndicatorBuilder.cs" />
     <Compile Include="IndicatorPresenter.cs" />
-    <Compile Include="IndicatorTemplateProvider.cs" />
+    <Compile Include="TemplateProvider.cs" />
     <Compile Include="OuterPartsProvider.cs" />
     <Compile Include="InnerPartsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RobotBuilder.cs" />
+    <Compile Include="RobotPresenter.cs" />
     <Compile Include="StringResourceReader.cs" />
     <Compile Include="TemplateOptimizer.cs" />
     <Resource Include="Templates\Common\OuterParts\Mq4Double.cs" />

@@ -2,7 +2,7 @@
 
 namespace _2calgo.Presenter
 {
-    public class AlgoBuilder
+    public abstract class AlgoBuilder
     {
         public readonly StringBuilder Parameters = new StringBuilder();
         public readonly StringBuilder DebugActions = new StringBuilder();
@@ -26,5 +26,7 @@ namespace _2calgo.Presenter
             code = code.Replace("#References_PLACE_HOLDER#", References.ToString());
             return code;
         }
+
+        public abstract string Build();
     }
 }

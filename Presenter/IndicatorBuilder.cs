@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using _2calgo.Model;
 
 namespace _2calgo.Presenter
 {
@@ -15,9 +16,9 @@ namespace _2calgo.Presenter
         public readonly StringBuilder WidthParameters = new StringBuilder();
         public string IsDrawingOnChartWindow { get; set; }
 
-        public string Build()
+        public override string Build()
         {
-            var template = IndicatorTemplateProvider.GetTemplate();
+            var template = TemplateProvider.GetTemplate(AlgoType.Indicator);
             var code = Build(template);
 
             code = code.Replace("#Lines_declarations_PLACE_HOLDER#", LinesDeclarations.ToString());

@@ -8,11 +8,11 @@ using _2calgo.Parser;
 
 namespace _2calgo.Presenter
 {
-    public class AlgoPresenter
+    public abstract class AlgoPresenter
     {
         private static readonly Regex Mq4NameRegex = new Regex(@"(?<name>.*)\.mq4");
 
-        protected void InitializeAlgoBuilder(Algo algo, AlgoBuilder builder)
+        protected static void InitializeAlgoBuilder(Algo algo, AlgoBuilder builder)
         {
             builder.Mq4Code = algo.Mq4Code;
             builder.AlgoName = GetMq4Name(algo.Mq4Code);
@@ -69,5 +69,7 @@ namespace _2calgo.Presenter
 
             return parameter;
         }
+
+        public abstract string GenerateCodeFrom(Algo algo);
     }
 }

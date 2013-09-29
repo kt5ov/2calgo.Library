@@ -5,7 +5,7 @@ namespace _2calgo.Presenter
 {
     public class IndicatorPresenter : AlgoPresenter
     {
-        public string GenerateCodeFrom(Algo algo)
+        public override string GenerateCodeFrom(Algo algo)
         {
             var builder = new IndicatorBuilder();
             InitializeAlgoBuilder(algo, builder);

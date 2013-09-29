@@ -24,7 +24,7 @@ namespace _2calgo.Library
             var indicatorParsingResult = parser.Parse(code, algotype);
             var algo = indicatorParsingResult.Algo;
 
-            var presenter = new IndicatorPresenter();
+            var presenter = CreatePresenter(algotype);
             var calgoCode = presenter.GenerateCodeFrom(algo);
 
             var compiler = new CSharpCompiler();
@@ -46,6 +46,21 @@ namespace _2calgo.Library
             }
 
             return new ConvertionResult(calgoCode, indicatorParsingResult.ParsingErrors, compilerErrors);
+        }
+
+        private static AlgoPresenter CreatePresenter(AlgoType algotype)
+        {
+            AlgoPresenter presenter;
+            switch (algotype)
+            {
+                case AlgoType.Indicator:
+                    presenter = new IndicatorPresenter();
+                    break;
+                default:
+                    presenter = new RobotPresenter();
+                    break;
+            }
+            return presenter;
         }
     }
 }
