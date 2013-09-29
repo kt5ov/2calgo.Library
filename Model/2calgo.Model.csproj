@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlgoType.cs" />
     <Compile Include="DrawingShapeStyle.cs" />
     <Compile Include="FunctionParameter.cs" />
     <Compile Include="Code.cs" />

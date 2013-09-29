@@ -12,7 +12,7 @@ namespace _2calgo.Parser
 {
     public class Mq4Parser
     {
-        public ParsingResult Parse(string code)
+        public ParsingResult Parse(string code, AlgoType algotype)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var parsingErrors = new ParsingErrors();
@@ -43,6 +43,7 @@ namespace _2calgo.Parser
             HandleFunctions(code, algo, parsingErrors);
             HandleFields(code, algo);
 
+            algo.AlgoType = algotype;
             algo.Code.ExtractStaticVariablesToFields();
             algo.Code.ReplaceSimpleTypesToMq4Types();
             algo.Code.RenameStandardFunctions();
@@ -51,7 +52,7 @@ namespace _2calgo.Parser
 
             return new ParsingResult(algo, parsingErrors.Errors);
         }
-        
+
         private void HandleFunctions(string code, Algo algo, ParsingErrors parsingErrors)
         {
             var withoutProperties = code.RemoveMq4Properies();
@@ -60,14 +61,14 @@ namespace _2calgo.Parser
             HandleInit(algo, mq4Functions, parsingErrors);
         }
 
-        private void HandleParameters(string code, Algo algo)
+        private static void HandleParameters(string code, Algo algo)
         {
             var parameters = ParametersParser.Parse(code).ToArray();
 
             algo.Parameters = parameters;
         }
 
-        private void HandleFields(string code, Algo algo)
+        private static void HandleFields(string code, Algo algo)
         {
             var onlyFields = code
                 .RemoveMq4Properies()
@@ -95,7 +96,7 @@ namespace _2calgo.Parser
             HandleIndexStyles(methodCalls, algo, parsingErrors);
         }
 
-        private void HandleIndexStyles(MethodCall[] methodCalls, Algo algo, ParsingErrors parsingErrors)
+        private static void HandleIndexStyles(MethodCall[] methodCalls, Algo algo, ParsingErrors parsingErrors)
         {
             var setIndexStyleCalls = methodCalls.Where(call => call.MethodName == "SetIndexStyle");
             var indexesStyles = new Dictionary<int, DrawingShapeStyle>();

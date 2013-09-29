@@ -9,14 +9,14 @@ using _2calgo.Presenter.Extensions;
 
 namespace _2calgo.Presenter
 {
-    public class IndicatorPresenter
+    public class CAlgoPresenter
     {
         public string GenerateCodeFrom(Algo algo)
         {
-            var template = new IndicatorBuilder();
+            var template = new AlgoBuilder();
             template.Mq4Code = algo.Mq4Code;
 
-            template.IndicatorName = GetIndicatorName(algo.Mq4Code);
+            template.AlgoName = GetIndicatorName(algo.Mq4Code);
 
             foreach (var parameter in algo.Parameters)
             {
@@ -130,7 +130,7 @@ namespace _2calgo.Presenter
             return parameter;
         }
 
-        private static void AddLineDeclaration(Algo algo, IndicatorBuilder template, int bufferIndex, string bufferName)
+        private static void AddLineDeclaration(Algo algo, AlgoBuilder template, int bufferIndex, string bufferName)
         {
             if (algo.Styles[bufferIndex] != DrawingShapeStyle.None && IsLineVisible(algo, bufferIndex))
             {

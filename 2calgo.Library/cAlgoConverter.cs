@@ -1,5 +1,6 @@
 ﻿using System.CodeDom.Compiler;
 using System.IO;
+using _2calgo.Model;
 using _2calgo.Parser;
 using _2calgo.Presenter;
 
@@ -16,15 +17,15 @@ namespace _2calgo.Library
             }
         ";
 
-        public static ConvertionResult Convert(string code)
+        public static ConvertionResult Convert(string code, AlgoType algotype)
         {
             var parser = new Mq4Parser();
             
-            var indicatorParsingResult = parser.Parse(code);
-            var indicator = indicatorParsingResult.Algo;
+            var indicatorParsingResult = parser.Parse(code, algotype);
+            var algo = indicatorParsingResult.Algo;
 
-            var presenter = new IndicatorPresenter();
-            var calgoCode = presenter.GenerateCodeFrom(indicator);
+            var presenter = new CAlgoPresenter();
+            var calgoCode = presenter.GenerateCodeFrom(algo);
 
             var compiler = new CSharpCompiler();
             var fileName = Path.GetTempFileName();
@@ -33,7 +34,7 @@ namespace _2calgo.Library
             {
                 var codeToCompile = calgoCode;
                 var indexToInsert = codeToCompile.IndexOf("//Custom Indicators Place Holder");
-                foreach (var customIndicatorName in indicator.CustomIndicators)
+                foreach (var customIndicatorName in algo.CustomIndicators)
                 {
                     codeToCompile = codeToCompile.Insert(indexToInsert, CustomIndicatorTemplate.Replace("CustomIndicatorName", customIndicatorName));
                 }

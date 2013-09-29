@@ -6,6 +6,8 @@ namespace _2calgo.Model
     {
         public string Mq4Code { get; set; }
 
+        public AlgoType AlgoType { get; set; }
+
         public bool IsDrawingOnChartWindow { get; set; }
 
         public int BuffersCount { get; set; }
