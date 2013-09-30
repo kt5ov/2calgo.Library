@@ -26,19 +26,35 @@ namespace cAlgo.Robots
 		#DebugActions_PLACE_HOLDER#           
 
 		Mq4Init();
+
+		var mq4Thread = new Thread(Mq4ThreadStart);
+		mq4Thread.Start();
     }
+
+    AutoResetEvent _mq4Start = new AutoResetEvent(false);
+    AutoResetEvent _mq4Finished = new AutoResetEvent(false);
 
     protected override void OnTick()
     {
-		try
-		{
-			Mq4Start();
-		}
-		catch(Exception e)
-		{
-			#HandleException_PLACE_HOLDER#
-			throw;
-		}
+    	_mq4Start.Set();
+    	_mq4Finished.WaitOne();		
+    }
+
+    private void Mq4ThreadStart()
+    {
+    	while (_mq4Start.WaitOne())
+    	{
+			try
+			{
+				Mq4Start();
+			}
+			catch(Exception e)
+			{
+				#HandleException_PLACE_HOLDER#
+				throw;
+			}
+    		_mq4Finished.Set();
+    	}
     }
 
 	private IndicatorDataSeries CreateDataSeries()
