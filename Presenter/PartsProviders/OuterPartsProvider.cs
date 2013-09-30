@@ -19,6 +19,7 @@ namespace _2calgo.Presenter.PartsProviders
                 "TimeSeriesExtensions.c",
                 "Mq4Colors.c",
                 "EventExtensions.c",
+                "Mq4LineStyles.c",
             };
 
         public static string Get()

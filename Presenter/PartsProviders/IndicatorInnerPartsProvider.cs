@@ -11,6 +11,8 @@ namespace _2calgo.Presenter.PartsProviders
         private static readonly IEnumerable<string> InnerParts = new[]
             {
                 "Mq4OutputDataSeries.c",
+                "Custom indicators.c",
+
             };
 
         public static string Get()

@@ -34,10 +34,10 @@ namespace _2calgo.Presenter.PartsProviders
                 "stdlib.c",
                 "Global variables.c",
                 "Series.c",
+                "Arrows.c",
 
                 Indicators + "/iIndicators.c",
                 Indicators + "/CachedStandardIndicators.c",
-                Indicators + "/Custom indicators.c",
 
                 StandardConstants + "/Constants.c",
                 StandardConstants + "/Trade operations.c",

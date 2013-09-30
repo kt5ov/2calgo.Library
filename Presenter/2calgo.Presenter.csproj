@@ -84,7 +84,7 @@
     <Resource Include="Templates\Indicator\IndicatorMainTemplate.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\Indicators\Custom indicators.c" />
+    <Resource Include="Templates\Indicator\InnerParts\Custom indicators.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Debug.c" />
@@ -226,6 +226,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Robot\RobotMainTemplate.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\Mq4LineStyles.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\InnerParts\Arrows.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
