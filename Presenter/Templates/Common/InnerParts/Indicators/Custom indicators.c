@@ -19,12 +19,6 @@
 	[Conditional("SetLevelStyle")]	
 	void SetLevelStyle(int drawStyle, int width, int clr = CLR_NONE) { }
 
-	[Conditional("SetIndexBuffer")]
-    bool SetIndexBuffer(int index, Mq4OutputDataSeries dataSeries) 
-    {
-      return true;
-    }
-
 	[Conditional("IndicatorShortName")]
     void IndicatorShortName(Mq4String name) { }
 

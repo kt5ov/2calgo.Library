@@ -48,12 +48,6 @@ int ArrayResize<T>(Mq4Array<T> array, int new_size)
 	array.Resize(new_size);
 	return new_size;
 }
-
-[Conditional("ArrayResize")]
-int ArrayResize(Mq4OutputDataSeries array, int new_size)
-{
-	return array.Length;
-}
 		
 [Conditional("ArraySize")]
 int ArraySize<T>(IMq4Array<T> array)
@@ -62,19 +56,12 @@ int ArraySize<T>(IMq4Array<T> array)
 }
 
 [Conditional("ArraySetAsSeries")]
-//{
 bool ArraySetAsSeries<T>(Mq4Array<T> mq4Array, bool value)
 {
 	var result = mq4Array.IsInverted;
 	mq4Array.IsInverted = value;
 	return result;
 }
-
-bool ArraySetAsSeries(Mq4OutputDataSeries mq4OutputDataSeries, bool value)
-{
-	return true;
-}
-//}
 	
 [Conditional("ArrayCopySeries")]
 int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, Mq4String symbol = null, int timeframe = 0)
