@@ -30,20 +30,21 @@ namespace cAlgo.Robots
 
     protected override void OnTick()
     {
-		Mq4Start();
-    }
-        
-    public override void Calculate(int index)
-    {
 		try
 		{
+			Mq4Start();
 		}
 		catch(Exception e)
 		{
 			#HandleException_PLACE_HOLDER#
 			throw;
 		}
-    }	
+    }
+
+	private IndicatorDataSeries CreateDataSeries()
+	{
+		return null;
+	}
 
 #InnerParts_PLACE_HOLDER#
 	}
@@ -52,22 +53,4 @@ namespace cAlgo.Robots
 
 #OuterParts_PLACE_HOLDER#
 
-	static class Mq4LineStyles
-    {
-      public static LineStyle ToLineStyle(int style)
-      {
-        switch (style)
-        {
-          case 1: 
-            return LineStyle.Lines;
-          case 2: 
-            return LineStyle.Dots;
-          case 3: 
-          case 4: 
-            return LineStyle.LinesDots;
-          default:
-            return LineStyle.Solid;
-        }
-      }
-    }
 }
