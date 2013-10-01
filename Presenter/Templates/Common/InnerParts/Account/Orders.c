@@ -11,6 +11,24 @@ private int GetTicket(PendingOrder pendingOrder)
 	return pendingOrder.Id + (int)1e8;
 }
 
+private int GetMagicNumber(string label)
+{
+	int magicNumber;
+	if (int.TryParse(label, out magicNumber))
+		return magicNumber;
+	return 0;
+}
+
+private int GetMagicNumber(Position position)
+{
+	return GetMagicNumber(position.Label);
+}
+
+private int GetMagicNumber(PendingOrder pendingOrder)
+{
+	return GetMagicNumber(pendingOrder.Label);
+}
+
 [Conditional("OrdersTotal")]
 Mq4Double OrdersTotal()
 {
@@ -39,6 +57,7 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 	return true;
 }
 
+[Conditional("OrderLots")]
 Mq4Double OrderLots()
 {
 	if (_currentOrder == null)
