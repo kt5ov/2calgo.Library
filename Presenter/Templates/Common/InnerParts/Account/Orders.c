@@ -29,6 +29,15 @@ private int GetMagicNumber(PendingOrder pendingOrder)
 	return GetMagicNumber(pendingOrder.Label);
 }
 
+private int GetMagicNumber(object order)
+{
+	if (order is Position)
+		return GetMagicNumber((Position)order);
+	if (order is PendingOrder)
+		return GetMagicNumber((PendingOrder)order);
+	return 0;
+}
+
 [Conditional("OrdersTotal")]
 Mq4Double OrdersTotal()
 {
@@ -72,4 +81,13 @@ Mq4Double OrderLots()
 		volume = ((PendingOrder)_currentOrder).Volume;
 
 	return volume / 100000;
+}
+
+[Conditional("OrderMagicNumber")]
+Mq4Double OrderMagicNumber()
+{
+	if (_currentOrder == null)
+		return 0;
+
+	return GetMagicNumber(_currentOrder);
 }
