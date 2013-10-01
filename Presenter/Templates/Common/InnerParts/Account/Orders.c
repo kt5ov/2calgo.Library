@@ -1,6 +1,15 @@
 const int MODE_TRADES = 0;
 const int SELECT_BY_POS = 0;
 
+private int GetTicket(Position position)
+{
+	return position.Id + (int)1e8;
+}
+
+private int GetTicket(PendingOrder pendingOrder)
+{
+	return pendingOrder.Id + (int)1e8;
+}
 
 [Conditional("OrdersTotal")]
 Mq4Double OrdersTotal()

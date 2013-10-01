@@ -34,13 +34,22 @@ namespace cAlgo.Robots
     AutoResetEvent _mq4Start = new AutoResetEvent(false);
     AutoResetEvent _mq4Finished = new AutoResetEvent(false);
     DesiredTrade _desiredTrade;
+    Position _positionToProtect;
+    Position _lastOpenedPosition;
 
     protected override void OnTick()
     {
-        if (_desiredTrade != null)
-            return;
-    	
-        ExecuteMq4Code();
+        if (_desiredTrade != null && _desiredTrade.IsPosition 
+            && _positionToProtect != null 
+            && (!_desiredTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
+            && (!_desiredTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
+        {
+            _positionToProtect = null;
+            _desiredTrade = null;
+            ExecuteMq4Code();
+        }
+        else if (_desiredTrade == null)
+            ExecuteMq4Code();
     }
 
     private void ExecuteMq4Code()
@@ -51,10 +60,20 @@ namespace cAlgo.Robots
 
     protected override void OnPositionOpened(Position openedPosition)
     {
-        if (_desiredTrade != null && _desiredTrade.IsPosition == true)
+        _lastOpenedPosition = openedPosition;
+        if (_desiredTrade != null
+            && _desiredTrade.IsPosition == true)
         {
-            _desiredTrade = null;
-            ExecuteMq4Code();
+            if (_desiredTrade.StopLoss == null && _desiredTrade.TakeProfit == null)
+            {
+                _desiredTrade = null;
+                ExecuteMq4Code();
+            }
+            else
+            {
+                _positionToProtect = openedPosition;
+                Trade.ModifyPosition(openedPosition, _desiredTrade.StopLoss, _desiredTrade.TakeProfit);
+            }
         }
     }
 
