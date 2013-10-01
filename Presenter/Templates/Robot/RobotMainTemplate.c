@@ -33,11 +33,29 @@ namespace cAlgo.Robots
 
     AutoResetEvent _mq4Start = new AutoResetEvent(false);
     AutoResetEvent _mq4Finished = new AutoResetEvent(false);
+    DesiredTrade _desiredTrade;
 
     protected override void OnTick()
     {
-    	_mq4Start.Set();
-    	_mq4Finished.WaitOne();		
+        if (_desiredTrade != null)
+            return;
+    	
+        ExecuteMq4Code();
+    }
+
+    private void ExecuteMq4Code()
+    {
+        _mq4Start.Set();
+        _mq4Finished.WaitOne();             
+    }
+
+    protected override void OnPositionOpened(Position openedPosition)
+    {
+        if (_desiredTrade != null && _desiredTrade.IsPosition == true)
+        {
+            _desiredTrade = null;
+            ExecuteMq4Code();
+        }
     }
 
     private void Mq4ThreadStart()
@@ -51,7 +69,6 @@ namespace cAlgo.Robots
 			catch(Exception e)
 			{
 				#HandleException_PLACE_HOLDER#
-				throw;
 			}
     		_mq4Finished.Set();
     	}
@@ -63,6 +80,8 @@ namespace cAlgo.Robots
 	}
 
 #InnerParts_PLACE_HOLDER#
+#RobotInnerParts_PLACE_HOLDER#
+
 	}
 
 	//Custom Indicators Place Holder

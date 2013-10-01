@@ -51,6 +51,7 @@
     <Compile Include="IndicatorPresenter.cs" />
     <Compile Include="IndicatorTemplateProvider.cs" />
     <Compile Include="PartsProviders\IndicatorInnerPartsProvider.cs" />
+    <Compile Include="PartsProviders\RobotInnerPartsProvider.cs" />
     <Compile Include="RobotTemplateProvider.cs" />
     <Compile Include="TemplateProvider.cs" />
     <Compile Include="PartsProviders\OuterPartsProvider.cs" />
@@ -235,6 +236,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Account\Orders.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Robot\InnerParts\Trading functions.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
