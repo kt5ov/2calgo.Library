@@ -18,17 +18,20 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
         case OP_SELL:
             var tradeType = cmd == OP_BUY ? TradeType.Buy : TradeType.Sell;
             var volumeInMoney = volume * 100000;
+            var slippageInPrice = symbolObject.PointSize * slippage;
+            var slippageInPips = (int)Math.Round((double)slippageInPrice / symbolObject.PipSize);
 
             var request = new MarketOrderRequest(tradeType, volumeInMoney);            
             request.Label = magic.ToString();
             request.Symbol = symbolObject;
+            request.SlippagePips = slippageInPips;
             Trade.Send(request);
 
             _desiredTrade = new DesiredTrade 
             { 
                 IsPosition = true, 
                 StopLoss = stoploss == 0 ? (double?)null : (double)stoploss, 
-                TakeProfit = takeprofit == 0 ? (double?)null : (double)takeprofit,
+                TakeProfit = takeprofit == 0 ? (double?)null : (double)takeprofit,                
             };
             _mq4Finished.Set();     
             _mq4Start.WaitOne();
