@@ -36,6 +36,7 @@ namespace cAlgo.Robots
     DesiredTrade _desiredTrade;
     Position _positionToProtect;
     Position _lastOpenedPosition;
+    PendingOrder _lastPlacedOrder;
 
     protected override void OnTick()
     {
@@ -75,6 +76,13 @@ namespace cAlgo.Robots
                 Trade.ModifyPosition(openedPosition, _desiredTrade.StopLoss, _desiredTrade.TakeProfit);
             }
         }
+    }
+
+    protected override void OnPendingOrderCreated(PendingOrder newOrder)
+    {
+        _lastPlacedOrder = newOrder;
+        _desiredTrade = null;
+        ExecuteMq4Code();
     }
 
     private void Mq4ThreadStart()
