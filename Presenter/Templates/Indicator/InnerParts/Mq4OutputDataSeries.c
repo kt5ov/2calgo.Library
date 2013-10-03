@@ -4,7 +4,7 @@ class Mq4OutputDataSeries : IMq4Array<Mq4Double>
     private readonly IndicatorDataSeries _originalValues;
     private int _currentIndex;
     private int _shift;
-    private double _emptyValue = double.NaN;
+    private double _emptyValue = EMPTY_VALUE;
     private readonly ChartObjects _chartObjects;
 	private readonly int _style;
 	private readonly int _bufferIndex;
@@ -61,10 +61,12 @@ class Mq4OutputDataSeries : IMq4Array<Mq4Double>
         get 
         { 
             var indexToGetFrom = _currentIndex - index + _shift;
-            if (indexToGetFrom < 0 || indexToGetFrom >= _originalValues.Count)
-                return 0;
+            if (indexToGetFrom < 0 || indexToGetFrom > _currentIndex)
+                    return 0;
+            if (indexToGetFrom >= _originalValues.Count)
+                return _emptyValue;
 
-            return _originalValues[_currentIndex - index + _shift];
+            return _originalValues[indexToGetFrom];
         }
         set 
         { 
