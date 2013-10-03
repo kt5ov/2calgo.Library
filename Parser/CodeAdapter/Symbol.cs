@@ -16,7 +16,7 @@ namespace _2calgo.Parser.CodeAdapter
 
                  var symbolCall = match.Groups["symbol"];
                  code = code.Remove(symbolCall.Index, symbolCall.Length);
-                 code = code.Insert(symbolCall.Index, "\"\"");
+                 code = code.Insert(symbolCall.Index, "Symbol.Code");
              } while (true);
              return code;
          }

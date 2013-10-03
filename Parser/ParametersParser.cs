@@ -17,7 +17,7 @@ namespace _2calgo.Parser
         {
             foreach (var match in ParameterRegex.Matches(code).OfType<Match>())
             {
-                var type = match.Groups["type"].Value.ReplaceSimpleTypesToMq4Types();
+                var type = match.Groups["type"].Value;
                 
                 var parametersPart = GetParametersPart(code, match.Index + match.Length);
                 var parameters = parametersPart.SplitByComma();
@@ -32,7 +32,7 @@ namespace _2calgo.Parser
                     }
                     var name = parameter.Substring(0, equalsPosition).Trim();
                     var value = parameter.Substring(equalsPosition + 1).Trim();
-                    yield return new Parameter(type.ToPublicType(), name, value, type);
+                    yield return new Parameter(type.ToPublicType(), name, value, type.ReplaceSimpleTypesToMq4Types());
                 }
             }
         }

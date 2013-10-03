@@ -294,7 +294,7 @@ class Mq4ChartObjects
 		return mq4Object as T;
 	}
 
-	[Conditional("ObjectGetValueByShift")] 
+	[Conditional("ObjectGetValueByShift", "Mq4TrendLine")] 
 	public double ObjectGetValueByShift(string name, int shift)
 	{
 		var mq4TrendLine = GetObject<Mq4TrendLine>(name);

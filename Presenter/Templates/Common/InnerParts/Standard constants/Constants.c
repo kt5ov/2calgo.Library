@@ -4,7 +4,7 @@ const bool TRUE = true;
 const bool FALSE = false;                
 Mq4Null NULL;
 const int EMPTY = -1;
-const double EMPTY_VALUE = double.NaN;
+const double EMPTY_VALUE = 2147483647;
 const int WHOLE_ARRAY = 0;
 
 const int MODE_SMA = 0; //Simple moving average

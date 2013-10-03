@@ -83,6 +83,7 @@ abstract class Mq4Object : IDisposable
 			{OBJPROP_COLOR, new Mq4Double(CLR_NONE)},
             {OBJPROP_RAY, new Mq4Double(1)},
 
+			{OBJPROP_LEVELCOLOR, new Mq4Double(CLR_NONE)},
 			{OBJPROP_LEVELSTYLE, new Mq4Double(0)},
             {OBJPROP_LEVELWIDTH, new Mq4Double(1)},
             {OBJPROP_FIBOLEVELS, new Mq4Double(9)},
