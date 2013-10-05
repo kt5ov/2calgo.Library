@@ -10,7 +10,7 @@ int GetLastError()
 	return 0;
 }
 
-[Conditional("IsTesting")]
+[Conditional("IsTesting", "Alert")]
 bool IsTesting()
 {
 	return false;
