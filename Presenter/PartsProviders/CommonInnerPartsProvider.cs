@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace _2calgo.Presenter.PartsProviders
 {
-    public static class InnerPartsProvider
+    public static class CommonInnerPartsProvider
     {
         private const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/Common/InnerParts/";
         
@@ -12,7 +12,6 @@ namespace _2calgo.Presenter.PartsProviders
         private const string DataSeries = "DataSeries";
         private const string Indicators = "Indicators";
         private const string StandardConstants = "Standard constants";
-        private const string Account = "Account";
 
         private static readonly IEnumerable<string> InnerParts = new[]
             {
@@ -36,9 +35,7 @@ namespace _2calgo.Presenter.PartsProviders
                 "Global variables.c",
                 "Series.c",
                 "Arrows.c",
-
-                Account + "/Orders.c",
-
+                
                 Indicators + "/iIndicators.c",
                 Indicators + "/CachedStandardIndicators.c",
 

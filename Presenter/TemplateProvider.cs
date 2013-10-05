@@ -10,7 +10,7 @@ namespace _2calgo.Presenter
         {
             return mainTemplate
                 .Replace("#Usings_PLACE_HOLDER#", StringResourceReader.Read(FolderPath + "Common/Usings.c"))
-                .Replace("#InnerParts_PLACE_HOLDER#", InnerPartsProvider.Get())
+                .Replace("#InnerParts_PLACE_HOLDER#", CommonInnerPartsProvider.Get())
                 .Replace("#OuterParts_PLACE_HOLDER#", OuterPartsProvider.Get());
         }
     }

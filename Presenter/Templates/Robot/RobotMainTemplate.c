@@ -106,6 +106,11 @@ namespace cAlgo.Robots
 		return null;
 	}
 
+    private bool IsLastBar
+    {
+        get { return true; }
+    }
+
 #InnerParts_PLACE_HOLDER#
 #RobotInnerParts_PLACE_HOLDER#
 
