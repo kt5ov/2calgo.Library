@@ -1,4 +1,4 @@
-    [Conditional("OBJ_TREND")] 
+    [Conditional("OBJ_TREND", "ObjectGetValueByShift")] 
 	class Mq4TrendLine : Mq4Object
     {
 		private readonly TimeSeries _timeSeries;
