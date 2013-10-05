@@ -15,7 +15,7 @@ namespace _2calgo.Presenter
         protected static void InitializeAlgoBuilder(Algo algo, AlgoBuilder builder)
         {
             builder.Mq4Code = algo.Mq4Code;
-            builder.AlgoName = GetMq4Name(algo.Mq4Code);
+            builder.AlgoName = GetMq4Name(algo.Mq4Code, algo.AlgoType);
             builder.Fields = algo.Code.FieldsDeclarations;
 
             builder.Mq4Functions = GetFunctions(algo.Code.Functions);
@@ -36,13 +36,13 @@ namespace _2calgo.Presenter
 #endif
         }
 
-        private static string GetMq4Name(string mq4Code)
+        private static string GetMq4Name(string mq4Code, AlgoType algoType)
         {
             var match = Mq4NameRegex.Match(mq4Code);
             if (!match.Success)
-                return "ConvertedIndicator";
+                return "Converted" + algoType.ToString();
 
-            return AlgoNameProvider.GetSimplifiedName(match.Groups["name"].Value);
+            return AlgoNameProvider.GetSimplifiedName(match.Groups["name"].Value, algoType);
         }
 
         private static string GetFunctions(IEnumerable<Function> functions)

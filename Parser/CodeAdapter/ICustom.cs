@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _2calgo.Model;
 
 namespace _2calgo.Parser.CodeAdapter
 {
@@ -18,7 +19,7 @@ namespace _2calgo.Parser.CodeAdapter
              foreach (var methodCall in methodCalls)
              {
                  var nameParameter = methodCall.Parameters[2];
-                 var simplifiedName = AlgoNameProvider.GetSimplifiedName(nameParameter);
+                 var simplifiedName = AlgoNameProvider.GetSimplifiedName(nameParameter, AlgoType.Indicator);
 
                  var stringToReplace = methodCall.OriginalText.Replace("iCustom", string.Format("iCustom<{0}>", simplifiedName));
                  code = code.Replace(methodCall.OriginalText, stringToReplace);
