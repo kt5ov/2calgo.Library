@@ -40,10 +40,11 @@ namespace cAlgo.Robots
 
     protected override void OnTick()
     {
-        if (_desiredTrade != null && _desiredTrade.IsPosition 
+        var openedPositionTrade = _desiredTrade as OpenPositionTrade;
+        if (openedPositionTrade != null
             && _positionToProtect != null 
-            && (!_desiredTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
-            && (!_desiredTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
+            && (!openedPositionTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
+            && (!openedPositionTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
         {
             _positionToProtect = null;
             _desiredTrade = null;
@@ -62,10 +63,10 @@ namespace cAlgo.Robots
     protected override void OnPositionOpened(Position openedPosition)
     {
         _lastOpenedPosition = openedPosition;
-        if (_desiredTrade != null
-            && _desiredTrade.IsPosition == true)
+        var openedPositionTrade = _desiredTrade as OpenPositionTrade;
+        if (openedPositionTrade != null)
         {
-            if (_desiredTrade.StopLoss == null && _desiredTrade.TakeProfit == null)
+            if (openedPositionTrade.StopLoss == null && openedPositionTrade.TakeProfit == null)
             {
                 _desiredTrade = null;
                 ExecuteMq4Code();
@@ -73,7 +74,7 @@ namespace cAlgo.Robots
             else
             {
                 _positionToProtect = openedPosition;
-                Trade.ModifyPosition(openedPosition, _desiredTrade.StopLoss, _desiredTrade.TakeProfit);
+                Trade.ModifyPosition(openedPosition, openedPositionTrade.StopLoss, openedPositionTrade.TakeProfit);
             }
         }
     }
@@ -83,6 +84,12 @@ namespace cAlgo.Robots
         _lastPlacedOrder = newOrder;
         _desiredTrade = null;
         ExecuteMq4Code();
+    }
+
+    protected override void OnPositionClosed(Position position)
+    {
+        _desiredTrade = null;
+        ExecuteMq4Code();        
     }
 
     private void Mq4ThreadStart()

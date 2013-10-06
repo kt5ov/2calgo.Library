@@ -14,6 +14,7 @@ namespace _2calgo.Presenter.PartsProviders
                 "Trading functions.c",
                 "Execution errors.c",
                 Account + "/Orders.c",
+                Account + "/Account information.c",
             };
 
         public static string Get()

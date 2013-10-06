@@ -1,9 +1,14 @@
-class DesiredTrade
+class DesiredTrade {}
+
+class OpenPositionTrade : DesiredTrade
 {
-    public bool IsPosition { get; set; }
     public double? TakeProfit { get; set; }
     public double? StopLoss { get; set; }
 }
+
+class CreatePendingOrderTrade : DesiredTrade { }
+
+class ClosePositionTrade : DesiredTrade {}
 
 Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
     Mq4Double takeprofit, string comment = null, int magic = 0, int expiration = 0, int arrow_color = CLR_NONE)
@@ -29,9 +34,8 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                 request.SlippagePips = slippageInPips;
                 Trade.Send(request);
 
-                _desiredTrade = new DesiredTrade 
+                _desiredTrade = new OpenPositionTrade 
                 { 
-                    IsPosition = true, 
                     StopLoss = stoploss == 0 ? (double?)null : (double)stoploss, 
                     TakeProfit = takeprofit == 0 ? (double?)null : (double)takeprofit,                
                 };
@@ -57,10 +61,7 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                 request.TakeProfit = takeprofit;
                 request.Expiration = Mq4TimeSeries.ToDateTime(expiration);
 
-                _desiredTrade = new DesiredTrade 
-                { 
-                    IsPosition = false, 
-                };
+                _desiredTrade = new CreatePendingOrderTrade();
 
                 Trade.Send(request);
 
@@ -74,4 +75,25 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
     }
 
     return 0;
+}
+
+[Conditional("OrderClose")]
+Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Color = CLR_NONE)
+{
+    var position = GetOrderByTicket(ticket) as Position;
+    if (position == null)
+    {
+        _lastError = ERR_INVALID_TICKET;
+        return false;
+    }
+    if (GetLots(position) != lots)
+        throw new Exception("Partial close isn't supported by cAlgo");
+
+    _desiredTrade = new ClosePositionTrade();
+    Trade.Close(position);
+    
+    _mq4Finished.Set();     
+    _mq4Start.WaitOne();
+
+    return true;
 }

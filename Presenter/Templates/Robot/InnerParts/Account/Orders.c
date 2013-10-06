@@ -172,19 +172,3 @@ Mq4Double OrderProfit()
 		return 0;
 	return position.NetProfit;
 }
-
-[Conditional("OrderClose")]
-Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Color = CLR_NONE)
-{
-	var order = GetOrderByTicket(ticket) as Position;
-	if (order == null)
-	{
-		_lastError = ERR_INVALID_TICKET;
-		return false;
-	}
-	if (GetLots(order) != lots)
-		throw new Exception("Partial close isn't supported by cAlgo");
-
-
-	return true;
-}

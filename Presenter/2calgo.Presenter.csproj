@@ -243,6 +243,9 @@
   <ItemGroup>
     <Resource Include="Templates\Robot\InnerParts\Execution errors.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Robot\InnerParts\Account\Account information.c" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
