@@ -4,10 +4,12 @@ bool IsConnected()
     return true;
 }
 	
+private int _lastError;
+
 [Conditional("GetLastError")]
 int GetLastError()
 {
-	return 0;
+	return _lastError;
 }
 
 [Conditional("IsTesting", "Alert")]

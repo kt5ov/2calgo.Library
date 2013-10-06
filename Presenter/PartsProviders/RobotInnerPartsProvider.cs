@@ -12,6 +12,7 @@ namespace _2calgo.Presenter.PartsProviders
         private static readonly IEnumerable<string> InnerParts = new[]
             {
                 "Trading functions.c",
+                "Execution errors.c",
                 Account + "/Orders.c",
             };
 

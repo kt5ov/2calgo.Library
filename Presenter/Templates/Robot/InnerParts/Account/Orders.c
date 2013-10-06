@@ -89,11 +89,27 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 			_currentOrder = allOrders[index];
 			return true;
 		case SELECT_BY_TICKET:
-			_currentOrder = allOrders.FirstOrDefault(_ => GetTicket(_) == index);
+			_currentOrder = GetOrderByTicket(index);
 			return _currentOrder != null;
 	}	
 
 	return false;
+}
+
+double GetLots(object order)
+{
+	var volume = GetPropertyValue<long>(order, _ => _.Volume,  _ => _.Volume);
+
+	return volume / 100000;
+}
+
+object GetOrderByTicket(int ticket)
+{
+	var allOrders = Account.Positions.OfType<object>()
+							.Concat(Account.PendingOrders.OfType<object>())
+							.ToArray();
+
+	return allOrders.FirstOrDefault(_ => GetTicket(_) == ticket);
 }
 
 [Conditional("OrderLots")]
@@ -102,9 +118,7 @@ Mq4Double OrderLots()
 	if (_currentOrder == null)
 		return 0;
 
-	var volume = GetPropertyValue<long>(_currentOrder, _ => _.Volume,  _ => _.Volume);
-
-	return volume / 100000;
+	return GetLots(_currentOrder);
 }
 
 [Conditional("OrderType")]
@@ -148,4 +162,29 @@ Mq4Double OrderTakeProfit()
 {
 	var nullableValue = GetPropertyValue<double?>(_ => _.TakeProfit, _ => _.TakeProfit);
 	return nullableValue ?? 0;
+}
+
+[Conditional("OrderProfit")]
+Mq4Double OrderProfit()
+{
+	var position = _currentOrder as Position;
+	if (position == null)
+		return 0;
+	return position.NetProfit;
+}
+
+[Conditional("OrderClose")]
+Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Color = CLR_NONE)
+{
+	var order = GetOrderByTicket(ticket) as Position;
+	if (order == null)
+	{
+		_lastError = ERR_INVALID_TICKET;
+		return false;
+	}
+	if (GetLots(order) != lots)
+		throw new Exception("Partial close isn't supported by cAlgo");
+
+
+	return true;
 }

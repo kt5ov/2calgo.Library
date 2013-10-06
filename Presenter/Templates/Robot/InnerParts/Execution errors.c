@@ -1,0 +1,1 @@
+const int ERR_INVALID_TICKET = 4108;
