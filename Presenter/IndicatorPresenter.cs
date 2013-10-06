@@ -9,23 +9,7 @@ namespace _2calgo.Presenter
         {
             var builder = new IndicatorBuilder();
             InitializeAlgoBuilder(algo, builder);
-
-            foreach (var parameter in algo.Parameters)
-            {
-                if (parameter.Type != "color")
-                {
-                    if (parameter.DefaultValue != null)
-                        builder.Parameters.AppendLine(string.Format("[Parameter(\"{0}\", DefaultValue = {1})]", parameter.Name, parameter.DefaultValue));
-                    else
-                        builder.Parameters.AppendLine(string.Format("[Parameter(\"{0}\")]", parameter.Name));
-                }
-                builder.Parameters.AppendLine(string.Format("public {0} {1} {2}", parameter.Type, parameter.Name + "_parameter", "{ get; set; }"));
-                builder.Parameters.AppendLine(string.Format("bool _{0}Got;", parameter.Name));
-                builder.Parameters.AppendLine(string.Format("{0} {1}_backfield;", parameter.BackfieldType, parameter.Name));
-                builder.Parameters.AppendLine(parameter.BackfieldType + " " + parameter.Name + " { get { if (!_" + parameter.Name + "Got) " + parameter.Name
-                    + "_backfield = " + parameter.Name + "_parameter; return " + parameter.Name + "_backfield;	} set { " + parameter.Name + "_backfield = value; } }");
-                builder.Parameters.AppendLine();
-            }
+            
             builder.ColorParameters.AppendFormat("int indicator_buffers = {0};\n", algo.BuffersCount);
 
             for (var index = 0; index < algo.Colors.Length; index++)
