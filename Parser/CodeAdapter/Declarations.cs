@@ -15,6 +15,8 @@ namespace _2calgo.Parser.CodeAdapter
                 .OfType<Match>()
                 .Where(match => match.Groups["type"].Value.IsSupported()))
             {
+                if (IsInsideString(code, code.IndexOf(declarationsWithAssignments.Value)))
+                    continue;
                 var @typeWithStatic = declarationsWithAssignments.Groups["typeWithStatic"].Value;
                 var @type = declarationsWithAssignments.Groups["type"].Value;
                 var declarationsWithoutType = declarationsWithAssignments.Value.Substring(@typeWithStatic.Length, declarationsWithAssignments.Length - @typeWithStatic.Length - 1);
@@ -38,6 +40,14 @@ namespace _2calgo.Parser.CodeAdapter
                 }
             }
             return code;
+        }
+
+        private static bool IsInsideString(string code, int index)
+        {
+            var stringStructure = new InnerStructures.StringStructure();
+            for (var i = 0; i <= index; i++)
+                stringStructure.Handle(code[i]);
+            return stringStructure.IsInsideString;
         }
 
         private static string GetDefaultValue(string type)

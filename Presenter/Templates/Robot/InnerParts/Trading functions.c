@@ -11,8 +11,8 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
     var symbolObject = GetSymbol(symbol);
     if (comment == null)
         comment = string.Empty;
-    var volumeInMoney = volume * 100000;
-    var label = magic.ToString();
+    var volumeInMoney = volume * 100000;    
+    var label = magic.ToString() + (comment == string.Empty ? string.Empty : "#" + comment);
 
     switch (cmd)
     {
