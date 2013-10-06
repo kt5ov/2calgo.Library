@@ -1,5 +1,6 @@
 const int MODE_TRADES = 0;
 const int SELECT_BY_POS = 0;
+const int SELECT_BY_TICKET = 1;
 
 T GetPropertyValue<T>(Func<Position, T> getFromPosition, Func<PendingOrder, T> getFromPendingOrder)
 {
@@ -18,7 +19,7 @@ T GetPropertyValue<T>(object obj, Func<Position, T> getFromPosition, Func<Pendin
 
 private Mq4Double GetTicket(object trade)
 {
-	return GetPropertyValue<int>(trade, _ => _.Id, _ => _.Id) + (int)1e8;
+	return new Mq4Double(GetPropertyValue<int>(trade, _ => _.Id, _ => _.Id) + (int)1e8);
 }
 
 [Conditional("OrderTicket")]
@@ -79,15 +80,20 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 							.Concat(Account.PendingOrders.OfType<object>())
 							.ToArray();
 
-	if (select == SELECT_BY_POS)
+	switch (select)
 	{
-		if (index < 0 || index >= allOrders.Length)
-			return false;
+		case SELECT_BY_POS:	
+			if (index < 0 || index >= allOrders.Length)
+				return false;
 
-		_currentOrder = allOrders[index];
-	}
+			_currentOrder = allOrders[index];
+			return true;
+		case SELECT_BY_TICKET:
+			_currentOrder = allOrders.FirstOrDefault(_ => GetTicket(_) == index);
+			return _currentOrder != null;
+	}	
 
-	return true;
+	return false;
 }
 
 [Conditional("OrderLots")]
