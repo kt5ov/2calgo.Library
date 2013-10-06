@@ -73,6 +73,7 @@
     <Compile Include="CodeAdapter\Defines.cs" />
     <Compile Include="CodeAdapter\DrawingShapeStyles.cs" />
     <Compile Include="CodeAdapter\Functions.cs" />
+    <Compile Include="Errors\PartialCloseDetector.cs" />
     <Compile Include="Extensions\MatchExtensions.cs" />
     <Compile Include="InnerStructures\InnerStructures.cs" />
     <Compile Include="CodeAdapter\Mq4Buffers.cs" />

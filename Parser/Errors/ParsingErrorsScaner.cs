@@ -18,6 +18,7 @@ namespace _2calgo.Parser.Errors
         private static readonly List<ErrorDetector> ErrorDetectors = new List<ErrorDetector>
             {
                 new InvokesNotSupportedMethodsDetector(),
+                new PartialCloseDetector(),
 
                 new ContainsStringErrorDetector("#import", ErrorType.NotSupportedError),
                 new ContainsStringErrorDetector("AccountEquity", ErrorType.NotSupportedError),

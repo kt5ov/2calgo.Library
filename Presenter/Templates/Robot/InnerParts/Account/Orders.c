@@ -144,24 +144,45 @@ Mq4String OrderSymbol()
 	return GetPropertyValue<string>(_ => _.SymbolCode, _ => _.SymbolCode);
 }
 
+double GetOpenPrice(object order)
+{
+	return GetPropertyValue<double>(order, _ => _.EntryPrice, _ => _.TargetPrice);
+}
+
 [Conditional("OrderOpenPrice")]
 Mq4Double OrderOpenPrice()
 {
-	return GetPropertyValue<double>(_ => _.EntryPrice, _ => _.TargetPrice);
+	if (_currentOrder == null)
+		return 0;
+	return GetOpenPrice(_currentOrder);
+}
+
+private double GetStopLoss(object order)
+{
+	var nullableValue = GetPropertyValue<double?>(order, _ => _.StopLoss, _ => _.StopLoss);
+	return nullableValue ?? 0;
+}
+
+private double GetTakeProfit(object order)
+{
+	var nullableValue = GetPropertyValue<double?>(order, _ => _.TakeProfit, _ => _.TakeProfit);
+	return nullableValue ?? 0;
 }
 
 [Conditional("OrderStopLoss")]
 Mq4Double OrderStopLoss()
 {	
-	var nullableValue = GetPropertyValue<double?>(_ => _.StopLoss, _ => _.StopLoss);
-	return nullableValue ?? 0;
+	if (_currentOrder == null)
+		return 0;
+	return GetStopLoss(_currentOrder);
 }
 
 [Conditional("OrderTakeProfit")]
 Mq4Double OrderTakeProfit()
 {
-	var nullableValue = GetPropertyValue<double?>(_ => _.TakeProfit, _ => _.TakeProfit);
-	return nullableValue ?? 0;
+	if (_currentOrder == null)
+		return 0;
+	return GetTakeProfit(_currentOrder);
 }
 
 [Conditional("OrderProfit")]

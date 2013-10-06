@@ -70,6 +70,11 @@ namespace cAlgo.Indicators
 		}
     }	
 
+    private bool IsTradeAllowed()
+    {
+        return false;
+    }
+
 #InnerParts_PLACE_HOLDER#
 #IndicatorInnerParts_PLACE_HOLDER#
 	}

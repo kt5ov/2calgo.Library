@@ -2,13 +2,25 @@ class DesiredTrade {}
 
 class OpenPositionTrade : DesiredTrade
 {
-    public double? TakeProfit { get; set; }
     public double? StopLoss { get; set; }
+    public double? TakeProfit { get; set; }    
 }
 
 class CreatePendingOrderTrade : DesiredTrade { }
 
 class ClosePositionTrade : DesiredTrade {}
+
+class ProtectPositionTrade : DesiredTrade
+{
+    public double? StopLoss { get; set; }
+    public double? TakeProfit { get; set; }    
+}
+
+class ModifyPendingOrderTrade : DesiredTrade
+{
+    public double? StopLoss { get; set; }
+    public double? TakeProfit { get; set; }    
+}
 
 Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
     Mq4Double takeprofit, string comment = null, int magic = 0, int expiration = 0, int arrow_color = CLR_NONE)
@@ -92,6 +104,49 @@ Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Co
     _desiredTrade = new ClosePositionTrade();
     Trade.Close(position);
     
+    _mq4Finished.Set();     
+    _mq4Start.WaitOne();
+
+    return true;
+}
+
+[Conditional("OrderModify")]
+Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprofit, int expiration, int arrow_color=CLR_NONE)
+{
+    var order = GetOrderByTicket(ticket);
+    if (GetTakeProfit(order) == takeprofit && GetStopLoss(order) == stoploss
+        && GetOpenPrice(order) == price)
+    {
+        _lastError = ERR_NO_RESULT;
+        return false;
+    }
+
+    var position = order as Position;
+    if (position != null)
+    {
+        _desiredTrade = new ProtectPositionTrade
+        {
+            StopLoss = stoploss.ToNullableDouble(),
+            TakeProfit = takeprofit.ToNullableDouble(),
+        };                
+        _positionToProtect = position;
+        Trade.ModifyPosition(position, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
+
+        _mq4Finished.Set();     
+        _mq4Start.WaitOne();
+
+        return true;
+    }
+    
+    var pendingOrder = (PendingOrder)order;
+    _desiredTrade = new ModifyPendingOrderTrade
+    {
+        StopLoss = stoploss.ToNullableDouble(),
+        TakeProfit = takeprofit.ToNullableDouble(),
+    };                
+    _pendingOrderToModify = pendingOrder;
+    Trade.ModifyPendingOrder(pendingOrder, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
+
     _mq4Finished.Set();     
     _mq4Start.WaitOne();
 

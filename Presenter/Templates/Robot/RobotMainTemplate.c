@@ -35,12 +35,17 @@ namespace cAlgo.Robots
     AutoResetEvent _mq4Finished = new AutoResetEvent(false);
     DesiredTrade _desiredTrade;
     Position _positionToProtect;
+    PendingOrder _pendingOrderToModify;
     Position _lastOpenedPosition;
     PendingOrder _lastPlacedOrder;
 
     protected override void OnTick()
     {
         var openedPositionTrade = _desiredTrade as OpenPositionTrade;
+        var protectPositionTrade = _desiredTrade as ProtectPositionTrade;
+        var modifyPendingOrderTrade = _desiredTrade as ModifyPendingOrderTrade;
+
+
         if (openedPositionTrade != null
             && _positionToProtect != null 
             && (!openedPositionTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
@@ -49,6 +54,21 @@ namespace cAlgo.Robots
             _positionToProtect = null;
             _desiredTrade = null;
             ExecuteMq4Code();
+        } else if (protectPositionTrade != null
+            && (!protectPositionTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
+            && (!protectPositionTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
+            {
+                _positionToProtect = null;
+                _desiredTrade = null;
+                ExecuteMq4Code();
+            } 
+        else if (modifyPendingOrderTrade != null
+            && (!modifyPendingOrderTrade.StopLoss.HasValue || _pendingOrderToModify.StopLoss.HasValue) 
+            && (!modifyPendingOrderTrade.TakeProfit.HasValue || _pendingOrderToModify.TakeProfit.HasValue) )
+        {
+                _pendingOrderToModify = null;
+                _desiredTrade = null;
+                ExecuteMq4Code();
         }
         else if (_desiredTrade == null)
             ExecuteMq4Code();
@@ -118,6 +138,11 @@ namespace cAlgo.Robots
         get { return true; }
     }
 
+    private bool IsTradeAllowed()
+    {
+        return true;
+    }
+
 #InnerParts_PLACE_HOLDER#
 #RobotInnerParts_PLACE_HOLDER#
 
@@ -126,5 +151,15 @@ namespace cAlgo.Robots
 	//Custom Indicators Place Holder
 
 #OuterParts_PLACE_HOLDER#
+
+    static class ConvertExtensions
+    {
+        public static double? ToNullableDouble(this double protection)
+        {
+            if (protection == 0)
+                return null;
+            return protection;
+        }
+    }
 
 }
