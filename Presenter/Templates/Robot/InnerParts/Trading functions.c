@@ -22,6 +22,11 @@ class ModifyPendingOrderTrade : DesiredTrade
     public double? TakeProfit { get; set; }    
 }
 
+class CancelPendingOrderTrade : DesiredTrade 
+{
+    public PendingOrder PendingOrder { get; set; }
+}
+
 Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
     Mq4Double takeprofit, string comment = null, int magic = 0, int expiration = 0, int arrow_color = CLR_NONE)
 {
@@ -151,4 +156,22 @@ Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprof
     _mq4Start.WaitOne();
 
     return true;
+}
+
+[Conditional("OrderDelete")]
+bool OrderDelete(int ticket, int Color = CLR_NONE)
+{
+    var pendingOrder = GetOrderByTicket(ticket) as PendingOrder;
+    if (pendingOrder == null)
+        return false;
+
+    _desiredTrade = new CancellPendingOrderTrade
+    {
+        PendingOrder = pendingOrder,
+    };
+
+    Trade.DeletePendingOrder(pendingOrder);
+    
+    _mq4Finished.Set();     
+    _mq4Start.WaitOne();
 }

@@ -44,6 +44,7 @@ namespace cAlgo.Robots
         var openedPositionTrade = _desiredTrade as OpenPositionTrade;
         var protectPositionTrade = _desiredTrade as ProtectPositionTrade;
         var modifyPendingOrderTrade = _desiredTrade as ModifyPendingOrderTrade;
+        var cancelPendingOrderTrade = _desiredTrade as CancelPendingOrderTrade;
 
 
         if (openedPositionTrade != null
@@ -69,6 +70,11 @@ namespace cAlgo.Robots
                 _pendingOrderToModify = null;
                 _desiredTrade = null;
                 ExecuteMq4Code();
+        }
+        else if (cancelPendingOrderTrade != null && Account.PendingOrders.All(o => o != cancelPendingOrderTrade.PendingOrder))
+        {
+            _desiredTrade = null;
+            ExecuteMq4Code();
         }
         else if (_desiredTrade == null)
             ExecuteMq4Code();
