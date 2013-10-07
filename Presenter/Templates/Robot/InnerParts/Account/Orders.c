@@ -193,3 +193,13 @@ Mq4Double OrderProfit()
 		return 0;
 	return position.NetProfit;
 }
+
+[Conditional("OrderOpenTime")]
+Mq4Double OrderOpenTime()
+{
+	var position = _currentOrder as Position;
+	if (position == null)
+		return 0;
+
+	return Mq4TimeSeries.ToInteger(position.EntryTime);
+}

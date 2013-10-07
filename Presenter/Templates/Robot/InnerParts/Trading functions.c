@@ -165,13 +165,15 @@ bool OrderDelete(int ticket, int Color = CLR_NONE)
     if (pendingOrder == null)
         return false;
 
-    _desiredTrade = new CancellPendingOrderTrade
+    _desiredTrade = new CancelPendingOrderTrade
     {
         PendingOrder = pendingOrder,
     };
 
     Trade.DeletePendingOrder(pendingOrder);
-    
+
     _mq4Finished.Set();     
     _mq4Start.WaitOne();
+
+    return true;
 }
