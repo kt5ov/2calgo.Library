@@ -32,6 +32,8 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
 			return 0;
 		case MODE_MARGINCALCMODE:
 			return 0;
+        case MODE_STOPLEVEL:
+            return symbolObject.PointSize;    
 	}
 	return 0;
 }
