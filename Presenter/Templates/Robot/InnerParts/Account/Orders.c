@@ -226,6 +226,16 @@ Mq4Double OrderOpenTime()
 	return Mq4TimeSeries.ToInteger(position.EntryTime);
 }
 
+[Conditional("OrderExpiration")]
+Mq4Double OrderExpiration()
+{
+	var pendingOrder = _currentOrder as PendingOrder;
+	if (pendingOrder == null || pendingOrder.ExpirationTime == null)
+		return 0;
+
+	return Mq4TimeSeries.ToInteger(pendingOrder.ExpirationTime.Value);
+}
+
 [Conditional("OrderSwap")]
 Mq4Double OrderSwap()
 {

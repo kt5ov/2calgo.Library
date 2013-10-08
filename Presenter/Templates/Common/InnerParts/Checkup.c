@@ -36,8 +36,8 @@ Mq4Double IsTradeContextBusy()
     return false;
 }
 
-[Conditional("IsExpertEnabled()")]
-Mq4Double IsExpertEnabled()()
+[Conditional("IsExpertEnabled")]
+Mq4Double IsExpertEnabled()
 {
 	return true;
 }
