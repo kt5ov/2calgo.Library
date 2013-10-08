@@ -241,10 +241,10 @@
     <Resource Include="Templates\Robot\InnerParts\Trading functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Robot\InnerParts\Execution errors.c" />
+    <Resource Include="Templates\Robot\InnerParts\Account\Account information.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Robot\InnerParts\Account\Account information.c" />
+    <Resource Include="Templates\Common\InnerParts\Standard constants\stderror.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

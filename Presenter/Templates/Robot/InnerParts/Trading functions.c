@@ -30,6 +30,7 @@ class CancelPendingOrderTrade : DesiredTrade
 Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
     Mq4Double takeprofit, string comment = null, int magic = 0, int expiration = 0, int arrow_color = CLR_NONE)
 {
+    _lastError = ERR_NO_ERROR;
     var symbolObject = GetSymbol(symbol);
     if (comment == null)
         comment = string.Empty;
@@ -97,6 +98,8 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
 [Conditional("OrderClose")]
 Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Color = CLR_NONE)
 {
+    _lastError = ERR_NO_ERROR;
+
     var position = GetOrderByTicket(ticket) as Position;
     if (position == null)
     {
@@ -118,6 +121,8 @@ Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Co
 [Conditional("OrderModify")]
 Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprofit, int expiration, int arrow_color=CLR_NONE)
 {
+    _lastError = ERR_NO_ERROR;
+
     var order = GetOrderByTicket(ticket);
     if (GetTakeProfit(order) == takeprofit && GetStopLoss(order) == stoploss
         && GetOpenPrice(order) == price)
@@ -161,6 +166,8 @@ Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprof
 [Conditional("OrderDelete")]
 bool OrderDelete(int ticket, int Color = CLR_NONE)
 {
+    _lastError = ERR_NO_ERROR;
+    
     var pendingOrder = GetOrderByTicket(ticket) as PendingOrder;
     if (pendingOrder == null)
         return false;

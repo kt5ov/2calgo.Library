@@ -82,6 +82,7 @@ void PlaySound(Mq4String fileName)
 void SendMail(Mq4String subject, string text)
 {
     Notifications.SendEmail(EmailAddressFrom, EmailAddressTo, subject, text);
+    _lastError = ERR_NO_MQLERROR;
 }
 
 [Conditional("Print")]
