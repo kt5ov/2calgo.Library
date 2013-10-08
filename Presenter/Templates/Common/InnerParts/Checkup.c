@@ -27,6 +27,12 @@ bool IsStopped()
 [Conditional("UninitializeReason")]
 int UninitializeReason()
 {
-	return REASON_REMOVE;
+    return REASON_REMOVE;
+}
+
+[Conditional("IsTradeContextBusy")]
+int IsTradeContextBusy()
+{
+	return false;
 }
 
