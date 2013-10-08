@@ -1,5 +1,5 @@
 [Conditional("IsConnected")]
-bool IsConnected()
+Mq4Double IsConnected()
 {
     return true;
 }
@@ -7,31 +7,31 @@ bool IsConnected()
 private int _lastError;
 
 [Conditional("GetLastError")]
-int GetLastError()
+Mq4Double GetLastError()
 {
 	return _lastError;
 }
 
 [Conditional("IsTesting", "Alert")]
-bool IsTesting()
+Mq4Double IsTesting()
 {
 	return false;
 }
 
 [Conditional("IsStopped")]
-bool IsStopped()
+Mq4Double IsStopped()
 {
 	return false;
 }
 
 [Conditional("UninitializeReason")]
-int UninitializeReason()
+Mq4Double UninitializeReason()
 {
     return REASON_REMOVE;
 }
 
 [Conditional("IsTradeContextBusy")]
-int IsTradeContextBusy()
+Mq4Double IsTradeContextBusy()
 {
 	return false;
 }

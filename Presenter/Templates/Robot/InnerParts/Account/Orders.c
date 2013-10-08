@@ -203,3 +203,13 @@ Mq4Double OrderOpenTime()
 
 	return Mq4TimeSeries.ToInteger(position.EntryTime);
 }
+
+[Conditional("OrderSwap")]
+Mq4Double OrderSwap()
+{
+	var position = _currentOrder as Position;
+	if (position == null)
+		return 0;
+
+	return position.Swap;
+}
