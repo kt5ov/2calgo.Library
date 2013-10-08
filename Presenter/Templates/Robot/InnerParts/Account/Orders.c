@@ -48,6 +48,18 @@ private int GetMagicNumber(string label)
 	return 0;
 }
 
+private string GetComment(string label)
+{
+	if (string.IsNullOrEmpty(label))
+		return string.Empty;
+
+	var sharpIndex = label.IndexOf("#");
+	if (sharpIndex == -1)
+		return string.Empty;
+
+	return label.Substring(sharpIndex, label.Length - sharpIndex);
+}
+
 private int GetMagicNumber(object order)
 {	
 	var label = GetPropertyValue<string>(order, _ => _.Label, _ => _.Label);
@@ -61,6 +73,16 @@ Mq4Double OrderMagicNumber()
 		return 0;
 
 	return GetMagicNumber(_currentOrder);
+}
+
+[Conditional("OrderComment")]
+Mq4String OrderComment()
+{
+	if (_currentOrder == null)
+		return string.Empty;
+
+	var label = GetPropertyValue<string>(_currentOrder, _ => _.Label, _ => _.Label);
+	return GetComment(label);
 }
 
 [Conditional("OrdersTotal")]

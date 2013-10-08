@@ -33,6 +33,12 @@ Mq4Double UninitializeReason()
 [Conditional("IsTradeContextBusy")]
 Mq4Double IsTradeContextBusy()
 {
-	return false;
+    return false;
+}
+
+[Conditional("IsExpertEnabled()")]
+Mq4Double IsExpertEnabled()()
+{
+	return true;
 }
 
