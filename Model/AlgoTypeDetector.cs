@@ -35,8 +35,10 @@ namespace _2calgo.Model
                 "OrderModify",
             };
 
-        public static AlgoType GetAlgoType(string code)
+        public static AlgoType? GetAlgoType(string code)
         {
+            if (!code.Contains("start"))
+                return null;
             if (RobotKeyWords.Any(code.Contains))
                 return AlgoType.Robot;
             if (IndicatorKeyWords.Any(code.Contains))
