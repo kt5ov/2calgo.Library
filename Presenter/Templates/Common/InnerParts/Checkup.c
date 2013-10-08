@@ -15,6 +15,12 @@ Mq4Double GetLastError()
 [Conditional("IsTesting", "Alert")]
 Mq4Double IsTesting()
 {
+    return false;
+}
+
+[Conditional("IsOptimization")]
+Mq4Double IsOptimization()
+{
 	return false;
 }
 
@@ -39,6 +45,12 @@ Mq4Double IsTradeContextBusy()
 [Conditional("IsExpertEnabled")]
 Mq4Double IsExpertEnabled()
 {
-	return true;
+    return true;
+}
+
+[Conditional("IsDemo")]
+Mq4Double IsDemo()
+{
+	return false;
 }
 
