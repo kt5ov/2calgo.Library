@@ -67,6 +67,7 @@
     <Compile Include="Errors\ContainsStringErrorDetector.cs" />
     <Compile Include="Errors\ErrorDetector.cs" />
     <Compile Include="Errors\ErrorType.cs" />
+    <Compile Include="Errors\IncludeDetector.cs" />
     <Compile Include="Errors\InvokesNotSupportedMethodsDetector.cs" />
     <Compile Include="Errors\MethodError.cs" />
     <Compile Include="Errors\ParsingError.cs" />
