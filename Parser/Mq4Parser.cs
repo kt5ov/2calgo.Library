@@ -35,6 +35,7 @@ namespace _2calgo.Parser
                 .ReplaceColorToInt()
                 .RenameTimeFrameParameter()
                 .ReplacePrintToMq4Print()
+                .RenameFunctions()
                 .AddRefModifiers()
                 .AddTypeParameterToICustom(out customIndicators);
 

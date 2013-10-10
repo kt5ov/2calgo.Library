@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AlgoNameProvider.cs" />
     <Compile Include="CodeAdapter\Arrays.cs" />
+    <Compile Include="CodeAdapter\FunctionsRenaming.cs" />
     <Compile Include="CodeAdapter\Mq4Dates.cs" />
     <Compile Include="CodeAdapter\Mq4RgbColors.cs" />
     <Compile Include="CodeAdapter\Comments.cs" />
