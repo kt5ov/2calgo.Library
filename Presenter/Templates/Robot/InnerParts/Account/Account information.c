@@ -25,5 +25,11 @@ Mq4Double AccountEquity()
 [Conditional("AccountCurrency")]
 Mq4String AccountCurrency()
 {
-	return Account.Currency;
+    return Account.Currency;
+}
+
+[Conditional("AccountServer")]
+Mq4String AccountServer()
+{
+	return "Unknown Server";
 }
