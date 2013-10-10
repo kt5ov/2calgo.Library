@@ -19,7 +19,11 @@ Mq4Double AccountMargin()
 [Conditional("AccountEquity")]
 Mq4Double AccountEquity()
 {
-	return Account.Equity;
+    return Account.Equity;
 }
 
-
+[Conditional("AccountCurrency")]
+Mq4String AccountCurrency()
+{
+	return Account.Currency;
+}
