@@ -13,7 +13,13 @@ Mq4Double AccountBalance()
 [Conditional("AccountMargin")]
 Mq4Double AccountMargin()
 {
-	return Account.Margin;
+    return Account.Margin;
+}
+
+[Conditional("AccountEquity")]
+Mq4Double AccountEquity()
+{
+	return Account.Equity;
 }
 
 
