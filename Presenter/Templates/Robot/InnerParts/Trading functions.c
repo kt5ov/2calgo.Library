@@ -28,14 +28,16 @@ class CancelPendingOrderTrade : DesiredTrade
 }
 
 Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
-    Mq4Double takeprofit, string comment = null, int magic = 0, int expiration = 0, int arrow_color = CLR_NONE)
+    Mq4Double takeprofit, Mq4String comment = null, Mq4Double? magic = null, int expiration = 0, int arrow_color = CLR_NONE)
 {
     _lastError = ERR_NO_ERROR;
+    if (magic == null)
+        magic = 0;
     var symbolObject = GetSymbol(symbol);
-    if (comment == null)
+    if ((string)comment == (string)null)
         comment = string.Empty;
     var volumeInMoney = volume * 100000;    
-    var label = magic.ToString() + (comment == string.Empty ? string.Empty : "#" + comment);
+    var label = magic.Value.ToString() + ((string)comment == string.Empty ? string.Empty : "#" + comment);
 
     switch (cmd)
     {

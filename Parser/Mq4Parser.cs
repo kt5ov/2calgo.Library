@@ -17,12 +17,21 @@ namespace _2calgo.Parser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var parsingErrors = new ParsingErrors();
 
-            var algo = new Algo{Mq4Code = code};
+            var algo = new Algo
+                {
+                    Mq4Code = code, 
+                    AlgoType = algotype
+                };
             string[] customIndicators;
 
             code = code
                 .RemoveComments()
-                .HandleParsingErrors(parsingErrors)
+                .HandleParsingErrors(parsingErrors);
+
+            if (parsingErrors.Errors.Any(error => error.ErrorType >= ErrorType.Error))
+                return new ParsingResult(algo, parsingErrors.Errors);
+            
+            code = code
                 .ReplaceDateTimeToInt()
                 .ReplaceDateConstants()
                 .ReplaceDefines()
@@ -44,7 +53,6 @@ namespace _2calgo.Parser
             HandleFunctions(code, algo, parsingErrors);
             HandleFields(code, algo);
 
-            algo.AlgoType = algotype;
             algo.Code.ExtractStaticVariablesToFields();
             algo.Code.ReplaceSimpleTypesToMq4Types();
             algo.Code.RenameStandardFunctions();

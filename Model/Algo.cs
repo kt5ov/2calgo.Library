@@ -31,6 +31,7 @@ namespace _2calgo.Model
         public Algo()
         {
             Code = new Code();
+            CustomIndicators = new string[0];
 
             Styles = new DrawingShapeStyle[8];
             Widths = new int[8];
