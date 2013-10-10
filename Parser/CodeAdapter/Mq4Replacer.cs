@@ -91,7 +91,8 @@ namespace _2calgo.Parser.CodeAdapter
 
         public static string ReplacePrintToMq4Print(this string code)
         {
-            return code.Replace("Print", "Mq4Print");
+            var printInvocationRegex = new Regex(@"(?<!\w)Print\s*\(");
+            return printInvocationRegex.Replace(code, "Mq4Print(");
         }
     }
 }

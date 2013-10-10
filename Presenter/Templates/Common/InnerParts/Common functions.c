@@ -68,7 +68,7 @@ void Comment(params object[] objects)
 }
 
 [Conditional("Sleep")]
-void Sleep(int milliseconds)
+void Sleep(Mq4Double milliseconds)
 {        
 }
 
@@ -92,7 +92,7 @@ void Mq4Print(params object[] parameters)
 }
 
 [Conditional("GetTickCount")]
-int GetTickCount()
+Mq4Double GetTickCount()
 {
 	return Environment.TickCount;
 }
