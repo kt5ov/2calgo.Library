@@ -245,3 +245,13 @@ Mq4Double OrderSwap()
 
 	return position.Swap;
 }
+
+[Conditional("OrderCommission")]
+Mq4Double OrderCommission()
+{
+	var position = _currentOrder as Position;
+	if (position == null)
+		return 0;
+
+	return position.Commissions;
+}
