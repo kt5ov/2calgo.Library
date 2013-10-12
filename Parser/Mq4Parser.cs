@@ -38,6 +38,7 @@ namespace _2calgo.Parser
                 .ReplaceCSharpKeyWords()
                 .RemoveDotsFromNames()
                 .Replace("$", string.Empty)
+                .Replace("?", "_")
                 .RemoveIncludes()
                 .Replace("Debug", "Debug_")
                 .ReplaceMq4RgbColorsToKnownColors()
