@@ -84,9 +84,22 @@ namespace _2calgo.Parser.CodeAdapter
             }
         }
 
-        public static string RenameTimeFrameParameter(this string code)
+
+        private static readonly string[] _calgoKeywords = new []
+            {
+                "TimeFrame",
+                "Trade",
+                "Debug",
+                "Stop",
+            };
+
+        public static string ReplaceCAlgoKeyWords(this string code)
         {
-            return code.Replace("TimeFrame", "TimeFrameParameter");
+            foreach (var calgoKeyword in _calgoKeywords)
+            {
+                code = code.Replace(calgoKeyword, calgoKeyword + "Mq4");
+            }
+            return code;
         }
 
         public static string ReplacePrintToMq4Print(this string code)
