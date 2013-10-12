@@ -50,17 +50,17 @@ namespace _2calgo.Library
 
         private static AlgoPresenter CreatePresenter(AlgoType algotype)
         {
-            AlgoPresenter presenter;
+            string template;
             switch (algotype)
             {
                 case AlgoType.Indicator:
-                    presenter = new IndicatorPresenter();
+                    template = new IndicatorTemplateProvider().GetTemplate();
                     break;
                 default:
-                    presenter = new RobotPresenter();
+                    template = new RobotTemplateProvider().GetTemplate();
                     break;
             }
-            return presenter;
+            return new AlgoPresenter(new AlgoBuilder(template));
         }
     }
 }

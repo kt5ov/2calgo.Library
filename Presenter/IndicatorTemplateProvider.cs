@@ -2,7 +2,7 @@
 
 namespace _2calgo.Presenter
 {
-    class IndicatorTemplateProvider : TemplateProvider
+    public class IndicatorTemplateProvider : TemplateProvider
     {
         public virtual string GetTemplate()
         {

@@ -35,6 +35,8 @@ namespace _2calgo.Presenter.PartsProviders
                 "Global variables.c",
                 "Series.c",
                 "Arrows.c",
+                "Mq4OutputDataSeries.c",
+                "Custom indicators.c",
                 
                 Indicators + "/iIndicators.c",
                 Indicators + "/CachedStandardIndicators.c",

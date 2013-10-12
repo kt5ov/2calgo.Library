@@ -2,7 +2,7 @@
 
 namespace _2calgo.Presenter
 {
-    abstract class TemplateProvider
+    public abstract class TemplateProvider
     {
         protected const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/";
 

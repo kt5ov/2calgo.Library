@@ -28,7 +28,12 @@ namespace cAlgo.Indicators
 #WidthParameters_PLACE_HOLDER#
 
 #LevelParameters_PLACE_HOLDER#
-        
+
+#Inverted_buffers_declarations_PLACE_HOLDER#     
+
+List<Mq4OutputDataSeries> AllBuffers = new List<Mq4OutputDataSeries>();		
+public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
+
         protected override void Initialize()
         {
 #Initialize_buffers_PLACE_HOLDER#
@@ -37,12 +42,7 @@ namespace cAlgo.Indicators
 			CommonInitialize();			            
 #DebugActions_PLACE_HOLDER#            
         }
-        
-#Inverted_buffers_declarations_PLACE_HOLDER#        
-
-        List<Mq4OutputDataSeries> AllBuffers = new List<Mq4OutputDataSeries>();		
-		public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
-
+		
 	private bool _initialized;
     public override void Calculate(int index)
     {

@@ -2,7 +2,7 @@
 
 namespace _2calgo.Presenter
 {
-    class RobotTemplateProvider : TemplateProvider
+    public class RobotTemplateProvider : TemplateProvider
     {
         public string GetTemplate()
         {

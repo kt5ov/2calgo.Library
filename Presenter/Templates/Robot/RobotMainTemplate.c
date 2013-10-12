@@ -18,10 +18,25 @@ namespace cAlgo.Robots
 
 #Parameters_PLACE_HOLDER#
 
+#Lines_declarations_PLACE_HOLDER#
+     
 #Mq4Fields_PLACE_HOLDER#
+        
+#ColorParameters_PLACE_HOLDER#
+                
+#WidthParameters_PLACE_HOLDER#
+
+#LevelParameters_PLACE_HOLDER#
+
+#Inverted_buffers_declarations_PLACE_HOLDER#     
+
+List<Mq4OutputDataSeries> AllBuffers = new List<Mq4OutputDataSeries>();     
+public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
         
 	protected override void OnStart()
     {
+#Initialize_buffers_PLACE_HOLDER#
+#Initialize_AllOutputDataSeries_PLACE_HOLDER#        
 		CommonInitialize();			            
 		#DebugActions_PLACE_HOLDER#           
 
@@ -40,7 +55,10 @@ namespace cAlgo.Robots
     PendingOrder _lastPlacedOrder;
 
     protected override void OnTick()
-    {
+    {        
+        var index = MarketSeries.Close.Count - 1;
+        #Buffers_SetCurrentIndex_PLACE_HOLDER#        
+
         var openedPositionTrade = _desiredTrade as OpenPositionTrade;
         var protectPositionTrade = _desiredTrade as ProtectPositionTrade;
         var modifyPendingOrderTrade = _desiredTrade as ModifyPendingOrderTrade;

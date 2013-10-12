@@ -43,7 +43,7 @@ namespace _2calgo.Parser.CodeAdapter
             return code;
         }
 
-        private static readonly Regex CSharpReturnRegex = new Regex(@"return[^;]*;", RegexOptions.Compiled);
+        private static readonly Regex CSharpReturnRegex = new Regex(@"return(?!\w)[^;]*;", RegexOptions.Compiled);
 
         public static string RemoveReturnStatements(this string code)
         {

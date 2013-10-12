@@ -8,11 +8,8 @@ namespace _2calgo.Presenter.PartsProviders
     {
         private const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/Indicator/InnerParts/";
 
-        private static readonly IEnumerable<string> InnerParts = new[]
+        private static readonly IEnumerable<string> InnerParts = new string[0]
             {
-                "Mq4OutputDataSeries.c",
-                "Custom indicators.c",
-
             };
 
         public static string Get()
