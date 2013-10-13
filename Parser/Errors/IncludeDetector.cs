@@ -6,7 +6,7 @@ namespace _2calgo.Parser.Errors
 {
     class IncludeDetector : ErrorDetector
     {
-        private static readonly Regex IncludeRegex = new Regex(@"#include\s+<(?<name>[^\>]*)>");
+        private static readonly Regex IncludeRegex = new Regex(@"#include\s+[<""](?<name>[^\>""]*)[>""]");
         
         public override IEnumerable<ParsingError> FindErrors(string code)
         {

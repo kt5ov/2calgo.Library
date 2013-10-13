@@ -88,16 +88,17 @@ namespace _2calgo.Parser.CodeAdapter
         private static readonly string[] _calgoKeywords = new []
             {
                 "TimeFrame",
-                "Trade",
                 "Debug",
                 "Stop",
+                "Trade"
             };
 
         public static string ReplaceCAlgoKeyWords(this string code)
         {
             foreach (var calgoKeyword in _calgoKeywords)
             {
-                code = code.Replace(calgoKeyword, calgoKeyword + "Mq4");
+                var regex = new Regex(@"(?<!\w)" + calgoKeyword + @"(?!\w)");
+                code = regex.Replace(code, calgoKeyword + "Mq4");
             }
             return code;
         }

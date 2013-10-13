@@ -10,9 +10,6 @@ namespace _2calgo.Parser.Errors
                 new MethodError("IndicatorDigits", ErrorType.NotSupportedWarning),
                 new MethodError("IndicatorShortName", ErrorType.NotSupportedWarning),
                 new MethodError("SetIndexLabel", ErrorType.NotSupportedWarning),
-
-                new MethodError("SetIndexEmptyValue", ErrorType.NotFullySupportedWarning),
-                new MethodError("Symbol", ErrorType.NotFullySupportedWarning),
             };
         
         public override IEnumerable<ParsingError> FindErrors(string code)
