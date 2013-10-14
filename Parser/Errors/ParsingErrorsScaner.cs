@@ -21,7 +21,7 @@ namespace _2calgo.Parser.Errors
                 new PartialCloseDetector(),
                 new IncludeDetector(),
 
-                new ContainsStringErrorDetector("#import", ErrorType.NotSupportedError),
+                new ContainsStringErrorDetector("#import", ErrorType.NotSupportedCriticalError),
                 new ContainsStringErrorDetector("OBJPROP_ANGLE", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("DRAW_ZIGZAG", ErrorType.NotSupportedWarning),
                 new ContainsStringErrorDetector("OBJPROP_BACK", ErrorType.NotSupportedWarning),

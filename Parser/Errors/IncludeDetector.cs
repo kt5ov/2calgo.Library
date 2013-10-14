@@ -14,7 +14,7 @@ namespace _2calgo.Parser.Errors
             {
                 if (match.Groups["name"].Value != "stdlib.mqh" && match.Groups["name"].Value != "stderror.mqh")
                 {
-                    yield return new ParsingError(ErrorType.NotSupportedError, "#include", match.Groups["name"].Value);
+                    yield return new ParsingError(ErrorType.NotSupportedCriticalError, "#include", match.Groups["name"].Value);
                 }
             }
         }

@@ -5,6 +5,7 @@ namespace _2calgo.Parser.Errors
         NotFullySupportedWarning,
         NotSupportedWarning,
         Error,
-        NotSupportedError
+        NotSupportedError,
+        NotSupportedCriticalError
     }
 }

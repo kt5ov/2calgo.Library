@@ -28,7 +28,7 @@ namespace _2calgo.Parser
                 .RemoveComments()
                 .HandleParsingErrors(parsingErrors);
 
-            if (parsingErrors.Errors.Any(error => error.ErrorType >= ErrorType.Error))
+            if (parsingErrors.Errors.Any(error => error.ErrorType >= ErrorType.NotSupportedCriticalError))
                 return new ParsingResult(algo, parsingErrors.Errors);
             
             code = code

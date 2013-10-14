@@ -26,3 +26,7 @@ Mq4String WindowExpertName()
     return "#AlgoName_PLACE_HOLDER#";
 }
 
+[Conditional("HideTestIndicators")]
+void HideTestIndicators()
+{
+}

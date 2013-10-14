@@ -51,6 +51,18 @@ Mq4Double IsExpertEnabled()
 [Conditional("IsDemo")]
 Mq4Double IsDemo()
 {
+    return false;
+}
+
+[Conditional("IsLibrariesAllowed")]
+Mq4Double IsLibrariesAllowed()
+{
+    return true;
+}
+
+[Conditional("IsDllsAllowed")]
+Mq4Double IsDllsAllowed()
+{
 	return false;
 }
 
