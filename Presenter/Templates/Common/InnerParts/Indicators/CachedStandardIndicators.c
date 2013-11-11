@@ -326,4 +326,19 @@
         return indicator;
     }
     //}
+
+    [Conditional("iAO")]
+    //{
+    private readonly Dictionary<MarketSeries, AwesomeOscillator> _aoCache = new Dictionary<MarketSeries, AwesomeOscillator>();
+
+    public AwesomeOscillator AwesomeOscillator(MarketSeries marketSeries)
+    {
+        if (_aoCache.ContainsKey(marketSeries))
+            return _aoCache[marketSeries];
+
+        var indicator = _indicatorsAccessor.AwesomeOscillator(marketSeries);
+        _aoCache.Add(marketSeries, indicator);
+        return indicator;
+    }    
+    //}
 }

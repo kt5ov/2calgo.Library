@@ -763,3 +763,10 @@ private Mq4Double iIchimoku(Mq4String symbol, int timeframe, int tenkan_sen, int
     }
     return 0;
 }
+
+[Conditional("iAO")]
+Mq4Double iAO(Mq4String symbol, int timeframe, int shift)
+{
+    var marketSeries = GetSeries(symbol, timeframe);
+    return _cachedStandardIndicators.AwesomeOscillator(marketSeries).Result.FromEnd(shift);   
+}
