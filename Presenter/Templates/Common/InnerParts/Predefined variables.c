@@ -22,7 +22,7 @@
 			if (Symbol == null)
 				return 0.00001;
 
-			return Symbol.PointSize;
+			return Symbol.TickSize;
 		}
 	}
 

@@ -631,7 +631,7 @@ private object CastParameter(object parameter)
 	if (parameter is Mq4Double)
 	{
 		var mq4Double = (Mq4Double)parameter;
-		if (Math.Abs(mq4Double - (int)mq4Double) < Symbol.PointSize)
+		if (Math.Abs(mq4Double - (int)mq4Double) < Symbol.TickSize)
 			return (int)mq4Double;
 		return (double)mq4Double;
 	}

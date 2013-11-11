@@ -45,7 +45,7 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
         case OP_SELL:
             {
                 var tradeType = cmd == OP_BUY ? TradeType.Buy : TradeType.Sell;
-                var slippageInPrice = symbolObject.PointSize * slippage;
+                var slippageInPrice = symbolObject.TickSize * slippage;
                 var slippageInPips = (int)Math.Round((double)slippageInPrice / symbolObject.PipSize);
 
                 var request = new MarketOrderRequest(tradeType, volumeInMoney);            

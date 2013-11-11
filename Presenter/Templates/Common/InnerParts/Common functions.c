@@ -17,7 +17,7 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
 		case MODE_BID:
 			return symbolObject.Bid;
 		case MODE_SPREAD:
-			return symbolObject.Spread / symbolObject.PointSize;
+			return symbolObject.Spread / symbolObject.TickSize;
 		case MODE_PROFITCALCMODE:
 			return 0;
 		case MODE_FREEZELEVEL:
@@ -25,15 +25,15 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
 		case MODE_TRADEALLOWED:
 			return 1;
 		case MODE_POINT:
-			return symbolObject.PointSize;
+			return symbolObject.TickSize;
 		case MODE_TICKSIZE:
-			return symbolObject.PointSize;
+			return symbolObject.TickSize;
 		case MODE_SWAPTYPE:
 			return 0;
 		case MODE_MARGINCALCMODE:
 			return 0;
         case MODE_STOPLEVEL:
-            return symbolObject.PointSize;    
+            return symbolObject.TickSize;    
 	}
 	return 0;
 }
