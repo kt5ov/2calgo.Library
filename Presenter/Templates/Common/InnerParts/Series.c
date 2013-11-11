@@ -31,7 +31,7 @@ private DataSeries ToAppliedPrice(string symbol, int timeframe, int constant)
         case PRICE_TYPICAL:
             return series.Typical;    
         case PRICE_WEIGHTED:
-            return series.Weighted;
+            return series.WeightedClose;
     }
     throw new NotImplementedException("Converter doesn't support working with this type of AppliedPrice");
 }   
