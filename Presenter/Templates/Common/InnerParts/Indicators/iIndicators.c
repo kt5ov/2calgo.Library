@@ -770,3 +770,10 @@ Mq4Double iAO(Mq4String symbol, int timeframe, int shift)
     var marketSeries = GetSeries(symbol, timeframe);
     return _cachedStandardIndicators.AwesomeOscillator(marketSeries).Result.FromEnd(shift);   
 }
+
+[Conditional("iAC")]
+Mq4Double iAC(Mq4String symbol, int timeframe, int shift)
+{
+    var marketSeries = GetSeries(symbol, timeframe);
+    return _cachedStandardIndicators.AcceleratorOscillator(marketSeries).Result.FromEnd(shift);   
+}

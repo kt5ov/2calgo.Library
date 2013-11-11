@@ -341,4 +341,18 @@
         return indicator;
     }    
     //}
+    [Conditional("iAC")]
+    //{
+    private readonly Dictionary<MarketSeries, AcceleratorOscillator> _acCache = new Dictionary<MarketSeries, AcceleratorOscillator>();
+
+    public AcceleratorOscillator AcceleratorOscillator(MarketSeries marketSeries)
+    {
+        if (_acCache.ContainsKey(marketSeries))
+            return _acCache[marketSeries];
+
+        var indicator = _indicatorsAccessor.AcceleratorOscillator(marketSeries);
+        _acCache.Add(marketSeries, indicator);
+        return indicator;
+    }    
+    //}
 }
