@@ -8,13 +8,21 @@ namespace _2calgo.Parser.CodeAdapter
         {
             var openBracketIndex = code.IndexOf('{', startIndexToSearch);
             var codeLength = 0;
-            string bodyWithAroundingBrackets;
-            do
+
+            var openBrackets = 0;
+            while (true)
             {
                 codeLength++;
-                bodyWithAroundingBrackets = code.Substring(openBracketIndex, codeLength);
-            } while (!bodyWithAroundingBrackets.ContainsBracketsAndTheyAreSimmetric('{', '}'));
-            return bodyWithAroundingBrackets;
+                var index = openBracketIndex + codeLength - 1;
+                if (code[index] == '{') 
+                    openBrackets++;
+                if (code[index] == '}')
+                    openBrackets--;
+                if (openBrackets == 0)
+                    break;
+            }
+
+            return code.Substring(openBracketIndex, codeLength);
         }
     }
 }

@@ -1,43 +1,12 @@
-class DesiredTrade {}
-
-class OpenPositionTrade : DesiredTrade
-{
-    public double? StopLoss { get; set; }
-    public double? TakeProfit { get; set; }    
-}
-
-class CreatePendingOrderTrade : DesiredTrade { }
-
-class ClosePositionTrade : DesiredTrade {}
-
-class ProtectPositionTrade : DesiredTrade
-{
-    public double? StopLoss { get; set; }
-    public double? TakeProfit { get; set; }    
-}
-
-class ModifyPendingOrderTrade : DesiredTrade
-{
-    public double? StopLoss { get; set; }
-    public double? TakeProfit { get; set; }    
-}
-
-class CancelPendingOrderTrade : DesiredTrade 
-{
-    public PendingOrder PendingOrder { get; set; }
-}
-
-Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippage, Mq4Double stoploss, 
+Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price, Mq4Double slippagePoints, Mq4Double stoploss, 
     Mq4Double takeprofit, Mq4String comment = null, Mq4Double? magic = null, int expiration = 0, int arrow_color = CLR_NONE)
 {
     _lastError = ERR_NO_ERROR;
     if (magic == null)
         magic = 0;
     var symbolObject = GetSymbol(symbol);
-    if ((string)comment == (string)null)
-        comment = string.Empty;
-    var volumeInMoney = volume * 100000;    
-    var label = magic.Value.ToString() + ((string)comment == string.Empty ? string.Empty : "#" + comment);
+    var volumeInUnits = symbolObject.ToUnitsVolume(volume);;    
+    var label = magic.Value.ToString();
 
     switch (cmd)
     {
@@ -45,24 +14,18 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
         case OP_SELL:
             {
                 var tradeType = cmd == OP_BUY ? TradeType.Buy : TradeType.Sell;
-                var slippageInPrice = symbolObject.TickSize * slippage;
+                var slippageInPrice = symbolObject.TickSize * slippagePoints;
                 var slippageInPips = (int)Math.Round((double)slippageInPrice / symbolObject.PipSize);
+                double? stopLossPips = null;
+                if (stoploss != 0)
+                    stopLossPips = tradeType == TradeType.Buy ? (symbolObject.Ask - stoploss) / symbolObject.PipSize : (stoploss - symbolObject.Bid) / symbolObject.PipSize;
+                double? takeProfitPips = null;
+                if (takeprofit != 0)
+                    takeProfitPips = tradeType == TradeType.Buy ? (takeprofit - symbolObject.Ask) / symbolObject.PipSize : (symbolObject.Bid - takeprofit) / symbolObject.PipSize;
 
-                var request = new MarketOrderRequest(tradeType, volumeInMoney);            
-                request.Label = label;
-                request.Symbol = symbolObject;
-                request.SlippagePips = slippageInPips;
-                Trade.Send(request);
+                ExecuteMarketOrder(tradeType, symbolObject, volumeInUnits, label, stopLossPips, takeProfitPips, slippageInPips, comment);
 
-                _desiredTrade = new OpenPositionTrade 
-                { 
-                    StopLoss = stoploss == 0 ? (double?)null : (double)stoploss, 
-                    TakeProfit = takeprofit == 0 ? (double?)null : (double)takeprofit,                
-                };
-                _mq4Finished.Set();     
-                _mq4Start.WaitOne();
-
-                return GetTicket(_lastOpenedPosition);
+                return GetTicket(LastResult.Position);
             }
         case OP_BUYLIMIT:
         case OP_SELLLIMIT:
@@ -70,25 +33,20 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
         case OP_SELLSTOP:
             {
                 var tradeType = cmd == OP_BUYLIMIT || cmd == OP_BUYSTOP ? TradeType.Buy : TradeType.Sell;
-                PendingOrderRequest request;
+
+                double? stopLossPips = null;
+                if (stoploss != 0)
+                    stopLossPips = tradeType == TradeType.Buy ? (price - stoploss) / symbolObject.PipSize : (stoploss - price) / symbolObject.PipSize;
+                double? takeProfitPips = null;
+                if (takeprofit != 0)
+                    takeProfitPips = tradeType == TradeType.Buy ? (takeprofit - price) / symbolObject.PipSize : (price - takeprofit) / symbolObject.PipSize;
+
                 if (cmd == OP_BUYLIMIT || cmd == OP_SELLLIMIT)
-                    request = new LimitOrderRequest(tradeType, volumeInMoney, price);
+                    PlaceLimitOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
                 else
-                    request = new StopOrderRequest(tradeType, volumeInMoney, price);
-                request.Label = label;
-                request.Symbol = symbolObject;
-                request.StopLoss = stoploss;
-                request.TakeProfit = takeprofit;
-                request.Expiration = Mq4TimeSeries.ToDateTime(expiration);
+                    PlaceStopOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
 
-                _desiredTrade = new CreatePendingOrderTrade();
-
-                Trade.Send(request);
-
-                _mq4Finished.Set();     
-                _mq4Start.WaitOne();
-
-                return GetTicket(_lastPlacedOrder);
+                return GetTicket(LastResult.PendingOrder);
             }
         default:
             throw new Exception("Not supported by converter");            
@@ -98,7 +56,7 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
 }
 
 [Conditional("OrderClose")]
-Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Color = CLR_NONE)
+Mq4Double OrderClose(int ticket, double lots, double price, int slippagePoints, int Color = CLR_NONE)
 {
     _lastError = ERR_NO_ERROR;
 
@@ -108,16 +66,12 @@ Mq4Double OrderClose(int ticket, double lots, double price, int slippage, int Co
         _lastError = ERR_INVALID_TICKET;
         return false;
     }
-    if (GetLots(position) != lots)
-        throw new Exception("Partial close isn't supported by cAlgo");
-
-    _desiredTrade = new ClosePositionTrade();
-    Trade.Close(position);
+    var symbolObject = MarketData.GetSymbol(position.SymbolCode);
     
-    _mq4Finished.Set();     
-    _mq4Start.WaitOne();
+    var volumeInUnits = symbolObject.ToUnitsVolume(lots);    
+    ClosePosition(position, volumeInUnits);    
 
-    return true;
+    return LastResult.IsSuccessful;
 }
 
 [Conditional("OrderModify")]
@@ -135,34 +89,17 @@ Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprof
 
     var position = order as Position;
     if (position != null)
-    {
-        _desiredTrade = new ProtectPositionTrade
-        {
-            StopLoss = stoploss.ToNullableDouble(),
-            TakeProfit = takeprofit.ToNullableDouble(),
-        };                
-        _positionToProtect = position;
-        Trade.ModifyPosition(position, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
+    {    
+        ModifyPosition(position, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
 
-        _mq4Finished.Set();     
-        _mq4Start.WaitOne();
-
-        return true;
+        return LastResult.IsSuccessful;
     }
     
     var pendingOrder = (PendingOrder)order;
-    _desiredTrade = new ModifyPendingOrderTrade
-    {
-        StopLoss = stoploss.ToNullableDouble(),
-        TakeProfit = takeprofit.ToNullableDouble(),
-    };                
-    _pendingOrderToModify = pendingOrder;
-    Trade.ModifyPendingOrder(pendingOrder, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
+    var expirationTime = expiration.ToNullableDateTime();
+    ModifyPendingOrder(pendingOrder, price, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble(), expirationTime);
 
-    _mq4Finished.Set();     
-    _mq4Start.WaitOne();
-
-    return true;
+    return LastResult.IsSuccessful;
 }
 
 [Conditional("OrderDelete")]
@@ -174,15 +111,7 @@ bool OrderDelete(int ticket, int Color = CLR_NONE)
     if (pendingOrder == null)
         return false;
 
-    _desiredTrade = new CancelPendingOrderTrade
-    {
-        PendingOrder = pendingOrder,
-    };
-
-    Trade.DeletePendingOrder(pendingOrder);
-
-    _mq4Finished.Set();     
-    _mq4Start.WaitOne();
-
-    return true;
+    CancelPendingOrder(pendingOrder);
+    
+    return LastResult.IsSuccessful;
 }

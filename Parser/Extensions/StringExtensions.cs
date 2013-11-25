@@ -3,19 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using _2calgo.Parser.InnerStructures;
 
 namespace _2calgo.Parser.Extensions
 {
     public static class StringExtensions
     {
-        public static bool ContainsBracketsAndTheyAreSimmetric(this string code, char bracketOpen, char bracketClose)
-        {
-            return code.Contains(bracketOpen.ToString())
-                   && code.Contains(bracketClose.ToString())
-                   && code.AreBracketsSimmetric(bracketOpen, bracketClose);
-        }
-
         public static bool AreBracketsSimmetric(this string code, char bracketOpen, char bracketClose)
         {
             var opened = 0;

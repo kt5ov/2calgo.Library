@@ -90,7 +90,9 @@ namespace _2calgo.Parser.CodeAdapter
                 "TimeFrame",
                 "Debug",
                 "Stop",
-                "Trade"
+                "Trade",
+                "PendingOrders",
+                "Positions",
             };
 
         public static string ReplaceCAlgoKeyWords(this string code)

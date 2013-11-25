@@ -1,38 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
+using _2calgo.Parser.InnerStructures;
 
 namespace _2calgo.Parser.CodeAdapter
 {
     public static class Names
     {
-        private static readonly Regex NameRegex = new Regex(@"(\w+\.)+\w+");
-        
+        private static readonly Regex IncludeRegex = new Regex(@"#include.*");
+
         public static string RemoveDotsFromNames(this string code)
         {
-            int matchCount;
-            do
+            var result = new StringBuilder();
+            var stringStructure = new StringStructure();
+
+            for (int i = 0; i < code.Length; i++)
             {
-                matchCount = 0;
-                var handled = new HashSet<string>();
-                foreach (var match in NameRegex.Matches(code).OfType<Match>())
+                stringStructure.Handle(code[i]);
+                if (i > 0 && i < code.Length - 1 &&
+                    code[i] == '.')
                 {
-                    var name = match.Value;
-                    if (handled.Contains(name))
+                    if (!stringStructure.IsInsideString
+                        && IsInsideWord(i, code))
                         continue;
-                    handled.Add(name);
-                    double doubleValue;
-                    if (double.TryParse(name, out doubleValue))
-                        continue;
-                    matchCount++;
-                    var nameWithoutDots = name.Replace(".", string.Empty);
-                    code = code.Replace(name, nameWithoutDots);
                 }
-            } while (matchCount > 0);
-            return code;
+
+                result.Append(code[i]);
+            }
+
+            return result.ToString();
         }
 
-        private static readonly Regex IncludeRegex = new Regex(@"#include.*");
+        private static bool IsInsideWord(int index, string code)
+        {
+            int i = index - 1;
+            while (i >= 0 && !IsSplitChar(code[i]))
+            {
+                if (char.IsLetter(code[i]) || code[i] == '_')
+                    return true;
+                i--;
+            }
+            i = index + 1;
+            while (i < code.Length && !IsSplitChar(code[i]))
+            {
+                if (char.IsLetter(code[i]) || code[i] == '_')
+                    return true;
+                i++;
+            }
+            return false;
+        }
+
+        private static bool IsSplitChar(char c)
+        {
+            switch (c)
+            {
+                case ' ':
+                case '\n':
+                case '\r':
+                case ';':
+                case ':':
+                case '?':
+                case '=':
+                case '*':
+                case '+':
+                case '/':
+                case '-':
+                case '(':
+                case ')':
+                    return true;
+            }
+            return false;
+        }
+
         public static string RemoveIncludes(this string code)
         {
             return IncludeRegex.Replace(code, string.Empty);

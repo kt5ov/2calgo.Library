@@ -326,33 +326,33 @@
         return indicator;
     }
     //}
+	
+	[Conditional("iAO")]
+	//{
+	private readonly Dictionary<MarketSeries, AwesomeOscillator> _aoCache = new Dictionary<MarketSeries, AwesomeOscillator>();
 
-    [Conditional("iAO")]
-    //{
-    private readonly Dictionary<MarketSeries, AwesomeOscillator> _aoCache = new Dictionary<MarketSeries, AwesomeOscillator>();
+	public AwesomeOscillator AwesomeOscillator(MarketSeries marketSeries)
+	{
+		if (_aoCache.ContainsKey(marketSeries))
+			return _aoCache[marketSeries];
 
-    public AwesomeOscillator AwesomeOscillator(MarketSeries marketSeries)
-    {
-        if (_aoCache.ContainsKey(marketSeries))
-            return _aoCache[marketSeries];
+		var indicator = _indicatorsAccessor.AwesomeOscillator(marketSeries);
+		_aoCache.Add(marketSeries, indicator);
+		return indicator;
+	}    
+	//}
+	[Conditional("iAC")]
+	//{
+	private readonly Dictionary<MarketSeries, AcceleratorOscillator> _acCache = new Dictionary<MarketSeries, AcceleratorOscillator>();
 
-        var indicator = _indicatorsAccessor.AwesomeOscillator(marketSeries);
-        _aoCache.Add(marketSeries, indicator);
-        return indicator;
-    }    
-    //}
-    [Conditional("iAC")]
-    //{
-    private readonly Dictionary<MarketSeries, AcceleratorOscillator> _acCache = new Dictionary<MarketSeries, AcceleratorOscillator>();
+	public AcceleratorOscillator AcceleratorOscillator(MarketSeries marketSeries)
+	{
+		if (_acCache.ContainsKey(marketSeries))
+			return _acCache[marketSeries];
 
-    public AcceleratorOscillator AcceleratorOscillator(MarketSeries marketSeries)
-    {
-        if (_acCache.ContainsKey(marketSeries))
-            return _acCache[marketSeries];
-
-        var indicator = _indicatorsAccessor.AcceleratorOscillator(marketSeries);
-        _acCache.Add(marketSeries, indicator);
-        return indicator;
-    }    
-    //}
+		var indicator = _indicatorsAccessor.AcceleratorOscillator(marketSeries);
+		_acCache.Add(marketSeries, indicator);
+		return indicator;
+	}    
+	//}
 }

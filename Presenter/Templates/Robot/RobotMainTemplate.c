@@ -40,122 +40,30 @@ public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
 		CommonInitialize();			            
 		#DebugActions_PLACE_HOLDER#           
 
-		Mq4Init();
-
-		var mq4Thread = new Thread(Mq4ThreadStart);
-		mq4Thread.Start();
+		try
+        {
+			Mq4Init();
+		}
+        catch(Exception e)
+        {
+            #HandleException_PLACE_HOLDER#
+        }  
     }
-
-    AutoResetEvent _mq4Start = new AutoResetEvent(false);
-    AutoResetEvent _mq4Finished = new AutoResetEvent(false);
-    DesiredTrade _desiredTrade;
-    Position _positionToProtect;
-    PendingOrder _pendingOrderToModify;
-    Position _lastOpenedPosition;
-    PendingOrder _lastPlacedOrder;
 
     protected override void OnTick()
     {        
         var index = MarketSeries.Close.Count - 1;
         #Buffers_SetCurrentIndex_PLACE_HOLDER#        
 
-        var openedPositionTrade = _desiredTrade as OpenPositionTrade;
-        var protectPositionTrade = _desiredTrade as ProtectPositionTrade;
-        var modifyPendingOrderTrade = _desiredTrade as ModifyPendingOrderTrade;
-        var cancelPendingOrderTrade = _desiredTrade as CancelPendingOrderTrade;
-
-
-        if (openedPositionTrade != null
-            && _positionToProtect != null 
-            && (!openedPositionTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
-            && (!openedPositionTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
+        try
         {
-            _positionToProtect = null;
-            _desiredTrade = null;
-            ExecuteMq4Code();
-        } else if (protectPositionTrade != null
-            && (!protectPositionTrade.StopLoss.HasValue || _positionToProtect.StopLoss.HasValue) 
-            && (!protectPositionTrade.TakeProfit.HasValue || _positionToProtect.TakeProfit.HasValue) )
-            {
-                _positionToProtect = null;
-                _desiredTrade = null;
-                ExecuteMq4Code();
-            } 
-        else if (modifyPendingOrderTrade != null
-            && (!modifyPendingOrderTrade.StopLoss.HasValue || _pendingOrderToModify.StopLoss.HasValue) 
-            && (!modifyPendingOrderTrade.TakeProfit.HasValue || _pendingOrderToModify.TakeProfit.HasValue) )
-        {
-                _pendingOrderToModify = null;
-                _desiredTrade = null;
-                ExecuteMq4Code();
+            Mq4Start();
         }
-        else if (cancelPendingOrderTrade != null && Account.PendingOrders.All(o => o != cancelPendingOrderTrade.PendingOrder))
+        catch(Exception e)
         {
-            _desiredTrade = null;
-            ExecuteMq4Code();
-        }
-        else if (_desiredTrade == null)
-            ExecuteMq4Code();
+            #HandleException_PLACE_HOLDER#
+        }    
     }
-
-    private void ExecuteMq4Code()
-    {
-        _mq4Start.Set();
-        _mq4Finished.WaitOne();             
-    }
-
-    protected override void OnPositionOpened(Position openedPosition)
-    {
-        _lastOpenedPosition = openedPosition;
-        var openedPositionTrade = _desiredTrade as OpenPositionTrade;
-        if (openedPositionTrade != null)
-        {
-            if (openedPositionTrade.StopLoss == null && openedPositionTrade.TakeProfit == null)
-            {
-                _desiredTrade = null;
-                ExecuteMq4Code();
-            }
-            else
-            {
-                _positionToProtect = openedPosition;
-                Trade.ModifyPosition(openedPosition, openedPositionTrade.StopLoss, openedPositionTrade.TakeProfit);
-            }
-        }
-    }
-
-    protected override void OnPendingOrderCreated(PendingOrder newOrder)
-    {
-        _lastPlacedOrder = newOrder;
-        _desiredTrade = null;
-        ExecuteMq4Code();
-    }
-
-    protected override void OnPositionClosed(Position position)
-    {
-        _desiredTrade = null;
-        ExecuteMq4Code();        
-    }
-
-    private void Mq4ThreadStart()
-    {
-    	while (_mq4Start.WaitOne())
-    	{
-			try
-			{
-				Mq4Start();
-			}
-			catch(Exception e)
-			{
-				#HandleException_PLACE_HOLDER#
-			}
-    		_mq4Finished.Set();
-    	}
-    }
-
-	private IndicatorDataSeries CreateDataSeries()
-	{
-		return null;
-	}
 
     private bool IsLastBar
     {
@@ -175,15 +83,5 @@ public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
 	//Custom Indicators Place Holder
 
 #OuterParts_PLACE_HOLDER#
-
-    static class ConvertExtensions
-    {
-        public static double? ToNullableDouble(this double protection)
-        {
-            if (protection == 0)
-                return null;
-            return protection;
-        }
-    }
 
 }

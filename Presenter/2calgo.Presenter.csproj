@@ -52,7 +52,7 @@
     <Compile Include="PartsProviders\RobotInnerPartsProvider.cs" />
     <Compile Include="RobotTemplateProvider.cs" />
     <Compile Include="TemplateProvider.cs" />
-    <Compile Include="PartsProviders\OuterPartsProvider.cs" />
+    <Compile Include="PartsProviders\CommonOuterPartsProvider.cs" />
     <Compile Include="PartsProviders\CommonInnerPartsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringResourceReader.cs" />
@@ -87,7 +87,7 @@
     <Resource Include="Templates\Common\InnerParts\Debug.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4TimeSeries.c" />
+    <Resource Include="Templates\Common\OuterParts\Mq4TimeSeries.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Standard constants\Constants.c" />
@@ -231,16 +231,28 @@
     <Resource Include="Templates\Common\InnerParts\Arrows.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Robot\InnerParts\Account\Orders.c" />
+    <Resource Include="Templates\Common\InnerParts\Account\Orders.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Robot\InnerParts\Trading functions.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Robot\InnerParts\Account\Account information.c" />
+    <Resource Include="Templates\Common\InnerParts\Account\Account information.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Standard constants\stderror.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\ConvertExtensions.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\InnerParts\File functions.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\InnerParts\FolderPaths.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\Mq4Char.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

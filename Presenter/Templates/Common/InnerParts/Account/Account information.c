@@ -33,3 +33,15 @@ Mq4String AccountServer()
 {
 	return "Unknown Server";
 }
+
+[Conditional("AccountLeverage")]
+Mq4Double AccountLeverage()
+{
+    return Account.Leverage;
+}
+
+[Conditional("AccountProfit")]
+Mq4Double AccountProfit()
+{
+    return Positions.Sum(p => p.NetProfit);
+}

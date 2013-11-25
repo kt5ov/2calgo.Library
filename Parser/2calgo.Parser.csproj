@@ -68,6 +68,7 @@
     <Compile Include="Errors\ContainsStringErrorDetector.cs" />
     <Compile Include="Errors\ErrorDetector.cs" />
     <Compile Include="Errors\ErrorType.cs" />
+    <Compile Include="Errors\FileSeekDetector.cs" />
     <Compile Include="Errors\IncludeDetector.cs" />
     <Compile Include="Errors\InvokesNotSupportedMethodsDetector.cs" />
     <Compile Include="Errors\MethodError.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="CodeAdapter\Defines.cs" />
     <Compile Include="CodeAdapter\DrawingShapeStyles.cs" />
     <Compile Include="CodeAdapter\Functions.cs" />
-    <Compile Include="Errors\PartialCloseDetector.cs" />
+    <Compile Include="Errors\TwoDimentialArrayErrorDetector.cs" />
     <Compile Include="Extensions\MatchExtensions.cs" />
     <Compile Include="InnerStructures\InnerStructures.cs" />
     <Compile Include="CodeAdapter\Mq4Buffers.cs" />

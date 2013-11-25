@@ -81,14 +81,13 @@ Mq4String OrderComment()
 	if (_currentOrder == null)
 		return string.Empty;
 
-	var label = GetPropertyValue<string>(_currentOrder, _ => _.Label, _ => _.Label);
-	return GetComment(label);
+	return GetPropertyValue<string>(_currentOrder, _ => _.Comment, _ => _.Comment);
 }
 
 [Conditional("OrdersTotal")]
 Mq4Double OrdersTotal()
 {
-	return Account.Positions.Count + Account.PendingOrders.Count;
+	return Positions.Count + PendingOrders.Count;
 }
 
 object _currentOrder;
@@ -98,8 +97,8 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 {
 	_currentOrder = null;
 
-	var allOrders = Account.Positions.OfType<object>()
-							.Concat(Account.PendingOrders.OfType<object>())
+	var allOrders = Positions.OfType<object>()
+							.Concat(PendingOrders.OfType<object>())
 							.ToArray();
 
 	switch (select)
@@ -121,14 +120,16 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 double GetLots(object order)
 {
 	var volume = GetPropertyValue<long>(order, _ => _.Volume,  _ => _.Volume);
-
-	return volume / 100000;
+	var symbolCode = GetPropertyValue<string>(order, _ => _.SymbolCode, _ => _.SymbolCode);
+	var symbolObject = MarketData.GetSymbol(symbolCode);
+	
+	return symbolObject.ToLotsVolume(volume);
 }
 
 object GetOrderByTicket(int ticket)
 {
-	var allOrders = Account.Positions.OfType<object>()
-							.Concat(Account.PendingOrders.OfType<object>())
+	var allOrders = Positions.OfType<object>()
+							.Concat(PendingOrders.OfType<object>())
 							.ToArray();
 
 	return allOrders.FirstOrDefault(_ => GetTicket(_) == ticket);

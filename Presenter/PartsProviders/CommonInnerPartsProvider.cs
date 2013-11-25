@@ -12,6 +12,7 @@ namespace _2calgo.Presenter.PartsProviders
         private const string DataSeries = "DataSeries";
         private const string Indicators = "Indicators";
         private const string StandardConstants = "Standard constants";
+        private const string Account = "Account";
 
         private static readonly IEnumerable<string> InnerParts = new[]
             {
@@ -37,6 +38,11 @@ namespace _2calgo.Presenter.PartsProviders
                 "Arrows.c",
                 "Mq4OutputDataSeries.c",
                 "Custom indicators.c",
+                "File functions.c",
+                "FolderPaths.c",
+  
+                Account + "/Orders.c",
+                Account + "/Account information.c",
                 
                 Indicators + "/iIndicators.c",
                 Indicators + "/CachedStandardIndicators.c",
@@ -60,7 +66,6 @@ namespace _2calgo.Presenter.PartsProviders
                 ChartObjects + "/Object functions.c",
                 
                 DataSeries + "/Mq4MarketDataSeries.c",
-                DataSeries + "/Mq4TimeSeries.c",
                 DataSeries + "/IMq4Array.c",
                 DataSeries + "/Mq4Array.c",
                 DataSeries + "/DefaultValues.c",

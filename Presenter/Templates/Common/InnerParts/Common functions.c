@@ -34,6 +34,16 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
 			return 0;
         case MODE_STOPLEVEL:
             return symbolObject.TickSize;    
+        case MODE_MINLOT:
+            return symbolObject.ToLotsVolume(symbolObject.VolumeMin);    
+        case MODE_MAXLOT:
+            return symbolObject.ToLotsVolume(symbolObject.VolumeMax);  
+        case MODE_LOTSTEP:
+            return symbolObject.ToLotsVolume(symbolObject.VolumeStep);   
+        case MODE_TICKVALUE:
+            return symbolObject.TickValue;    
+        case MODE_LOTSIZE:
+            return symbolObject.ToNotNormalizedUnitsVolume(1);    
 	}
 	return 0;
 }

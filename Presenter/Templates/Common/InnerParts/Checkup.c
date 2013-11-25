@@ -15,7 +15,7 @@ Mq4Double GetLastError()
 [Conditional("IsTesting", "Alert")]
 Mq4Double IsTesting()
 {
-    return false;
+    return IsBacktesting;
 }
 
 [Conditional("IsOptimization")]
@@ -51,7 +51,7 @@ Mq4Double IsExpertEnabled()
 [Conditional("IsDemo")]
 Mq4Double IsDemo()
 {
-    return false;
+    return !Account.IsLive;
 }
 
 [Conditional("IsLibrariesAllowed")]

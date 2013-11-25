@@ -12,9 +12,10 @@ namespace _2calgo.Parser.Errors
         {
             foreach (var match in IncludeRegex.Matches(code).OfType<Match>())
             {
-                if (match.Groups["name"].Value != "stdlib.mqh" && match.Groups["name"].Value != "stderror.mqh")
+                var include = match.Groups["name"].Value;
+                if (include != "stdlib.mqh" && include != "stderror.mqh" && include != "include/stdlib.mqh")
                 {
-                    yield return new ParsingError(ErrorType.NotSupportedCriticalError, "#include", match.Groups["name"].Value);
+                    yield return new ParsingError(ErrorType.NotSupportedCriticalError, "#include", include);
                 }
             }
         }

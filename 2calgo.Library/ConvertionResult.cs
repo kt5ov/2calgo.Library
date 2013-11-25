@@ -18,7 +18,7 @@ namespace _2calgo.Library
             CAlgoCode = cAlgoCode;
         }
 
-        public bool IsSuccessfull
+        public bool IsSuccessful
         {
             get { return !(CompilerErrors.Any(e => !e.IsWarning) || ParsingErrors.Any(e => e.ErrorType >= ErrorType.Error)); }
         }
