@@ -73,3 +73,22 @@
 		return dateTime;
 	}
 	//}
+	
+	int ToMq4ErrorCode(ErrorCode errorCode)
+	{
+		switch (errorCode)
+		{
+                case ErrorCode.BadVolume:
+                    return ERR_INVALID_TRADE_VOLUME; 
+                case ErrorCode.NoMoney:
+                    return ERR_NOT_ENOUGH_MONEY;
+                case ErrorCode.MarketClosed:
+                    return ERR_MARKET_CLOSED;
+                case ErrorCode.Disconnected:
+                    return ERR_NO_CONNECTION;
+                case ErrorCode.Timeout:
+                    return ERR_TRADE_TIMEOUT;
+                default:
+                    return ERR_COMMON_ERROR;
+		}
+	}

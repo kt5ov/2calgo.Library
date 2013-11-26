@@ -23,9 +23,14 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                 if (takeprofit != 0)
                     takeProfitPips = tradeType == TradeType.Buy ? (takeprofit - symbolObject.Ask) / symbolObject.PipSize : (symbolObject.Bid - takeprofit) / symbolObject.PipSize;
 
-                ExecuteMarketOrder(tradeType, symbolObject, volumeInUnits, label, stopLossPips, takeProfitPips, slippageInPips, comment);
-
-                return GetTicket(LastResult.Position);
+                var marketOrderResult = ExecuteMarketOrder(tradeType, symbolObject, volumeInUnits, label, stopLossPips, takeProfitPips, slippageInPips, comment);
+				if (marketOrderResult.IsSuccessful)
+					return GetTicket(marketOrderResult.Position);
+				else
+				{
+					_lastError = ToMq4ErrorCode(marketOrderResult.Error.Value);
+					return -1;
+				}
             }
         case OP_BUYLIMIT:
         case OP_SELLLIMIT:
@@ -41,12 +46,19 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                 if (takeprofit != 0)
                     takeProfitPips = tradeType == TradeType.Buy ? (takeprofit - price) / symbolObject.PipSize : (price - takeprofit) / symbolObject.PipSize;
 
+				TradeResult placeOrderResult;
                 if (cmd == OP_BUYLIMIT || cmd == OP_SELLLIMIT)
-                    PlaceLimitOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
+                    placeOrderResult = PlaceLimitOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
                 else
-                    PlaceStopOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
+                    placeOrderResult = PlaceStopOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
 
-                return GetTicket(LastResult.PendingOrder);
+				if (placeOrderResult.IsSuccessful)
+					return GetTicket(placeOrderResult.Position);
+				else
+				{
+					_lastError = ToMq4ErrorCode(placeOrderResult.Error.Value);
+					return -1;
+				}
             }
         default:
             throw new Exception("Not supported by converter");            
@@ -71,6 +83,9 @@ Mq4Double OrderClose(int ticket, double lots, double price, int slippagePoints, 
     var volumeInUnits = symbolObject.ToUnitsVolume(lots);    
     ClosePosition(position, volumeInUnits);    
 
+	if (!LastResult.IsSuccessful)
+		_lastError = ToMq4ErrorCode(LastResult.Error.Value);
+
     return LastResult.IsSuccessful;
 }
 
@@ -91,6 +106,8 @@ Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprof
     if (position != null)
     {    
         ModifyPosition(position, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble());
+		if (!LastResult.IsSuccessful)
+			_lastError = ToMq4ErrorCode(LastResult.Error.Value);
 
         return LastResult.IsSuccessful;
     }
@@ -98,6 +115,9 @@ Mq4Double OrderModify(int ticket, double price, double stoploss, double takeprof
     var pendingOrder = (PendingOrder)order;
     var expirationTime = expiration.ToNullableDateTime();
     ModifyPendingOrder(pendingOrder, price, stoploss.ToNullableDouble(), takeprofit.ToNullableDouble(), expirationTime);
+
+	if (!LastResult.IsSuccessful)
+		_lastError = ToMq4ErrorCode(LastResult.Error.Value);
 
     return LastResult.IsSuccessful;
 }
@@ -112,6 +132,9 @@ bool OrderDelete(int ticket, int Color = CLR_NONE)
         return false;
 
     CancelPendingOrder(pendingOrder);
+
+	if (!LastResult.IsSuccessful)
+		_lastError = ToMq4ErrorCode(LastResult.Error.Value);
     
     return LastResult.IsSuccessful;
 }
