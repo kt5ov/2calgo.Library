@@ -22,7 +22,7 @@ private Mq4Double GetTicket(object trade)
 	return new Mq4Double(GetPropertyValue<int>(trade, _ => _.Id, _ => _.Id) + (int)1e8);
 }
 
-[Conditional("OrderTicket")]
+[Conditional("OrderTicket", "OrderPrint")]
 Mq4Double OrderTicket()
 {
 	if (_currentOrder == null)
@@ -66,7 +66,7 @@ private int GetMagicNumber(object order)
 	return GetMagicNumber(label);
 }
 
-[Conditional("OrderMagicNumber")]
+[Conditional("OrderMagicNumber", "OrderPrint")]
 Mq4Double OrderMagicNumber()
 {
 	if (_currentOrder == null)
@@ -75,7 +75,7 @@ Mq4Double OrderMagicNumber()
 	return GetMagicNumber(_currentOrder);
 }
 
-[Conditional("OrderComment")]
+[Conditional("OrderComment", "OrderPrint")]
 Mq4String OrderComment()
 {
 	if (_currentOrder == null)
@@ -135,7 +135,7 @@ object GetOrderByTicket(int ticket)
 	return allOrders.FirstOrDefault(_ => GetTicket(_) == ticket);
 }
 
-[Conditional("OrderLots")]
+[Conditional("OrderLots", "OrderPrint")]
 Mq4Double OrderLots()
 {
 	if (_currentOrder == null)
@@ -144,7 +144,7 @@ Mq4Double OrderLots()
 	return GetLots(_currentOrder);
 }
 
-[Conditional("OrderType")]
+[Conditional("OrderType", "OrderPrint")]
 Mq4Double OrderType()
 {
 	if (_currentOrder == null)
@@ -172,7 +172,7 @@ double GetOpenPrice(object order)
 	return GetPropertyValue<double>(order, _ => _.EntryPrice, _ => _.TargetPrice);
 }
 
-[Conditional("OrderOpenPrice")]
+[Conditional("OrderOpenPrice", "OrderPrint")]
 Mq4Double OrderOpenPrice()
 {
 	if (_currentOrder == null)
@@ -192,7 +192,7 @@ private double GetTakeProfit(object order)
 	return nullableValue ?? 0;
 }
 
-[Conditional("OrderStopLoss")]
+[Conditional("OrderStopLoss", "OrderPrint")]
 Mq4Double OrderStopLoss()
 {	
 	if (_currentOrder == null)
@@ -200,7 +200,7 @@ Mq4Double OrderStopLoss()
 	return GetStopLoss(_currentOrder);
 }
 
-[Conditional("OrderTakeProfit")]
+[Conditional("OrderTakeProfit", "OrderPrint")]
 Mq4Double OrderTakeProfit()
 {
 	if (_currentOrder == null)
@@ -208,7 +208,7 @@ Mq4Double OrderTakeProfit()
 	return GetTakeProfit(_currentOrder);
 }
 
-[Conditional("OrderProfit")]
+[Conditional("OrderProfit", "OrderPrint")]
 Mq4Double OrderProfit()
 {
 	var position = _currentOrder as Position;
@@ -217,7 +217,7 @@ Mq4Double OrderProfit()
 	return position.NetProfit;
 }
 
-[Conditional("OrderOpenTime")]
+[Conditional("OrderOpenTime", "OrderPrint")]
 Mq4Double OrderOpenTime()
 {
 	var position = _currentOrder as Position;
@@ -227,7 +227,7 @@ Mq4Double OrderOpenTime()
 	return Mq4TimeSeries.ToInteger(position.EntryTime);
 }
 
-[Conditional("OrderExpiration")]
+[Conditional("OrderExpiration", "OrderPrint")]
 Mq4Double OrderExpiration()
 {
 	var pendingOrder = _currentOrder as PendingOrder;
@@ -237,7 +237,7 @@ Mq4Double OrderExpiration()
 	return Mq4TimeSeries.ToInteger(pendingOrder.ExpirationTime.Value);
 }
 
-[Conditional("OrderSwap")]
+[Conditional("OrderSwap", "OrderPrint")]
 Mq4Double OrderSwap()
 {
 	var position = _currentOrder as Position;
@@ -247,7 +247,7 @@ Mq4Double OrderSwap()
 	return position.Swap;
 }
 
-[Conditional("OrderCommission")]
+[Conditional("OrderCommission", "OrderPrint")]
 Mq4Double OrderCommission()
 {
 	var position = _currentOrder as Position;
@@ -255,4 +255,49 @@ Mq4Double OrderCommission()
 		return 0;
 
 	return position.Commissions;
+}
+
+[Conditional("OrderPrint")]
+private string OrderTypeString()
+{
+	switch(OrderType())
+	{
+		case OP_BUY:
+			return "buy";
+		case OP_SELL:
+			return "sell";
+		case OP_BUYLIMIT:
+			return "buy limit";
+		case OP_SELLLIMIT:
+			return "sell limit";
+		case OP_BUYSTOP:
+			return "buy stop";
+		case OP_SELLSTOP:
+			return "sell stop";
+	}
+	return "0";
+}
+
+[Conditional("OrderPrint")]
+void OrderPrint()
+{
+	var values = new string[]
+	{
+		OrderTicket().ToString(),
+		Mq4TimeSeries.ToDateTime(OrderOpenTime()).ToString(),
+		OrderTypeString(),
+		OrderLots().ToString(),
+		OrderOpenPrice().ToString(),
+		OrderStopLoss().ToString(),
+		OrderTakeProfit().ToString(),
+		"0",
+		"0",
+		OrderCommission().ToString(),
+		OrderSwap().ToString(),
+		OrderProfit().ToString(),
+		OrderComment(),
+		OrderMagicNumber().ToString(),
+		OrderExpiration() == 0 ? "0" : Mq4TimeSeries.ToDateTime(OrderExpiration()).ToString(),
+	};
+	Print(string.Join("; ", values));
 }
