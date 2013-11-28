@@ -44,7 +44,7 @@ namespace _2calgo.Presenter
             _algoBuilder.Mq4Functions = GetFunctions(algo.Code.Functions);
             foreach (var customIndicator in algo.CustomIndicators)
             {
-                _algoBuilder.References.AppendLine(string.Format("//#reference: {0}.algo", customIndicator));
+                _algoBuilder.References.AppendLine(string.Format(@"//#reference: ..\Indicators\{0}.algo", customIndicator));
             }
 #if DEBUG
             _algoBuilder.DebugActions.AppendLine("Debug.Activate();");
