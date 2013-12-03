@@ -76,3 +76,40 @@ Mq4Double GlobalVariablesTotal()
 
     return allVariables.Length;
 }
+
+[Conditional("GlobalVariablesDeleteAll")]
+//{
+Mq4Double GlobalVariablesDeleteAll()
+{
+    var hkcu = Registry.CurrentUser;
+    hkcu.CreateSubKey(GlobalVariablesPath);
+    var globalVariablesKey = hkcu.OpenSubKey(GlobalVariablesPath, true);
+    string[] allVariables = globalVariablesKey.GetValueNames();
+	foreach (var name in allVariables)
+	{
+		globalVariablesKey.DeleteValue(name);  
+	}
+
+    globalVariablesKey.Close();
+    hkcu.Close();
+
+    return allVariables.Length;
+}
+
+Mq4Double GlobalVariablesDeleteAll(Mq4String prefix)
+{
+    var hkcu = Registry.CurrentUser;
+    hkcu.CreateSubKey(GlobalVariablesPath);
+    var globalVariablesKey = hkcu.OpenSubKey(GlobalVariablesPath, true);
+    string[] allVariables = globalVariablesKey.GetValueNames();
+	foreach (var name in allVariables.Where(n => n.StartsWith(prefix)))
+	{
+		globalVariablesKey.DeleteValue(name);  
+	}
+
+    globalVariablesKey.Close();
+    hkcu.Close();
+
+    return allVariables.Length;
+}
+//}

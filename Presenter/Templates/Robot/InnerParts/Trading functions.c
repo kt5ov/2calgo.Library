@@ -53,7 +53,7 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                     placeOrderResult = PlaceStopOrder(tradeType, symbolObject, volumeInUnits, price, label, stopLossPips, takeProfitPips, expiration.ToNullableDateTime(), comment);
 
 				if (placeOrderResult.IsSuccessful)
-					return GetTicket(placeOrderResult.Position);
+					return GetTicket(placeOrderResult.PendingOrder);
 				else
 				{
 					_lastError = ToMq4ErrorCode(placeOrderResult.Error.Value);
