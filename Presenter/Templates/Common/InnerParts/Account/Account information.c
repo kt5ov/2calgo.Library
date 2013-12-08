@@ -46,6 +46,12 @@ Mq4Double AccountProfit()
     return Positions.Sum(p => p.NetProfit);
 }
 
+[Conditional("AccountName")]
+Mq4String AccountName()
+{
+	return "Unknown";
+}
+
 [Conditional("AccountNumber")]
 Mq4Double AccountNumber()
 {
