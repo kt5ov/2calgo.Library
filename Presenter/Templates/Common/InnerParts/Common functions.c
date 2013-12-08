@@ -43,7 +43,7 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
         case MODE_TICKVALUE:
             return symbolObject.TickValue;    
         case MODE_LOTSIZE:
-            return symbolObject.ToNotNormalizedUnitsVolume(1);    
+            return symbolObject.ToNotNormalizedUnitsVolume(1);
 	}
 	return 0;
 }

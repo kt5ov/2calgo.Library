@@ -52,6 +52,12 @@ Mq4String AccountName()
 	return "Unknown";
 }
 
+[Conditional("AccountCredit")]
+Mq4Double AccountCredit()
+{
+	return 0;
+}
+
 [Conditional("AccountNumber")]
 Mq4Double AccountNumber()
 {
