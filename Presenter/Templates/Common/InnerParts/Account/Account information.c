@@ -51,3 +51,9 @@ Mq4Double AccountNumber()
 {
 	return 0;
 }
+
+[Conditional("AccountCompany")]
+Mq4String AccountCompany()
+{
+	return "Unknown";
+}
