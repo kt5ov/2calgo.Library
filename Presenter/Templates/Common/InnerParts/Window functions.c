@@ -27,6 +27,12 @@ Mq4String WindowExpertName()
 }
 
 [Conditional("HideTestIndicators")]
+//{
+void HideTestIndicators(Mq4Double hide)
+{
+}
+
 void HideTestIndicators()
 {
 }
+//}
