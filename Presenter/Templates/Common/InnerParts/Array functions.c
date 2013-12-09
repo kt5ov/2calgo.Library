@@ -91,7 +91,7 @@ int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, Mq4String sym
 				throw new NotImplementedException("Series index " + seriesIndex + " isn't supported in ArrayCopySeries");
 		}
 		for (var i = 0; i < dataSeries.Count - 1; i++)
-			mq4Array[i] = dataSeries.FromEnd(i);
+			mq4Array[i] = dataSeries.Last(i);
 		
 		return dataSeries.Count;
 	}

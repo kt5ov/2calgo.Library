@@ -1,6 +1,6 @@
 	static class TimeSeriesExtensions
 	{
-		public static DateTime FromEnd(this TimeSeries timeSeries, int index)
+		public static DateTime Last(this TimeSeries timeSeries, int index)
 		{
 			return timeSeries[timeSeries.InvertIndex(index)];
 		}

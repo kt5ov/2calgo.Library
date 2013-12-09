@@ -6,7 +6,7 @@
 		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + start - 1);
 		for (var i = start; i <= endIndex; i++)
 		{
-			if (dataSeries.FromEnd(i) > dataSeries.FromEnd(maxIndex))
+			if (dataSeries.Last(i) > dataSeries.Last(maxIndex))
 				maxIndex = i;
 		}
 		return maxIndex;
@@ -20,7 +20,7 @@
 		var endIndex = count == WHOLE_ARRAY ? (dataSeries.Count - 1) : (count + start - 1);
 		for (var i = start; i <= endIndex; i++)
 		{
-			if (dataSeries.FromEnd(i) < dataSeries.FromEnd(minIndex))
+			if (dataSeries.Last(i) < dataSeries.Last(minIndex))
 				minIndex = i;
 		}
 		return minIndex;
@@ -78,31 +78,31 @@
 	[Conditional("iOpen")]
     Mq4Double iOpen(Mq4String symbol, int timeframe, int shift)
     {	
-		return GetSeries(symbol, timeframe).Open.FromEnd(shift);
+		return GetSeries(symbol, timeframe).Open.Last(shift);
     }
 
 	[Conditional("iHigh")]
     Mq4Double iHigh(Mq4String symbol, int timeframe, int shift)
     {
-		return GetSeries(symbol, timeframe).High.FromEnd(shift);
+		return GetSeries(symbol, timeframe).High.Last(shift);
     }
 
 	[Conditional("iLow")]
     Mq4Double iLow(Mq4String symbol, int timeframe, int shift)
     {
-		return GetSeries(symbol, timeframe).Low.FromEnd(shift);
+		return GetSeries(symbol, timeframe).Low.Last(shift);
     }
 		
 	[Conditional("iClose")]
     Mq4Double iClose(Mq4String symbol, int timeframe, int shift)
     {
-		return GetSeries(symbol, timeframe).Close.FromEnd(shift);
+		return GetSeries(symbol, timeframe).Close.Last(shift);
     }
 	
 	[Conditional("iVolume")]
     Mq4Double iVolume(Mq4String symbol, int timeframe, int shift)
     {
-		return GetSeries(symbol, timeframe).TickVolume.FromEnd(shift);
+		return GetSeries(symbol, timeframe).TickVolume.Last(shift);
     }
 
 	[Conditional("iTime")]
@@ -110,7 +110,7 @@
     {
 		var timeSeries = GetSeries(symbol, timeframe).OpenTime;
 		if (shift >= 0 && shift < timeSeries.Count)
-			return Mq4TimeSeries.ToInteger(timeSeries.FromEnd(shift));
+			return Mq4TimeSeries.ToInteger(timeSeries.Last(shift));
 		return 0;
     }
 

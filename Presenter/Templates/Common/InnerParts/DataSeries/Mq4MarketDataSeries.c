@@ -9,7 +9,7 @@
 
         public Mq4Double this[int index]
         {
-            get { return _dataSeries.FromEnd(index); }
+            get { return _dataSeries.Last(index); }
 			set { }
         }
 
