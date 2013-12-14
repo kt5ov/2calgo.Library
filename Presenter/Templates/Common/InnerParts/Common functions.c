@@ -44,6 +44,8 @@ Mq4Double MarketInfo(Mq4String symbol, int type)
             return symbolObject.TickValue;    
         case MODE_LOTSIZE:
             return symbolObject.ToNotNormalizedUnitsVolume(1);
+        case MODE_MARGINREQUIRED:
+            return symbolObject.ToNotNormalizedUnitsVolume(1) / Account.Leverage * symbolObject.Ask * symbolObject.TickValue / symbolObject.TickSize;
 	}
 	return 0;
 }

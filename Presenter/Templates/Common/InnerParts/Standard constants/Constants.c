@@ -63,8 +63,8 @@ const int MODE_LOTSTEP = 24;
 const int MODE_MAXLOT = 25;
 /*const int MODE_MARGININIT = 29;
 const int MODE_MARGINMAINTENANCE = 30;
-const int MODE_MARGINHEDGED = 31;
-const int MODE_MARGINREQUIRED = 32;*/
+const int MODE_MARGINHEDGED = 31;*/
+const int MODE_MARGINREQUIRED = 32;
 
 const int OBJ_VLINE = 0;
     const int OBJ_HLINE = 1;
