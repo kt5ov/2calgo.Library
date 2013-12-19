@@ -79,11 +79,6 @@ void Comment(params object[] objects)
     ChartObjects.DrawText("top left comment", text, StaticPosition.TopLeft);
 }
 
-[Conditional("Sleep")]
-void Sleep(Mq4Double milliseconds)
-{        
-}
-
 [Conditional("PlaySound")]
 void PlaySound(Mq4String fileName)
 {

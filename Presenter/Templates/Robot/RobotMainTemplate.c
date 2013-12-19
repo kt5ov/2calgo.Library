@@ -70,10 +70,19 @@ public List<DataSeries> AllOutputDataSeries = new List<DataSeries>();
         get { return true; }
     }
 
+    [Conditional("IsTradeAllowed")]
     private bool IsTradeAllowed()
     {
         return true;
     }
+
+    [Conditional("Sleep")]
+    void Sleep(Mq4Double milliseconds)
+    {        
+        if (!IsBacktesting)
+            Thread.Sleep(milliseconds);
+    }
+
 
 #InnerParts_PLACE_HOLDER#
 #RobotInnerParts_PLACE_HOLDER#
