@@ -69,3 +69,14 @@ Mq4String AccountCompany()
 {
 	return "Unknown";
 }
+
+[Conditional("AccountFreeMarginCheck")]
+Mq4Double AccountFreeMarginCheck(Mq4String symbol, Mq4Double cmd, Mq4Double volume)
+{
+	_lastError = ERR_NO_ERROR;
+	var result = Account.FreeMargin - volume * MarketInfo(symbol, MODE_MARGINREQUIRED);
+	if (result <= 0)
+		_lastError = ERR_NOT_ENOUGH_MONEY;
+
+	return result;
+}
