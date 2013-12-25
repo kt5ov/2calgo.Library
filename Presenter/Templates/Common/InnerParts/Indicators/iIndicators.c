@@ -777,3 +777,66 @@ Mq4Double iAC(Mq4String symbol, int timeframe, int shift)
     var marketSeries = GetSeries(symbol, timeframe);
     return _cachedStandardIndicators.AcceleratorOscillator(marketSeries).Result.Last(shift);   
 }
+
+[Conditional("iDeMarker")]
+//{
+class DeMarkerIndicator
+{
+    private readonly IndicatorDataSeries _deMax;
+    private readonly IndicatorDataSeries _deMin;
+    private readonly SimpleMovingAverage _deMinSma;
+    private readonly SimpleMovingAverage _deMaxSma;
+    private readonly MarketSeries _marketSeries;
+    public readonly IndicatorDataSeries Result;
+
+    public DeMarkerIndicator(MarketSeries marketSeries, int period, Func<IndicatorDataSeries> dataSeriesFactory, IIndicatorsAccessor indicatorAccessor)
+    {
+        _marketSeries = marketSeries;
+        _deMax = dataSeriesFactory();
+        _deMin = dataSeriesFactory();
+        Result = dataSeriesFactory();
+        _deMaxSma = indicatorAccessor.SimpleMovingAverage(_deMax, period);
+        _deMinSma = indicatorAccessor.SimpleMovingAverage(_deMin, period);
+    }
+
+    public void Calculate(int index)
+    {
+        if (_marketSeries.High[index] > _marketSeries.High[index - 1])
+            _deMax[index] = _marketSeries.High[index] - _marketSeries.High[index - 1];
+        else
+            _deMax[index] = 0;
+
+        if (_marketSeries.Low[index] < _marketSeries.Low[index - 1])
+            _deMin[index] = _marketSeries.Low[index - 1] - _marketSeries.Low[index];
+        else
+            _deMin[index] = 0;
+
+        Result[index] = _deMaxSma.Result[index] / (_deMaxSma.Result[index] + _deMinSma.Result[index]);
+    }
+}
+
+class DeMarkerParameters
+{
+    public int Period { get; set;}
+    public MarketSeries MarketSeries { get; set;}
+}
+
+private static readonly Dictionary<DeMarkerParameters, DeMarkerIndicator> _demarkerCache = new Dictionary<DeMarkerParameters, DeMarkerIndicator>();
+
+Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
+{
+    var marketSeries = GetSeries(symbol, timeframe);
+    var parameters = new DeMarkerParameters
+    {
+        Period = period,
+        MarketSeries = marketSeries
+    };
+    DeMarkerIndicator indicator;
+    if (!_demarkerCache.TryGetValue(parameters, out indicator))
+    {
+        indicator = new DeMarkerIndicator(marketSeries, period, () => CreateDataSeries(), Indicators);
+        _demarkerCache.Add(parameters, indicator);
+    }
+    return indicator.Result.Last(shift);
+}
+//}
