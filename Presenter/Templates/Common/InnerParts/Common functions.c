@@ -1,4 +1,4 @@
-[Conditional("MarketInfo")]
+[Conditional("MarketInfo", "AccountFreeMarginCheck")]
 Mq4Double MarketInfo(Mq4String symbol, int type)
 {
 	var symbolObject = GetSymbol(symbol);

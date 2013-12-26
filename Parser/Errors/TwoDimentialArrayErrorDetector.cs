@@ -6,11 +6,12 @@ namespace _2calgo.Parser.Errors
 {
     class TwoDimentialArrayErrorDetector : ErrorDetector
     {
-        private static readonly Regex Regex = new Regex(@"\w\s*\[(?<body>[^\]""]+,[^\]""]+)\]");
+        private static readonly Regex First = new Regex(@"\w\s*\[(?<body>[^\]""]+,[^\]""]+)\]");
+        private static readonly Regex Second = new Regex(@"double\s+[^\[]*\[[^\]\r]*\]\s*\[[^\]\r]*\]");
 
         public override IEnumerable<ParsingError> FindErrors(string code)
         {
-            foreach (var match in Regex.Matches(code).OfType<Match>())
+            foreach (var match in First.Matches(code).OfType<Match>())
             {
                 var body = match.Groups["body"].Value;
                 var innerStructures = new InnerStructures.InnerStructures();
@@ -21,10 +22,15 @@ namespace _2calgo.Parser.Errors
                     {
                         yield return
                             new ParsingError(ErrorType.NotSupportedCriticalError, "Two dimential array",
-                                             Regex.Match(code).Value);
+                                             match.Value);
                         yield break;
                     }
                 }
+            }
+            foreach (var match in Second.Matches(code).OfType<Match>())
+            {
+                yield return new ParsingError(ErrorType.NotSupportedCriticalError, "Two dimential array",
+                                             match.Value);
             }
         }
     }
