@@ -70,6 +70,12 @@ Mq4String AccountCompany()
 	return "Unknown";
 }
 
+[Conditional("AccountFreeMarginMode")]
+Mq4Double AccountFreeMarginMode()
+{
+	return 1;
+}
+
 [Conditional("AccountFreeMarginCheck")]
 Mq4Double AccountFreeMarginCheck(Mq4String symbol, Mq4Double cmd, Mq4Double volume)
 {
