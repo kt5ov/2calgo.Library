@@ -13,7 +13,7 @@ namespace _2calgo.Parser
             if (char.IsDigit(simplifiedName[0]))
                 simplifiedName = "_" + simplifiedName;
 
-            return simplifiedName + algoType.ToString();
+            return simplifiedName + "_" + algoType;
         }
     }
 }

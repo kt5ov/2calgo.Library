@@ -7,7 +7,7 @@ namespace _2calgo.Parser.CodeAdapter
 {
     internal static class Declarations
     {
-        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?!case)(?!ase)(?!se)(?!e)(?<typeWithStatic>(static\s+){0,1}(?<type>\w+))\s+(?<declarations>\w+[^;]+);", RegexOptions.Compiled);
+        private static readonly Regex DeclarationWithAssignmentRegex = new Regex(@"(?<typeWithStatic>(static\s+){0,1}(?<type>(?<!\w)(int|double|char|string|bool)))\s+(?<declarations>[^;]+);", RegexOptions.Compiled);
 
         public static string SplitDeclarationsAndAssignments(this string code)
         {
