@@ -863,12 +863,37 @@ class Envelopes_Indicator
     }
 }
 
-class EnvelopesParameters 
+class EnvelopesParameters
 {
     public DataSeries SourceSeries { get; set; }
     public int Period { get; set; }
     public MovingAverageType MAType { get; set; }
     public double Deviation { get; set; }
+
+    protected bool Equals(EnvelopesParameters other)
+    {
+        return Equals(SourceSeries, other.SourceSeries) && Period == other.Period && MAType == other.MAType && Deviation.Equals(other.Deviation);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((EnvelopesParameters) obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = SourceSeries.GetHashCode();
+            hashCode = (hashCode*397) ^ Period;
+            hashCode = (hashCode*397) ^ (int) MAType;
+            hashCode = (hashCode*397) ^ Deviation.GetHashCode();
+            return hashCode;
+        }
+    }
 }
 
 private readonly Dictionary<EnvelopesParameters, Envelopes_Indicator> _envelopesCache = new Dictionary<EnvelopesParameters, Envelopes_Indicator>();
@@ -877,15 +902,17 @@ private Envelopes_Indicator GetEnvelopes(DataSeries sourceSeries, int period, Mo
 	var parameters = new EnvelopesParameters
     {
         SourceSeries = sourceSeries,
-        Period = ma_period,
+        Period = period,
         MAType = maType,
         Deviation = deviation
     };
+	Envelopes_Indicator indicator;
 	if (!_envelopesCache.TryGetValue(parameters, out indicator))
     {
-        indicator = new Envelopes_Indicator(sourceSeries, ma_period, maType, deviation, Indicators);
+        indicator = new Envelopes_Indicator(sourceSeries, period, maType, deviation, Indicators);
         _envelopesCache.Add(parameters, indicator);
     }
+	return indicator;
 }
 
 private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma_period, Mq4Double ma_method, 
