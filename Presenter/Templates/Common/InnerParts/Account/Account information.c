@@ -76,6 +76,12 @@ Mq4Double AccountFreeMarginMode()
 	return 1;
 }
 
+[Conditional("AccountStopoutMode")]
+Mq4Double AccountStopoutMode()
+{
+	return 0;
+}
+
 [Conditional("AccountFreeMarginCheck")]
 Mq4Double AccountFreeMarginCheck(Mq4String symbol, Mq4Double cmd, Mq4Double volume)
 {
