@@ -840,3 +840,63 @@ Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
     return indicator.Result.Last(shift);
 }
 //}
+[Conditional("iEnvelopes")]
+//{
+
+class Envelopes_Indicator
+{
+    private readonly MovingAverage _ma;
+    private readonly double _deviation;
+
+    public Envelopes_Indicator(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
+    {
+        _ma = indicatorAccessor.MovingAverage(sourceSeries, period, maType);
+        _deviation = deviation;
+    }
+
+    public double Calculate(int index, int mode)
+    {
+        var priceShift = _ma.Result[index] * _deviation / 100;
+        if (mode == MODE_UPPER)
+            return _ma.Result[index] + priceShift;
+        return _ma.Result[index] - priceShift;
+    }
+}
+
+class EnvelopesParameters 
+{
+    public DataSeries SourceSeries { get; set; }
+    public int Period { get; set; }
+    public MovingAverageType MAType { get; set; }
+    public double Deviation { get; set; }
+}
+
+private readonly Dictionary<EnvelopesParameters, Envelopes_Indicator> _envelopesCache = new Dictionary<EnvelopesParameters, Envelopes_Indicator>();
+private Envelopes_Indicator GetEnvelopes(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
+{
+	var parameters = new EnvelopesParameters
+    {
+        SourceSeries = sourceSeries,
+        Period = ma_period,
+        MAType = maType,
+        Deviation = deviation
+    };
+	if (!_envelopesCache.TryGetValue(parameters, out indicator))
+    {
+        indicator = new Envelopes_Indicator(sourceSeries, ma_period, maType, deviation, Indicators);
+        _envelopesCache.Add(parameters, indicator);
+    }
+}
+
+private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma_period, Mq4Double ma_method, 
+    Mq4Double ma_shift, Mq4Double applied_price, Mq4Double deviation, Mq4Double mode, Mq4Double shift)
+{
+    var sourceSeries = ToAppliedPrice(symbol, timeframe, applied_price);
+    var maType = ToMaType(ma_method);        
+    
+    var indicator = GetEnvelopes(sourceSeries, ma_period, maType, deviation, Indicators);
+    
+    var indexToCalculate = sourceSeries.InvertIndex(ma_shift + shift);
+    return indicator.Calculate(indexToCalculate, mode);
+}
+//}
