@@ -4,7 +4,7 @@ namespace _2calgo.Parser.CodeAdapter
 {
     public static class Defines
     {
-        private static readonly Regex DefineRegex = new Regex(@"\#define\s+(?<name>\w+)\s+(?<value>[^\r\n]+)",
+        private static readonly Regex DefineRegex = new Regex(@"\#define\s+(?<name>[^\s]+)\s+(?<value>[^\r\n]+)",
                                                               RegexOptions.Compiled);
 
         public static string ReplaceDefines(this string code)
