@@ -66,6 +66,7 @@ namespace _2calgo.Parser.CodeAdapter
                 case '-':
                 case '(':
                 case ')':
+                case ',':
                     return true;
             }
             return false;
