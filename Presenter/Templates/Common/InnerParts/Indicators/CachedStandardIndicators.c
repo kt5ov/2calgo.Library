@@ -10,42 +10,32 @@
 		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower", "iForce")]
 		//{
 #region iMA
-        private struct MAParameters
-        {
-            public DataSeries Source;
-            public int Periods;
-            public MovingAverageType MovingAverageType;
-        }
-    
-        private struct WellesWilderSmoothingParameters
-        {
-          public DataSeries Source;
-          public int Periods;
-        }
 
-        private Dictionary<MAParameters, MovingAverage> _movingAverages = new Dictionary<MAParameters, MovingAverage>();
-        private Dictionary<WellesWilderSmoothingParameters, WellesWilderSmoothing> _wellesWilderSmoothings = new Dictionary<WellesWilderSmoothingParameters, WellesWilderSmoothing>();
+        private Cache<MovingAverage> _movingAverages = new Cache<MovingAverage>();
+        private Cache<WellesWilderSmoothing> _wellesWilderSmoothings = new Cache<WellesWilderSmoothing>();
 
         public MovingAverage MovingAverage(DataSeries source, int periods, MovingAverageType maType)
         {
-            var maParameters = new MAParameters { MovingAverageType = maType, Periods = periods, Source = source };
-            if (_movingAverages.ContainsKey(maParameters))
-                return _movingAverages[maParameters];
+			MovingAverage indicator;
 
-            var indicator = _indicatorsAccessor.MovingAverage(source, periods, maType);
-            _movingAverages.Add(maParameters, indicator);
+            if (_movingAverages.TryGetValue(out indicator, maType, periods, source))
+                return indicator;
+
+            indicator = _indicatorsAccessor.MovingAverage(source, periods, maType);
+            _movingAverages.Add(indicator, maType, periods, source);
 
             return indicator;
         }
     
         public WellesWilderSmoothing WellesWilderSmoothing(DataSeries source, int periods)
         {
-            var parameters = new WellesWilderSmoothingParameters { Periods = periods, Source = source };
-            if (_wellesWilderSmoothings.ContainsKey(parameters))
-                return _wellesWilderSmoothings[parameters];
+			WellesWilderSmoothing indicator;
 
-            var indicator = _indicatorsAccessor.WellesWilderSmoothing(source, periods);
-            _wellesWilderSmoothings.Add(parameters, indicator);
+            if (_wellesWilderSmoothings.TryGetValue(out indicator, periods, source))
+                return indicator;
+
+            indicator = _indicatorsAccessor.WellesWilderSmoothing(source, periods);
+            _wellesWilderSmoothings.Add(indicator, periods, source);
 
             return indicator;
         }

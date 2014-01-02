@@ -158,10 +158,7 @@ private double iRSIOnArray(Mq4OutputDataSeries invertedDataSeries, int total, in
 
 [Conditional("iBandsOnArray")]                
 private double iBandsOnArray(Mq4OutputDataSeries invertedDataSeries, int total, int period, int deviation, int bands_shift, int mode, int shift) 
-{
-	if (bands_shift != 0)
-		throw new NotImplementedException(NotSupportedBandsShift);
-            
+{            
 	return CalculateBands(invertedDataSeries.OutputDataSeries, period, deviation, mode, shift);
 }
      
