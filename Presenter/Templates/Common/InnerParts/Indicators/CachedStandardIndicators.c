@@ -45,22 +45,17 @@
 		[Conditional("iRSI", "iRSIOnArray")]
 		//{
 #region iRSI
-        private struct RsiParameters
-        {
-            public DataSeries Source;
-            public int Periods;
-        }
     
-        private Dictionary<RsiParameters, RelativeStrengthIndex> _rsiIndicators = new Dictionary<RsiParameters, RelativeStrengthIndex>();
+        private Cache<RelativeStrengthIndex> _rsiIndicators = new Cache<RelativeStrengthIndex>();
 
         public RelativeStrengthIndex RelativeStrengthIndex(DataSeries source, int periods)
         {
-            var rsiParameters = new RsiParameters { Periods = periods, Source = source };
-            if (_rsiIndicators.ContainsKey(rsiParameters))
-                return _rsiIndicators[rsiParameters];
+			RelativeStrengthIndex indicator;
+            if (_rsiIndicators.TryGetValue(out indicator, periods, source))
+                return indicator;
 
-            var indicator = _indicatorsAccessor.RelativeStrengthIndex(source, periods);
-            _rsiIndicators.Add(rsiParameters, indicator);
+            indicator = _indicatorsAccessor.RelativeStrengthIndex(source, periods);
+            _rsiIndicators.Add(indicator, periods, source);
 
             return indicator;
         }
