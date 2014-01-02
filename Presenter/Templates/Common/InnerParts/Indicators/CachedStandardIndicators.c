@@ -235,24 +235,16 @@
     //}
     [Conditional("iIchimoku")]
     //{
-    struct IchimokuParameters
-    {
-        public MarketSeries MarketSeries;
-        public int TenkanSenPeriods;
-        public int KijunSenPeriods;
-        public int SenkouSpanBPeriods;
-    }
-
-    private Dictionary<IchimokuParameters, IchimokuKinkoHyo> _ichimokuIndicators = new Dictionary<IchimokuParameters, IchimokuKinkoHyo>();
+    private Cache<IchimokuKinkoHyo> _ichimokuIndicators = new Cache<IchimokuKinkoHyo>();
 
     public IchimokuKinkoHyo IchimokuKinkoHyo(MarketSeries marketSeries, int tenkanSenPeriods, int kijunSenPeriods, int senkouSpanBPeriods)
     {
-        var parameters = new IchimokuParameters { MarketSeries = marketSeries, TenkanSenPeriods = tenkanSenPeriods, KijunSenPeriods = kijunSenPeriods, SenkouSpanBPeriods = senkouSpanBPeriods };
-        if (_ichimokuIndicators.ContainsKey(parameters))
-            return _ichimokuIndicators[parameters];
+		IchimokuKinkoHyo indicator;
+        if (_ichimokuIndicators.TryGetValue(out indicator, marketSeries, tenkanSenPeriods, kijunSenPeriods, senkouSpanBPeriods))
+            return indicator;
 
-        var indicator = _indicatorsAccessor.IchimokuKinkoHyo(marketSeries, tenkanSenPeriods, kijunSenPeriods, senkouSpanBPeriods);
-        _ichimokuIndicators.Add(parameters, indicator);
+        indicator = _indicatorsAccessor.IchimokuKinkoHyo(marketSeries, tenkanSenPeriods, kijunSenPeriods, senkouSpanBPeriods);
+        _ichimokuIndicators.Add(indicator, marketSeries, tenkanSenPeriods, kijunSenPeriods, senkouSpanBPeriods);
 
         return indicator;
     }
