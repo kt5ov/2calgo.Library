@@ -203,23 +203,16 @@
 
 [Conditional("iSAR")]
 //{
-    private struct SarParameters
-    {
-        public double Step;
-    	public double Maximum;
-    	public MarketSeries Series;
-    }
-
-    private Dictionary<SarParameters, ParabolicSAR> _sarIndicators = new Dictionary<SarParameters, ParabolicSAR>();
+    private Cache<ParabolicSAR> _sarIndicators = new Cache<ParabolicSAR>();
 
     public ParabolicSAR ParabolicSAR(MarketSeries series, double step, double maximum)
     {
-        var sarParameters = new SarParameters { Step = step, Maximum = maximum, Series = series };
-        if (_sarIndicators.ContainsKey(sarParameters))
-            return _sarIndicators[sarParameters];
+		ParabolicSAR indicator;
+        if (_sarIndicators.TryGetValue(out indicator, series, step, maximum))
+            return indicator;
 
-        var indicator = _indicatorsAccessor.ParabolicSAR(step, maximum);
-        _sarIndicators.Add(sarParameters, indicator);
+        indicator = _indicatorsAccessor.ParabolicSAR(series, step, maximum);
+        _sarIndicators.Add(indicator, series, step, maximum);
 
         return indicator;
     }
