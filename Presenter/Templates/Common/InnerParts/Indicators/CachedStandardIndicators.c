@@ -64,25 +64,18 @@
 
 		[Conditional("iBands", "iBandsOnArray")]
 		//{
-#region iBands
-        private struct BandsParameters
-        {
-            public DataSeries Source;
-            public int Periods;
-            public int Deviation;
-            public MovingAverageType MovingAverageType;
-        }
-    
-        private Dictionary<BandsParameters, BollingerBands> _bandsIndicators = new Dictionary<BandsParameters, BollingerBands>();
+#region iBands    
+        private Cache<BollingerBands> _bandsIndicators = new Cache<BollingerBands>();
 
         public BollingerBands BollingerBands(DataSeries source, int periods, int deviation, MovingAverageType maType)
         {
-            var bandsParameters = new BandsParameters { Periods = periods, Source = source, Deviation = deviation, MovingAverageType = maType };
-            if (_bandsIndicators.ContainsKey(bandsParameters))
-                return _bandsIndicators[bandsParameters];
+			BollingerBands indicator;
 
-            var indicator = _indicatorsAccessor.BollingerBands(source, periods, deviation, maType);
-            _bandsIndicators.Add(bandsParameters, indicator);
+            if (_bandsIndicators.TryGetValue(out indicator, periods, source, deviation, maType))
+                return indicator;
+
+            indicator = _indicatorsAccessor.BollingerBands(source, periods, deviation, maType);
+            _bandsIndicators.Add(indicator, periods, source, deviation, maType);
 
             return indicator;
         }
