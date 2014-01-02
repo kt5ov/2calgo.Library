@@ -81,13 +81,10 @@
 		//{
 #region iBands
         private double iBands(Mq4String symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
-        {
-            if (bands_shift != 0)
-                throw new NotImplementedException(NotSupportedBandsShift);
-            
+        {            
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
-            return CalculateBands(series, period, deviation, mode, shift);
+            return CalculateBands(series, period, deviation, mode, bands_shift + shift);
         }       
         
         private double CalculateBands(DataSeries dataSeries, int period, int deviation, int mode, int shift)
