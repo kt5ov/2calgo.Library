@@ -105,25 +105,20 @@
 		[Conditional("iATR")]
 		//{
 #region iATR
-        private struct ATRParameters
-        {
-			public MarketSeries MarketSeries;
-            public int Periods;
-        }
     
-        private Dictionary<ATRParameters, SimpleMovingAverage> _atrIndicators = new Dictionary<ATRParameters, SimpleMovingAverage>();
+        private Cache<SimpleMovingAverage> _atrIndicators = new Cache<SimpleMovingAverage>();
 
         public SimpleMovingAverage ATR(MarketSeries series, int periods)
         {
-            var parameters = new ATRParameters { Periods = periods, MarketSeries = series };
-            if (_atrIndicators.ContainsKey(parameters))
-                return _atrIndicators[parameters];
+			SimpleMovingAverage indicator;
+            if (_atrIndicators.TryGetValue(out indicator, periods, series))
+                return indicator;
 
-            var trueRange = _indicatorsAccessor.TrueRange();
-            var atrIndicator = _indicatorsAccessor.SimpleMovingAverage(trueRange.Result, periods);
-            _atrIndicators.Add(parameters, atrIndicator);
+            var trueRange = _indicatorsAccessor.TrueRange(series);
+            indicator = _indicatorsAccessor.SimpleMovingAverage(trueRange.Result, periods);
+            _atrIndicators.Add(indicator, periods, series);
 
-            return atrIndicator;
+            return indicator;
         }
 #endregion //iATR
 		//}
