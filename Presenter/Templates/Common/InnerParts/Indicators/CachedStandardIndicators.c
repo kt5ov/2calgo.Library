@@ -219,22 +219,16 @@
 //}
     [Conditional("iMomentum")]
     //{
-    private struct MomentumParameters
-    {
-    	public DataSeries DataSeries;
-    	public int Period;
-    }
-
-    private Dictionary<MomentumParameters, MomentumOscillator> _momentumIndicators = new Dictionary<MomentumParameters, MomentumOscillator>();
+    private Cache<MomentumOscillator> _momentumIndicators = new Cache<MomentumOscillator>();
 
     public MomentumOscillator MomentumOscillator(DataSeries dataSeries, int period)
     {
-        var parameters = new MomentumParameters { DataSeries = dataSeries, Period = period };
-        if (_momentumIndicators.ContainsKey(parameters))
-            return _momentumIndicators[parameters];
+		MomentumOscillator indicator;
+		if (_momentumIndicators.TryGetValue(out indicator, dataSeries, period))
+            return indicator;
 
-        var indicator = _indicatorsAccessor.MomentumOscillator(dataSeries, period);
-        _momentumIndicators.Add(parameters, indicator);
+        indicator = _indicatorsAccessor.MomentumOscillator(dataSeries, period);
+        _momentumIndicators.Add(indicator, dataSeries, period);
 
         return indicator;
     }
