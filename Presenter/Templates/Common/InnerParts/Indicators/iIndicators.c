@@ -896,21 +896,14 @@ class EnvelopesParameters
     }
 }
 
-private readonly Dictionary<EnvelopesParameters, Envelopes_Indicator> _envelopesCache = new Dictionary<EnvelopesParameters, Envelopes_Indicator>();
+private readonly Cache<Envelopes_Indicator> _envelopesCache = new Cache<Envelopes_Indicator>();
 private Envelopes_Indicator GetEnvelopes(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
 {
-	var parameters = new EnvelopesParameters
-    {
-        SourceSeries = sourceSeries,
-        Period = period,
-        MAType = maType,
-        Deviation = deviation
-    };
 	Envelopes_Indicator indicator;
-	if (!_envelopesCache.TryGetValue(parameters, out indicator))
+	if (!_envelopesCache.TryGetValue(out indicator, sourceSeries, period, maType, deviation))
     {
         indicator = new Envelopes_Indicator(sourceSeries, period, maType, deviation, Indicators);
-        _envelopesCache.Add(parameters, indicator);
+        _envelopesCache.Add(indicator, sourceSeries, period, maType, deviation);
     }
 	return indicator;
 }
@@ -927,3 +920,54 @@ private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma
     return indicator.Calculate(indexToCalculate, mode);
 }
 //}
+
+class ParametersKey
+{
+	private readonly object[] _parameters;
+	
+	public ParametersKey(params object[] parameters)
+	{
+		_parameters = parameters;		
+	}
+	
+	public override bool Equals(object obj)
+	{
+		var other = (ParametersKey)obj;
+		for (var i = 0; i < _parameters.Length; i++)
+		{
+			if (!_parameters[i].Equals(other._parameters[i]))
+				return false;
+		}
+		return true;
+	}
+	
+	public override int GetHashCode()
+	{
+		unchecked
+		{
+			var hashCode = 0;
+			foreach (var parameter in _parameters)
+			{
+				hashCode = (hashCode*397) ^ parameter.GetHashCode();
+			}
+			return hashCode;
+		}
+	}
+}
+
+class Cache<TValue>
+{
+	private Dictionary<ParametersKey, TValue> _dictionary = new Dictionary<ParametersKey, TValue>();
+	
+	public bool TryGetValue(out TValue value, params object[] parameters)
+	{
+		var key = new ParametersKey(parameters);
+		return _dictionary.TryGetValue(key, out value);
+	}
+	
+	public void Add(TValue value, params object[] parameters)
+	{
+		var key = new ParametersKey(parameters);
+		_dictionary.Add(key, value);
+	}
+}
