@@ -165,23 +165,17 @@
 		[Conditional("iStdDev", "iStdDevOnArray")]
 		//{
 #region iStdDev
-        private struct stdDevParameters
-        {
-            public int Periods;
-            public DataSeries Source;
-            public MovingAverageType MovingAverageType;
-        }
     
-        private Dictionary<stdDevParameters, StandardDeviation> _stdDevIndicators = new Dictionary<stdDevParameters, StandardDeviation>();
+        private Cache<StandardDeviation> _stdDevIndicators = new Cache<StandardDeviation>();
 
         public StandardDeviation StandardDeviation(DataSeries source, int periods, MovingAverageType movingAverageType)
         {
-            var stdDevParameters = new stdDevParameters { Source = source, Periods = periods, MovingAverageType = movingAverageType };
-            if (_stdDevIndicators.ContainsKey(stdDevParameters))
-                return _stdDevIndicators[stdDevParameters];
+			StandardDeviation indicator;
+            if (_stdDevIndicators.TryGetValue(out indicator, source, periods, movingAverageType))
+                return indicator;
 
-            var indicator = _indicatorsAccessor.StandardDeviation(source, periods, movingAverageType);
-            _stdDevIndicators.Add(stdDevParameters, indicator);
+            indicator = _indicatorsAccessor.StandardDeviation(source, periods, movingAverageType);
+            _stdDevIndicators.Add(indicator, source, periods, movingAverageType);
 
             return indicator;
         }
