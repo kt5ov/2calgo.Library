@@ -85,22 +85,17 @@
 		[Conditional("iADX")]
 		//{
 #region iADX
-        private struct AdxParameters
-        {
-            public int Periods;
-			public MarketSeries MarketSeries;
-        }
     
-        private Dictionary<AdxParameters, DirectionalMovementSystem> _adxIndicators = new Dictionary<AdxParameters, DirectionalMovementSystem>();
+        private Cache<DirectionalMovementSystem> _adxIndicators = new Cache<DirectionalMovementSystem>();
 
         public DirectionalMovementSystem DirectionalMovementSystem(MarketSeries marketSeries, int periods)
         {
-            var adxParameters = new AdxParameters { Periods = periods, MarketSeries = marketSeries };
-            if (_adxIndicators.ContainsKey(adxParameters))
-                return _adxIndicators[adxParameters];
+			DirectionalMovementSystem indicator;
+            if (_adxIndicators.TryGetValue(out indicator, periods, marketSeries))
+                return indicator;
 
-            var indicator = _indicatorsAccessor.DirectionalMovementSystem(periods);
-            _adxIndicators.Add(adxParameters, indicator);
+            indicator = _indicatorsAccessor.DirectionalMovementSystem(marketSeries, periods);
+            _adxIndicators.Add(indicator, periods, marketSeries);
 
             return indicator;
         }
