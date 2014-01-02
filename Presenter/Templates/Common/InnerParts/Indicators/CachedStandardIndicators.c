@@ -185,22 +185,16 @@
 		[Conditional("iWPR")]
 		//{
 #region iWPR
-        private struct WprParameters
-        {
-			public MarketSeries MarketSeries;
-            public int Periods;
-        }
-    
-        private Dictionary<WprParameters, WilliamsPctR> _wprIndicators = new Dictionary<WprParameters, WilliamsPctR>();
+        private Cache<WilliamsPctR> _wprIndicators = new Cache<WilliamsPctR>();
 
         public WilliamsPctR WilliamsPctR(MarketSeries marketSeries, int periods)
         {
-            var wprParameters = new WprParameters { Periods = periods, MarketSeries = marketSeries };
-            if (_wprIndicators.ContainsKey(wprParameters))
-                return _wprIndicators[wprParameters];
+			WilliamsPctR indicator;
+            if (_wprIndicators.TryGetValue(out indicator, marketSeries, periods))
+                return indicator;
 
-            var indicator = _indicatorsAccessor.WilliamsPctR(periods);
-            _wprIndicators.Add(wprParameters, indicator);
+            indicator = _indicatorsAccessor.WilliamsPctR(marketSeries, periods);
+            _wprIndicators.Add(indicator, marketSeries, periods);
 
             return indicator;
         }
