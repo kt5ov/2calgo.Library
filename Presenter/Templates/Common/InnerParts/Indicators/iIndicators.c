@@ -397,6 +397,31 @@
 		public MovingAverageType MAType;
 		public StochasticMode StochasticMode;
 		public MarketSeries MarketSeries;
+
+		public bool Equals(StochasticParameters other)
+        {
+            return KPeriods == other.KPeriods && DPeriods == other.DPeriods && KSlowing == other.KSlowing && MAType == other.MAType && StochasticMode == other.StochasticMode && Equals(MarketSeries, other.MarketSeries);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is StochasticParameters && Equals((StochasticParameters) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = KPeriods;
+                hashCode = (hashCode*397) ^ DPeriods;
+                hashCode = (hashCode*397) ^ KSlowing;
+                hashCode = (hashCode*397) ^ (int) MAType;
+                hashCode = (hashCode*397) ^ (int) StochasticMode;
+                hashCode = (hashCode*397) ^ (MarketSeries != null ? MarketSeries.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 	private class StochasticValues
