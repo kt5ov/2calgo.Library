@@ -126,24 +126,17 @@
 		[Conditional("iMACD", "iOsMA")]
 		//{
 #region iMACD
-        private struct MacdParameters
-        {
-			public DataSeries Series;
-            public int LongPeriod;
-            public int ShortPeriod;
-            public int Periods;
-        }
     
-        private Dictionary<MacdParameters, MacdCrossOver> _macdIndicators = new Dictionary<MacdParameters, MacdCrossOver>();
+        private Cache<MacdCrossOver> _macdIndicators = new Cache<MacdCrossOver>();
         
         public MacdCrossOver MacdCrossOver(DataSeries series, int shortPeriod, int longPeriod, int periods)
         {
-            var parameters = new MacdParameters { LongPeriod = longPeriod, ShortPeriod = shortPeriod, Periods = periods, Series = series };
-            if (_macdIndicators.ContainsKey(parameters))
-                return _macdIndicators[parameters];
+			MacdCrossOver indicator;
+            if (_macdIndicators.TryGetValue(out indicator, series, shortPeriod, longPeriod, periods))
+                return indicator;
 
-            var indicator = _indicatorsAccessor.MacdCrossOver(longPeriod, shortPeriod, periods);
-            _macdIndicators.Add(parameters, indicator);
+            indicator = _indicatorsAccessor.MacdCrossOver(series, longPeriod, shortPeriod, periods);
+            _macdIndicators.Add(indicator, series, shortPeriod, longPeriod, periods);
 
             return indicator;
         }
@@ -153,21 +146,16 @@
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
 #region iCCI
-        private struct CciParameters
-        {
-            public int Periods;
-        }
     
-        private Dictionary<CciParameters, CommodityChannelIndex> _cciIndicators = new Dictionary<CciParameters, CommodityChannelIndex>();
+        private Dictionary<int, CommodityChannelIndex> _cciIndicators = new Dictionary<int, CommodityChannelIndex>();
 
         public CommodityChannelIndex CommodityChannelIndex(int periods)
         {
-            var cciParameters = new CciParameters { Periods = periods };
-            if (_cciIndicators.ContainsKey(cciParameters))
-                return _cciIndicators[cciParameters];
+            if (_cciIndicators.ContainsKey(periods))
+                return _cciIndicators[periods];
 
             var indicator = _indicatorsAccessor.CommodityChannelIndex(periods);
-            _cciIndicators.Add(cciParameters, indicator);
+            _cciIndicators.Add(periods, indicator);
 
             return indicator;
         }
