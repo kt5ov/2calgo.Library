@@ -815,27 +815,16 @@ class DeMarkerIndicator
     }
 }
 
-class DeMarkerParameters
-{
-    public int Period { get; set;}
-    public MarketSeries MarketSeries { get; set;}
-}
-
-private static readonly Dictionary<DeMarkerParameters, DeMarkerIndicator> _demarkerCache = new Dictionary<DeMarkerParameters, DeMarkerIndicator>();
+private static readonly Cache<DeMarkerIndicator> _demarkerCache = new Cache<DeMarkerIndicator>();
 
 Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    var parameters = new DeMarkerParameters
-    {
-        Period = period,
-        MarketSeries = marketSeries
-    };
     DeMarkerIndicator indicator;
-    if (!_demarkerCache.TryGetValue(parameters, out indicator))
+    if (!_demarkerCache.TryGetValue(out indicator, period, marketSeries))
     {
         indicator = new DeMarkerIndicator(marketSeries, period, () => CreateDataSeries(), Indicators);
-        _demarkerCache.Add(parameters, indicator);
+        _demarkerCache.Add(indicator, period, marketSeries);
     }
     return indicator.Result.Last(shift);
 }
