@@ -199,51 +199,42 @@
             return CalculateCCI(series, period, shift);
         }       
         
-        private Dictionary<CciParameters, CciIndicator> _cciIndicators = new Dictionary<CciParameters, CciIndicator>();
+        private Cache<CciIndicator> _cciIndicators = new Cache<CciIndicator>();
         private double CalculateCCI(DataSeries dataSeries, int period, int shift)
         {     
-            var parameters = new CciParameters
-			{
-                Source = dataSeries,
-                Period = period
-			};
             CciIndicator indicator = null;
-            if (!_cciIndicators.TryGetValue(parameters, out indicator))
+            if (!_cciIndicators.TryGetValue(out indicator, dataSeries, period))
 			{
-                indicator = new CciIndicator(parameters, Indicators);
-                _cciIndicators[parameters] = indicator;
+                indicator = new CciIndicator(dataSeries, period, Indicators);
+                _cciIndicators.Add(indicator, dataSeries, period);
 			}
             
             var index = dataSeries.Count - 1 - shift;
             return indicator.Calculate(index);
         }
 
-        class CciParameters
-        {
-            public DataSeries Source { get; set; }
-            public int Period { get; set; }
-        }
-
         class CciIndicator
         {
-            private readonly CciParameters _parameters;
+            private readonly DataSeries _source;
+            private readonly int _period;
             private readonly SimpleMovingAverage _sma;
 
-            public CciIndicator(CciParameters parameters, IIndicatorsAccessor indicatorsAccessor)
+            public CciIndicator(DataSeries source, int period, IIndicatorsAccessor indicatorsAccessor)
             {
-                _parameters = parameters;
-                _sma = indicatorsAccessor.SimpleMovingAverage(_parameters.Source, _parameters.Period);
+                _source = source;
+                _period = period;
+                _sma = indicatorsAccessor.SimpleMovingAverage(_source, _period);
             }
 
             public double Calculate(int index)
             {
                 var meanDeviation = 0.0;
-                for (var i = (index - _parameters.Period); i < index; i++)
+                for (var i = (index - _period); i < index; i++)
                 {
-                    meanDeviation = meanDeviation + Math.Abs(_parameters.Source[i] - _sma.Result[index]);
+                    meanDeviation = meanDeviation + Math.Abs(_source[i] - _sma.Result[index]);
                 }
-                meanDeviation /= _parameters.Period;
-                return (_parameters.Source[index] - _sma.Result[index]) / (meanDeviation * 0.015);
+                meanDeviation /= _period;
+                return (_source[index] - _sma.Result[index]) / (meanDeviation * 0.015);
             }
         }
 
