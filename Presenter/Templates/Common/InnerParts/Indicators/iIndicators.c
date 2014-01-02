@@ -863,39 +863,6 @@ class Envelopes_Indicator
     }
 }
 
-class EnvelopesParameters
-{
-    public DataSeries SourceSeries { get; set; }
-    public int Period { get; set; }
-    public MovingAverageType MAType { get; set; }
-    public double Deviation { get; set; }
-
-    protected bool Equals(EnvelopesParameters other)
-    {
-        return Equals(SourceSeries, other.SourceSeries) && Period == other.Period && MAType == other.MAType && Deviation.Equals(other.Deviation);
-    }
-
-    public override bool Equals(object obj)
-    {
-        if (ReferenceEquals(null, obj)) return false;
-        if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
-        return Equals((EnvelopesParameters) obj);
-    }
-
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            var hashCode = SourceSeries.GetHashCode();
-            hashCode = (hashCode*397) ^ Period;
-            hashCode = (hashCode*397) ^ (int) MAType;
-            hashCode = (hashCode*397) ^ Deviation.GetHashCode();
-            return hashCode;
-        }
-    }
-}
-
 private readonly Cache<Envelopes_Indicator> _envelopesCache = new Cache<Envelopes_Indicator>();
 private Envelopes_Indicator GetEnvelopes(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
 {
