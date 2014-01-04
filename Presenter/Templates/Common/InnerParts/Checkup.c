@@ -66,3 +66,9 @@ Mq4Double IsDllsAllowed()
 	return false;
 }
 
+[Conditional("IsVisualMode")]
+Mq4Double IsVisualMode()
+{
+    return false;
+}
+
