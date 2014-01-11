@@ -19,6 +19,8 @@ namespace _2calgo.Model
                 return null;
             if (RobotKeyWords.Any(code.Contains))
                 return AlgoType.Robot;
+            if (defaultValue == AlgoType.Robot)
+                return null;
 
             return defaultValue;
         }

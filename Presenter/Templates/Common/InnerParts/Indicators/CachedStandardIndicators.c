@@ -278,4 +278,20 @@
 		return indicator;
 	}    
 	//}
+	[Conditional("iMFI")]
+	//{
+	private Cache<MoneyFlowIndex> _mfiIndicators = new Cache<MoneyFlowIndex>();
+	
+	public MoneyFlowIndex MoneyFlowIndex(MarketSeries marketSeries, int period)
+	{
+		MoneyFlowIndex indicator;
+        if (_mfiIndicators.TryGetValue(out indicator, marketSeries, period))
+            return indicator;
+
+        indicator = _indicatorsAccessor.MoneyFlowIndex(marketSeries, period);
+        _mfiIndicators.Add(indicator, marketSeries, period);
+
+        return indicator;
+	}    
+	//}
 }

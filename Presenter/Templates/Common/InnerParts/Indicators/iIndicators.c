@@ -1,4 +1,56 @@
 
+class ParametersKey
+{
+	private readonly object[] _parameters;
+	
+	public ParametersKey(params object[] parameters)
+	{
+		_parameters = parameters;		
+	}
+	
+	public override bool Equals(object obj)
+	{
+		var other = (ParametersKey)obj;
+		for (var i = 0; i < _parameters.Length; i++)
+		{
+			if (!_parameters[i].Equals(other._parameters[i]))
+				return false;
+		}
+		return true;
+	}
+	
+	public override int GetHashCode()
+	{
+		unchecked
+		{
+			var hashCode = 0;
+			foreach (var parameter in _parameters)
+			{
+				hashCode = (hashCode*397) ^ parameter.GetHashCode();
+			}
+			return hashCode;
+		}
+	}
+}
+
+class Cache<TValue>
+{
+	private Dictionary<ParametersKey, TValue> _dictionary = new Dictionary<ParametersKey, TValue>();
+	
+	public bool TryGetValue(out TValue value, params object[] parameters)
+	{
+		var key = new ParametersKey(parameters);
+		return _dictionary.TryGetValue(key, out value);
+	}
+	
+	public void Add(TValue value, params object[] parameters)
+	{
+		var key = new ParametersKey(parameters);
+		_dictionary.Add(key, value);
+	}
+}
+
+
         private static MovingAverageType ToMaType(int constant)
         {
             switch (constant)
@@ -889,54 +941,9 @@ private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma
     return indicator.Calculate(indexToCalculate, mode);
 }
 //}
-
-class ParametersKey
+[Conditional("iMFI")]
+Mq4Double iMFI(Mq4String symbol, int timeframe, int period, int shift)
 {
-	private readonly object[] _parameters;
-	
-	public ParametersKey(params object[] parameters)
-	{
-		_parameters = parameters;		
-	}
-	
-	public override bool Equals(object obj)
-	{
-		var other = (ParametersKey)obj;
-		for (var i = 0; i < _parameters.Length; i++)
-		{
-			if (!_parameters[i].Equals(other._parameters[i]))
-				return false;
-		}
-		return true;
-	}
-	
-	public override int GetHashCode()
-	{
-		unchecked
-		{
-			var hashCode = 0;
-			foreach (var parameter in _parameters)
-			{
-				hashCode = (hashCode*397) ^ parameter.GetHashCode();
-			}
-			return hashCode;
-		}
-	}
-}
-
-class Cache<TValue>
-{
-	private Dictionary<ParametersKey, TValue> _dictionary = new Dictionary<ParametersKey, TValue>();
-	
-	public bool TryGetValue(out TValue value, params object[] parameters)
-	{
-		var key = new ParametersKey(parameters);
-		return _dictionary.TryGetValue(key, out value);
-	}
-	
-	public void Add(TValue value, params object[] parameters)
-	{
-		var key = new ParametersKey(parameters);
-		_dictionary.Add(key, value);
-	}
+	var marketSeries = GetSeries(symbol, timeframe);
+	return _cachedStandardIndicators.MoneyFlowIndex(marketSeries, period).Result.Last(shift); 
 }
