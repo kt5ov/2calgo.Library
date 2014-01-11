@@ -947,3 +947,58 @@ Mq4Double iMFI(Mq4String symbol, int timeframe, int period, int shift)
 	var marketSeries = GetSeries(symbol, timeframe);
 	return _cachedStandardIndicators.MoneyFlowIndex(marketSeries, period).Result.Last(shift); 
 }
+[Conditional("iAlligator")]
+//{
+class Mq4AlligatorIndicator
+{
+    private readonly MovingAverage _jawMa;
+    private readonly MovingAverage _teethMa;
+    private readonly MovingAverage _lipsMa;
+    private readonly int _jawShift;
+    private readonly int _teethShift;
+    private readonly int _lipsShift;
+
+
+    public Mq4AlligatorIndicator(DataSeries sourceSeries, MovingAverageType maType, int jawPeriod, int jawShift, int teethPeriod, int teethShift, int lipsPeriod, int lipsShift, 
+    	Func<IndicatorDataSeries> dataSeriesFactory, IIndicatorsAccessor indicatorAccessor)
+    {
+    	_lipsShift = lipsShift;
+    	_teethShift = teethShift;
+    	_jawShift = jawShift;
+        _jawMa = indicatorAccessor.MovingAverage(sourceSeries, jawPeriod, maType);
+        _teethMa = indicatorAccessor.MovingAverage(sourceSeries, teethPeriod, maType); 
+        _lipsMa = indicatorAccessor.MovingAverage(sourceSeries, lipsPeriod, maType); 
+    }
+
+    public double Calculate(int mode, int index)
+    {
+    	switch (mode)
+    	{
+    		case MODE_GATORLIPS:
+    			return _lipsMa.Result[index - _lipsShift];
+			case MODE_GATORJAW:
+    			return _jawMa.Result[index - _jawShift];
+			case MODE_GATORTEETH:
+    			return _teethMa.Result[index - _teethShift];
+    	}	
+    	return 0;
+    }
+}
+
+private static readonly Cache<Mq4AlligatorIndicator> _alligatorCache = new Cache<Mq4AlligatorIndicator>();
+
+Mq4Double iAlligator(Mq4String symbol, Mq4Double timeframe, Mq4Double jawPeriod, Mq4Double jawShift, Mq4Double teethPeriod, Mq4Double teethShift, Mq4Double lipsPeriod, Mq4Double lipsShift, Mq4Double ma_method, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
+{
+    var sourceSeries = ToAppliedPrice(symbol, timeframe, applied_price);
+    var maType = ToMaType(ma_method);   
+
+    Mq4AlligatorIndicator indicator;
+    if (!_alligatorCache.TryGetValue(out indicator, sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift))
+    {
+        indicator = new Mq4AlligatorIndicator(sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift, () => CreateDataSeries(), Indicators);
+        _alligatorCache.Add(indicator, sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift);
+    }
+
+    return indicator.Calculate(mode, sourceSeries.InvertIndex(shift));
+}
+//}

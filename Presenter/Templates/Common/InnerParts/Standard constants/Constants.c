@@ -141,6 +141,10 @@ const int MODE_SIGNAL = 1;
 const int MODE_UPPER = 1;
 const int MODE_LOWER = 2;
 
+const int MODE_GATORLIPS = 3;
+const int MODE_GATORJAW = 1;
+const int MODE_GATORTEETH = 2;
+
 const int CLR_NONE = 32768; 
 
 const int White = 16777215;
