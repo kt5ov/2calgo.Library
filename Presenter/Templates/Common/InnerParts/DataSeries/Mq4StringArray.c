@@ -1,11 +1,11 @@
-	class Mq4Array<T> : IMq4Array<T>,  IEnumerable
+	class Mq4StringArray : IEnumerable
 	{
-		private List<T> _data = new List<T>();
-		private readonly T _defaultValue;
+		private List<Mq4String> _data = new List<Mq4String>();
+		private readonly Mq4String _defaultValue;
 		      
-		public Mq4Array(int size = 0)
+		public Mq4StringArray(int size = 0)
 		{
-			_defaultValue = (T)DefaultValues.GetDefaultValue<T>();
+			_defaultValue = "";
 		}
 
 		public IEnumerator GetEnumerator()
@@ -20,7 +20,7 @@
 			set { _isInverted = value; }
 		}
 
-        public void Add(T value)
+        public void Add(Mq4String value)
         {
 			_data.Add(value);
         }
@@ -45,7 +45,7 @@
 				_data.Add(_defaultValue);
 		}
 				     
-		public T this[int index]
+		public Mq4String this[int index]
 		{       
 			get
 			{
@@ -64,33 +64,6 @@
 				EnsureCountIsEnough(index);
           
 				_data[index] = value;
-				Changed.Raise(index, value);
 			}
 		}	
-
-		[Conditional("ArraySort")]
-		//{
-		public void Sort(int count, int start, int sort_dir)
-		{
-			start = Math.Max(0, start);
-			if (count == WHOLE_ARRAY)
-				count = _data.Count - start;
-			else
-				count = Math.Min(_data.Count - start, count);
-			
-			var comparer = Comparers.GetComparer<T>();
-			_data.Sort(start, count, comparer);
-			if (sort_dir == MODE_DESCEND)
-			{				
-				for (var i = start; i < start + count / 2; i++)
-				{
-					var x = _data[i];
-					_data[i] = _data[start + count - 1 - i];
-					_data[start + count - 1 - i] = x;
-				}
-			}
-		}
-		//}
-
-		public event Action<int, T> Changed;
 	}

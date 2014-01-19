@@ -162,10 +162,7 @@
     <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Arrow.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\IMq4Array.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4Array.c" />
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4DoubleArray.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\DataSeries\DefaultValues.c" />
@@ -253,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\OuterParts\Mq4Char.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4StringArray.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\InnerParts\DataSeries\IMq4DoubleArray.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

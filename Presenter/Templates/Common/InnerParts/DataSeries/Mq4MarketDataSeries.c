@@ -1,4 +1,4 @@
-	class Mq4MarketDataSeries : IMq4Array<Mq4Double>
+	class Mq4MarketDataSeries : IMq4DoubleArray
     {
         private DataSeries _dataSeries;
 

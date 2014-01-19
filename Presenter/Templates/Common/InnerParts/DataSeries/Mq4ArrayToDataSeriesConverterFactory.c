@@ -1,6 +1,6 @@
 	class Mq4ArrayToDataSeriesConverterFactory
 	{
-		private readonly Dictionary<Mq4Array<Mq4Double>, IndicatorDataSeries> _cachedAdapters = new Dictionary<Mq4Array<Mq4Double>, IndicatorDataSeries>();
+		private readonly Dictionary<Mq4DoubleArray, IndicatorDataSeries> _cachedAdapters = new Dictionary<Mq4DoubleArray, IndicatorDataSeries>();
 		private Func<IndicatorDataSeries> _dataSeriesFactory;
 
 		public Mq4ArrayToDataSeriesConverterFactory(Func<IndicatorDataSeries> dataSeriesFactory)
@@ -8,7 +8,7 @@
 			_dataSeriesFactory = dataSeriesFactory;
 		}
 
-		public DataSeries Create(Mq4Array<Mq4Double> mq4Array)
+		public DataSeries Create(Mq4DoubleArray mq4Array)
 		{
 			IndicatorDataSeries dataSeries;
 

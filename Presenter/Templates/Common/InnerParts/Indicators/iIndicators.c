@@ -76,7 +76,7 @@ class Cache<TValue>
             return CalculateiMA(series, period, ma_method, shift + ma_shift);
         }       
                 
-        private double iMAOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
+        private double iMAOnArray(Mq4DoubleArray mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
         {
 			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateiMA(dataSeries, period, ma_method, shift + ma_shift);
@@ -114,7 +114,7 @@ class Cache<TValue>
             return CalculateRsi(series, period, shift);
         }       
                 
-        private double iRSIOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int shift) 
+        private double iRSIOnArray(Mq4DoubleArray mq4Array, int total, int period, int shift) 
         {
 			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateRsi(dataSeries, period, shift);
@@ -596,7 +596,7 @@ Mq4Double iBullsPower(Mq4String symbol, int timeframe, int period, int applied_p
 
 [Conditional("iMomentum", "iMomentumOnArray")]
 //{
-private double iMomentumOnArray(Mq4Array<Mq4Double> mq4Array, int total, int period, int shift) 
+private double iMomentumOnArray(Mq4DoubleArray mq4Array, int total, int period, int shift) 
 {
     var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 

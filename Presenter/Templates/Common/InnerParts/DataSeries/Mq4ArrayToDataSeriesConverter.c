@@ -1,9 +1,9 @@
 	class Mq4ArrayToDataSeriesConverter
 	{
-		private readonly Mq4Array<Mq4Double> _mq4Array;
+		private readonly Mq4DoubleArray _mq4Array;
 		private readonly IndicatorDataSeries _dataSeries;
 
-		public Mq4ArrayToDataSeriesConverter(Mq4Array<Mq4Double> mq4Array, IndicatorDataSeries dataSeries)
+		public Mq4ArrayToDataSeriesConverter(Mq4DoubleArray mq4Array, IndicatorDataSeries dataSeries)
 		{
 			_mq4Array = mq4Array;
 			_dataSeries = dataSeries;

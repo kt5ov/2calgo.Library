@@ -1,5 +1,13 @@
 [Conditional("ArrayInitialize")]
-int ArrayInitialize<T>(IMq4Array<T> array, T value)
+int ArrayInitialize(IMq4DoubleArray array, Mq4Double value)
+{
+	for(var i = 0; i < array.Length; i++)
+		array[i] = value;
+	return array.Length;
+}
+
+[Conditional("ArrayInitialize")]
+int ArrayInitialize(Mq4StringArray array, Mq4String value)
 {
 	for(var i = 0; i < array.Length; i++)
 		array[i] = value;
@@ -7,7 +15,19 @@ int ArrayInitialize<T>(IMq4Array<T> array, T value)
 }
 
 [Conditional("ArrayCopy")]
-int ArrayCopy<T>(IMq4Array<T> dest, IMq4Array<T> source, int start_dest = 0, int start_source = 0, int count = WHOLE_ARRAY)
+int ArrayCopy(IMq4DoubleArray dest, IMq4DoubleArray source, int start_dest = 0, int start_source = 0, int count = WHOLE_ARRAY)
+{
+	if (count == WHOLE_ARRAY)
+		count = source.Length - start_source;
+		
+	for (var i = 0; i < count; i++)
+		dest[start_dest + i] = source[start_source + i];
+
+	return count;
+}
+
+[Conditional("ArrayCopy")]
+int ArrayCopy(Mq4StringArray dest, Mq4StringArray source, int start_dest = 0, int start_source = 0, int count = WHOLE_ARRAY)
 {
 	if (count == WHOLE_ARRAY)
 		count = source.Length - start_source;
@@ -19,7 +39,7 @@ int ArrayCopy<T>(IMq4Array<T> dest, IMq4Array<T> source, int start_dest = 0, int
 }
 
 [Conditional("ArrayMaximum")]
-int ArrayMaximum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start = 0)
+int ArrayMaximum(IMq4DoubleArray array, int count = WHOLE_ARRAY, int start = 0)
 {
 	var result = start;
 	for (var i = start + 1; i < start + count; i++)
@@ -31,7 +51,7 @@ int ArrayMaximum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start 
 }
 
 [Conditional("ArrayMinimum")]
-int ArrayMinimum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start = 0)
+int ArrayMinimum(IMq4DoubleArray array, int count = WHOLE_ARRAY, int start = 0)
 {
 	var result = start;
 	for (var i = start + 1; i < start + count; i++)
@@ -43,20 +63,33 @@ int ArrayMinimum(IMq4Array<Mq4Double> array, int count = WHOLE_ARRAY, int start 
 }
 
 [Conditional("ArrayResize")]
-int ArrayResize<T>(Mq4Array<T> array, int new_size)
+int ArrayResize(Mq4DoubleArray array, int new_size)
+{
+	array.Resize(new_size);
+	return new_size;
+}
+
+[Conditional("ArrayResize")]
+int ArrayResize(Mq4StringArray array, int new_size)
 {
 	array.Resize(new_size);
 	return new_size;
 }
 		
 [Conditional("ArraySize")]
-int ArraySize<T>(IMq4Array<T> array)
+int ArraySize(IMq4DoubleArray array)
+{
+	return array.Length;
+}
+		
+[Conditional("ArraySize")]
+int ArraySize(Mq4StringArray array)
 {
 	return array.Length;
 }
 
 [Conditional("ArraySetAsSeries")]
-bool ArraySetAsSeries<T>(Mq4Array<T> mq4Array, bool value)
+bool ArraySetAsSeries(Mq4DoubleArray mq4Array, bool value)
 {
 	var result = mq4Array.IsInverted;
 	mq4Array.IsInverted = value;
@@ -64,7 +97,7 @@ bool ArraySetAsSeries<T>(Mq4Array<T> mq4Array, bool value)
 }
 	
 [Conditional("ArrayCopySeries")]
-int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, Mq4String symbol = null, int timeframe = 0)
+int ArrayCopySeries(IMq4DoubleArray mq4Array, int seriesIndex, Mq4String symbol = null, int timeframe = 0)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	if (seriesIndex != MODE_TIME)
@@ -106,14 +139,14 @@ int ArrayCopySeries(Mq4Array<Mq4Double> mq4Array, int seriesIndex, Mq4String sym
 }
 
 [Conditional("ArraySort")]
-int ArraySort<T>(Mq4Array<T> mq4Array, int count = WHOLE_ARRAY, int start = 0, int sort_dir = MODE_ASCEND)
+int ArraySort(Mq4DoubleArray mq4Array, int count = WHOLE_ARRAY, int start = 0, int sort_dir = MODE_ASCEND)
 {
 	mq4Array.Sort(count, start, sort_dir);
 	return 0;
 }
 
 [Conditional("ArrayBsearch")]
-int ArrayBsearch(Mq4Array<Mq4Double> mq4Array, double value, int count = WHOLE_ARRAY, int start = 0, int direction = MODE_ASCEND)
+int ArrayBsearch(IMq4DoubleArray mq4Array, double value, int count = WHOLE_ARRAY, int start = 0, int direction = MODE_ASCEND)
 {
 	start = Math.Max(0, start);
 	if (count == WHOLE_ARRAY)

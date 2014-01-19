@@ -66,8 +66,9 @@ namespace _2calgo.Presenter.PartsProviders
                 ChartObjects + "/Object functions.c",
                 
                 DataSeries + "/Mq4MarketDataSeries.c",
-                DataSeries + "/IMq4Array.c",
-                DataSeries + "/Mq4Array.c",
+                DataSeries + "/Mq4StringArray.c",
+                DataSeries + "/Mq4DoubleArray.c",
+                DataSeries + "/IMq4DoubleArray.c",
                 DataSeries + "/DefaultValues.c",
                 DataSeries + "/Mq4ArrayToDataSeriesConverter.c",
                 DataSeries + "/Mq4ArrayToDataSeriesConverterFactory.c",

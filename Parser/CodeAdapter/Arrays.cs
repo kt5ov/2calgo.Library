@@ -20,11 +20,13 @@ namespace _2calgo.Parser.CodeAdapter
                     if (!type.IsSupported())
                         continue;
 
+                    type = type.ReplaceSimpleTypesToMq4Types();
+
                     var name = match.Groups["name"].Value;
                     var size = match.Groups["size"].Value;
                     var values = match.Groups["values"].Value;
 
-                    var replacement = string.Format("Mq4Array<{0}> {1} = new Mq4Array<{0}>({2}){3}", type, name, size, values);
+                    var replacement = string.Format("{0}Array {1} = new {0}Array({2}){3}", type, name, size, values);
                     code = code
                         .Remove(match.Index, match.Value.Length)
                         .Insert(match.Index, replacement);
@@ -47,10 +49,14 @@ namespace _2calgo.Parser.CodeAdapter
                     var type = match.Groups["type"].Value;
                     if (!type.IsSupported())
                         continue;
-
+                    type = type.ReplaceSimpleTypesToMq4Types();                    
                     var name = match.Groups["name"].Value;
 
-                    var replacement = string.Format("IMq4Array<{0}> {1}", type, name);
+                    string replacement;
+                    if (type == "Mq4Double")
+                        replacement = string.Format("IMq4DoubleArray {1}", type, name);
+                    else
+                        replacement = string.Format("{0}Array {1}", type, name);
                     code = code
                         .Remove(match.Index, match.Value.Length)
                         .Insert(match.Index, replacement);
