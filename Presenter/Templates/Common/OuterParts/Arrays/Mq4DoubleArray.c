@@ -4,7 +4,7 @@
 		private readonly Mq4Double _defaultValue;
 		      
 		public Mq4DoubleArray(int size = 0)
-		{
+        {
 			_defaultValue = 0;
 		}
 
@@ -53,7 +53,7 @@
 					return _defaultValue;    
             
 				EnsureCountIsEnough(index);         
-          
+
 				return _data[index];
 			}       
 			set
@@ -73,14 +73,14 @@
 		public void Sort(int count, int start, int sort_dir)
 		{
 			start = Math.Max(0, start);
-			if (count == WHOLE_ARRAY)
+			if (count == #AlgoName_PLACE_HOLDER#.WHOLE_ARRAY)
 				count = _data.Count - start;
 			else
 				count = Math.Min(_data.Count - start, count);
 			
 			var comparer = new Mq4DoubleComparer();
 			_data.Sort(start, count, comparer);
-			if (sort_dir == MODE_DESCEND)
+			if (sort_dir == #AlgoName_PLACE_HOLDER#.MODE_DESCEND)
 			{				
 				for (var i = start; i < start + count / 2; i++)
 				{

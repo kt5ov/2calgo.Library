@@ -1,4 +1,5 @@
 [Conditional("ArrayInitialize")]
+//{
 int ArrayInitialize(IMq4DoubleArray array, Mq4Double value)
 {
 	for(var i = 0; i < array.Length; i++)
@@ -6,13 +7,19 @@ int ArrayInitialize(IMq4DoubleArray array, Mq4Double value)
 	return array.Length;
 }
 
-[Conditional("ArrayInitialize")]
 int ArrayInitialize(Mq4StringArray array, Mq4String value)
 {
 	for(var i = 0; i < array.Length; i++)
 		array[i] = value;
 	return array.Length;
 }
+
+int ArrayInitialize(Mq4DoubleTwoDimensionalArray array, Mq4Double value)
+{
+	array.Initialize(value);
+	return 0;
+}
+//}
 
 [Conditional("ArrayCopy")]
 int ArrayCopy(IMq4DoubleArray dest, IMq4DoubleArray source, int start_dest = 0, int start_source = 0, int count = WHOLE_ARRAY)
@@ -63,11 +70,18 @@ int ArrayMinimum(IMq4DoubleArray array, int count = WHOLE_ARRAY, int start = 0)
 }
 
 [Conditional("ArrayResize")]
+//{
 int ArrayResize(Mq4DoubleArray array, int new_size)
 {
 	array.Resize(new_size);
 	return new_size;
 }
+
+int ArrayResize(Mq4DoubleTwoDimensionalArray array, int new_size)
+{
+	return 0;
+}
+//}
 
 [Conditional("ArrayResize")]
 int ArrayResize(Mq4StringArray array, int new_size)

@@ -5,7 +5,7 @@ const bool FALSE = false;
 Mq4Null NULL;
 const int EMPTY = -1;
 const double EMPTY_VALUE = 2147483647;
-const int WHOLE_ARRAY = 0;
+public const int WHOLE_ARRAY = 0;
 
 const int MODE_SMA = 0; //Simple moving average
 const int MODE_EMA = 1; //Exponential moving average,
@@ -293,8 +293,8 @@ const int SYMBOL_THUMBSDOWN = 68;
 const int SYMBOL_CHECKSIGN = 25;
 */
 
-const int MODE_ASCEND = 1;
-const int MODE_DESCEND = 2;
+public const int MODE_ASCEND = 1;
+public const int MODE_DESCEND = 2;
 
 const int MODE_TENKANSEN = 1;
 const int MODE_KIJUNSEN = 2;

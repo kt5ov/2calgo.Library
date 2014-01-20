@@ -6,7 +6,7 @@ namespace _2calgo.Parser.CodeAdapter
     public static class Arrays
     {
         private static readonly Regex ArrayDeclarationRegex = new Regex(
-            @"(?<type>\w+)\s+(?<name>\w+)\s*\[(?<size>[^\]]*)\](?<initialization>\s*\=[\s\n\r]*(?<values>\{[^\}]*\})){0,1}", RegexOptions.Compiled);
+            @"(?<type>\w+)\s+(?<name>\w+)\s*\[(?<size1>[^\]]*)\](\[(?<size2>[^\]]*)\]){0,1}(?<initialization>\s*\=[\s\n\r]*(?<values>\{[^\}]*\})){0,1}", RegexOptions.Compiled);
 
         public static string ReplaceArraysToMq4Arrays(this string code)
         {
@@ -23,10 +23,16 @@ namespace _2calgo.Parser.CodeAdapter
                     type = type.ReplaceSimpleTypesToMq4Types();
 
                     var name = match.Groups["name"].Value;
-                    var size = match.Groups["size"].Value;
+                    var size1 = match.Groups["size1"].Value;
+                    var size2 = match.Groups["size2"].Value;
                     var values = match.Groups["values"].Value;
+                    
+                    string replacement;
+                    if (string.IsNullOrEmpty(size2))
+                        replacement = string.Format("{0}Array {1} = new {0}Array({2}{3}){4}", type, name, size1, size2, values);
+                    else
+                        replacement = string.Format("Mq4DoubleTwoDimensionalArray {0} = new Mq4DoubleTwoDimensionalArray({1}){2}", name, size2, values);
 
-                    var replacement = string.Format("{0}Array {1} = new {0}Array({2}){3}", type, name, size, values);
                     code = code
                         .Remove(match.Index, match.Value.Length)
                         .Insert(match.Index, replacement);

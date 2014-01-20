@@ -9,7 +9,6 @@ namespace _2calgo.Presenter.PartsProviders
         private const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/Common/InnerParts/";
         
         private const string ChartObjects = "ChartObjects";
-        private const string DataSeries = "DataSeries";
         private const string Indicators = "Indicators";
         private const string StandardConstants = "Standard constants";
         private const string Account = "Account";
@@ -64,14 +63,6 @@ namespace _2calgo.Presenter.PartsProviders
                 ChartObjects + "/Mq4Arrow.c",
                 ChartObjects + "/Mq4Fibo.c",
                 ChartObjects + "/Object functions.c",
-                
-                DataSeries + "/Mq4MarketDataSeries.c",
-                DataSeries + "/Mq4StringArray.c",
-                DataSeries + "/Mq4DoubleArray.c",
-                DataSeries + "/IMq4DoubleArray.c",
-                DataSeries + "/DefaultValues.c",
-                DataSeries + "/Mq4ArrayToDataSeriesConverter.c",
-                DataSeries + "/Mq4ArrayToDataSeriesConverterFactory.c",
             };
 
         public static string Get()

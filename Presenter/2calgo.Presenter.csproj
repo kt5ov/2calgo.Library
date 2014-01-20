@@ -153,7 +153,7 @@
     <Resource Include="Templates\Common\InnerParts\Indicators\CachedStandardIndicators.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4MarketDataSeries.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4MarketDataSeries.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Mq4OutputDataSeries.c" />
@@ -162,19 +162,16 @@
     <Resource Include="Templates\Common\InnerParts\ChartObjects\Mq4Arrow.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4DoubleArray.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\DefaultValues.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4DoubleArray.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Standard constants\Trade operations.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4ArrayToDataSeriesConverter.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4ArrayToDataSeriesConverter.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4ArrayToDataSeriesConverterFactory.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4ArrayToDataSeriesConverterFactory.c" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Templates\Common\InnerParts\Alert.cs" />
@@ -252,10 +249,13 @@
     <Resource Include="Templates\Common\OuterParts\Mq4Char.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\Mq4StringArray.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4StringArray.c" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Templates\Common\InnerParts\DataSeries\IMq4DoubleArray.c" />
+    <Resource Include="Templates\Common\OuterParts\Arrays\IMq4DoubleArray.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Templates\Common\OuterParts\Arrays\Mq4DoubleTwoDimensionalArray.c" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

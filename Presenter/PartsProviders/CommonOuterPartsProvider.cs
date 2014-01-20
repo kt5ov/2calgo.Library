@@ -7,10 +7,10 @@ namespace _2calgo.Presenter.PartsProviders
     public static class CommonOuterPartsProvider
     {
         private const string FolderPath = @"pack://application:,,,/2calgo.Presenter;component/Templates/Common/OuterParts/";
+        private const string Arrays = @"Arrays";
 
         private static readonly IEnumerable<string> OuterParts = new[]
             {
-                "Mq4Double.cs",
                 "Mq4DoubleComparer.cs",
                 "Mq4String.c",
                 "Mq4Char.c",
@@ -22,7 +22,16 @@ namespace _2calgo.Presenter.PartsProviders
                 "EventExtensions.c",
                 "Mq4LineStyles.c",
                 "Mq4TimeSeries.c",
-                "ConvertExtensions.c",
+                "ConvertExtensions.c",    
+                "Mq4Double.cs",      
+
+                Arrays + "/Mq4DoubleTwoDimensionalArray.c",      
+                Arrays + "/Mq4DoubleArray.c",
+                Arrays + "/Mq4MarketDataSeries.c",
+                Arrays + "/Mq4StringArray.c",
+                Arrays + "/IMq4DoubleArray.c",
+                Arrays + "/Mq4ArrayToDataSeriesConverter.c",
+                Arrays + "/Mq4ArrayToDataSeriesConverterFactory.c",
             };
 
         public static string Get()

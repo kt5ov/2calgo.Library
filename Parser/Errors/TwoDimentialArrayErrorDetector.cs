@@ -11,7 +11,7 @@ namespace _2calgo.Parser.Errors
 
         public override IEnumerable<ParsingError> FindErrors(string code)
         {
-            foreach (var match in First.Matches(code).OfType<Match>())
+            /*foreach (var match in First.Matches(code).OfType<Match>())
             {
                 var body = match.Groups["body"].Value;
                 var innerStructures = new InnerStructures.InnerStructures();
@@ -31,7 +31,8 @@ namespace _2calgo.Parser.Errors
             {
                 yield return new ParsingError(ErrorType.NotSupportedCriticalError, "Two dimential array",
                                              match.Value);
-            }
+            }*/
+            yield break;
         }
     }
 }
