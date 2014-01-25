@@ -37,6 +37,7 @@ namespace _2calgo.Parser
                 .ReplaceDefines()
                 .ReplaceCSharpKeyWords()
                 .RemoveDotsFromNames()
+                .AddZeroToDecimalNumbers()
                 .Replace("$", string.Empty)
                 .Replace("?", "_")
                 .RemoveIncludes()

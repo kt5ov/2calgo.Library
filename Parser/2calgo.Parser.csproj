@@ -58,6 +58,7 @@
     <Compile Include="CodeAdapter\Mq4Replacer.cs" />
     <Compile Include="CodeAdapter\Declarations.cs" />
     <Compile Include="CodeAdapter\Names.cs" />
+    <Compile Include="CodeAdapter\Numbers.cs" />
     <Compile Include="CodeAdapter\References.cs" />
     <Compile Include="CodeAdapter\ReturnStatements.cs" />
     <Compile Include="CodeAdapter\StaticVariables.cs" />
