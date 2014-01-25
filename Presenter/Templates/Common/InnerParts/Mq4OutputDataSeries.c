@@ -41,6 +41,10 @@ class Mq4OutputDataSeries : IMq4DoubleArray
         }
     }
 
+    public void Resize(int newSize)
+    {        
+    }
+
     public void SetCurrentIndex(int index)
     {
         _currentIndex = index;

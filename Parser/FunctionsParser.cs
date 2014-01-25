@@ -71,12 +71,12 @@ namespace _2calgo.Parser
             if (name.Contains("[]"))
             {
                 name = name.Replace("[]", string.Empty);
-                type = type == "Mq4String" || type == "string" ? "Mq4StringArray" : "Mq4DoubleArray";
+                type = type == "Mq4String" || type == "string" ? "Mq4StringArray" : "IMq4DoubleArray";
             }
 
             return new FunctionParameter
                 {
-                    ByReference = parameterAsString.Contains("&"),
+                    ByReference = parameterAsString.Contains("&") && type != "IMq4DoubleArray" && type != "Mq4StringArray",
                     DefaultValue = defaultValue,
                     Name = name,
                     Type = type,

@@ -17,4 +17,8 @@
 		{
 			get { return _dataSeries.Count; }
 		}
+
+        public void Resize(int newSize)
+        {        
+        }
     }

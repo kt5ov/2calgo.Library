@@ -22,7 +22,8 @@ namespace _2calgo.Parser.CodeAdapter
                      foreach (var parameter in f.Parameters.Where(p => p.ByReference))
                      {
                          var parameterValue = methodCall.Parameters[parameter.Index];
-                         methodCall.Parameters[parameter.Index] = "ref " + parameterValue;
+                         if (parameter.Type != "IMq4DoubleArray")
+                            methodCall.Parameters[parameter.Index] = "ref " + parameterValue;
                      }
                      code = code.Replace(methodCall.OriginalText, methodCall.ToCSharpCode());
                  }

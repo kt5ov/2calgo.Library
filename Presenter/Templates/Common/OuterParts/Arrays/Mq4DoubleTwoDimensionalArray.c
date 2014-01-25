@@ -40,4 +40,26 @@
 				return _arrays[index];
 			}       
 		}	
+
+		public Mq4Double this[int index1, int index2]
+		{       
+			get
+			{
+				if (index1 < 0)
+					return 0;
+
+				EnsureCountIsEnough(index1);         
+
+				return _arrays[index1][index2];
+			}    
+			set
+			{
+				if (index1 < 0)
+					return;
+
+				EnsureCountIsEnough(index1);         
+
+				_arrays[index1][index2] = value;
+			}   
+		}	
 	}

@@ -1,21 +1,11 @@
-struct Mq4Double : IMq4DoubleArray, IComparable, IComparable<Mq4Double>
+struct Mq4Double : IComparable, IComparable<Mq4Double>
     {
       private readonly double _value;
-      private readonly Mq4DoubleArray _mq4Array;
 
       public Mq4Double(double value)
       {
         _value = value;
-        _mq4Array = new Mq4DoubleArray();
       }
-
-      public Mq4Double this[int index]
-      {
-          get { return _mq4Array[index]; }
-          set { _mq4Array[index] = value; }
-      }
-
-      public int Length { get { return _mq4Array.Length; } }
       
       public static implicit operator double(Mq4Double property)
       {

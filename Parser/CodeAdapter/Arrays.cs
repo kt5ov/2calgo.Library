@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Linq;
+using _2calgo.Parser.Extensions;
 
 namespace _2calgo.Parser.CodeAdapter
 {
@@ -25,6 +26,13 @@ namespace _2calgo.Parser.CodeAdapter
                     var name = match.Groups["name"].Value;
                     var size1 = match.Groups["size1"].Value;
                     var size2 = match.Groups["size2"].Value;
+                    if (size1.Contains(","))
+                    {
+                        var splitByComma = size1.SplitByComma();
+                        size1 = splitByComma[0];
+                        size2 = splitByComma[1];
+                    }
+
                     var values = match.Groups["values"].Value;
                     
                     string replacement;

@@ -71,7 +71,7 @@ int ArrayMinimum(IMq4DoubleArray array, int count = WHOLE_ARRAY, int start = 0)
 
 [Conditional("ArrayResize")]
 //{
-int ArrayResize(Mq4DoubleArray array, int new_size)
+int ArrayResize(IMq4DoubleArray array, int new_size)
 {
 	array.Resize(new_size);
 	return new_size;
