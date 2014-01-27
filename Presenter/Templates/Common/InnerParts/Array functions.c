@@ -183,3 +183,9 @@ int ArrayBsearch(IMq4DoubleArray mq4Array, double value, int count = WHOLE_ARRAY
 	}
 	return -1;
 }
+
+[Conditional("ArrayRange")]
+Mq4Double ArrayRange(Mq4DoubleTwoDimensionalArray mq4Array, int index)
+{
+	return mq4Array.Range(index);
+}

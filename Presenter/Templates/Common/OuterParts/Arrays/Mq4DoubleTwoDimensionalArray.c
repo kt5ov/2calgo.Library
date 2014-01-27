@@ -27,6 +27,13 @@
 			for (var i = 0; i < _data.Count; i++)
 				_data[i] = value;
 		}
+
+		public int Range(int index)
+		{
+			if (index == 0)
+				return _data.Count;
+			return this[0].Length;
+		}
 				     
 		public Mq4DoubleArray this[int index]
 		{       
