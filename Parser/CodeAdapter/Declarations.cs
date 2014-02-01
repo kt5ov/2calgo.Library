@@ -23,7 +23,7 @@ namespace _2calgo.Parser.CodeAdapter
                 var splittedDeclarations = declarationsWithoutType.SplitByComma();
 
                 var assignments = splittedDeclarations
-                    .Where(v => v.Contains("="));
+                    .Where(v => v.Contains("=") && !IsArrayAssinment(v));
 
                 var replacement = string.Join(";" + Environment.NewLine, assignments);
                 if (replacement != string.Empty)
@@ -40,6 +40,17 @@ namespace _2calgo.Parser.CodeAdapter
                 }
             }
             return code;
+        }
+
+        private static bool IsArrayAssinment(string assignment)
+        {
+            var bracketIndex = assignment.IndexOf('[');
+            var assignmentIndex = assignment.IndexOf('=');
+
+            if (bracketIndex == -1)
+                return false;
+
+            return bracketIndex < assignmentIndex;
         }
 
         private static bool IsInsideString(string code, int index)
