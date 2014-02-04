@@ -164,10 +164,7 @@ class Cache<TValue>
 #region iADX
         private Mq4Double iADX(Mq4String symbol, int timeframe, int period, int applied_price, int mode, int shift)
         {
-            if (applied_price != PRICE_CLOSE)            
-              throw new NotImplementedException(AdxSupportsOnlyClosePrice);            
-
-			var marketSeries = GetSeries(symbol, timeframe);
+        	var marketSeries = GetSeries(symbol, timeframe);
       
             return CalculateAdx(marketSeries, period, mode, shift);
         }      
