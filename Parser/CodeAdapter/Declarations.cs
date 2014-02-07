@@ -15,11 +15,12 @@ namespace _2calgo.Parser.CodeAdapter
                 .OfType<Match>()
                 .Where(match => match.Groups["type"].Value.IsSupported()))
             {
-                if (IsInsideString(code, code.IndexOf(declarationsWithAssignments.Value)))
+                var typeWithStatic = declarationsWithAssignments.Groups["typeWithStatic"].Value;
+                if (IsInsideString(code, code.IndexOf(declarationsWithAssignments.Value)) || typeWithStatic.Contains("static"))
                     continue;
-                var @typeWithStatic = declarationsWithAssignments.Groups["typeWithStatic"].Value;
-                var @type = declarationsWithAssignments.Groups["type"].Value;
-                var declarationsWithoutType = declarationsWithAssignments.Value.Substring(@typeWithStatic.Length, declarationsWithAssignments.Length - @typeWithStatic.Length - 1);
+
+                var type = declarationsWithAssignments.Groups["type"].Value;
+                var declarationsWithoutType = declarationsWithAssignments.Value.Substring(type.Length, declarationsWithAssignments.Length - type.Length - 1);
                 var splittedDeclarations = declarationsWithoutType.SplitByComma();
 
                 var assignments = splittedDeclarations
@@ -35,8 +36,9 @@ namespace _2calgo.Parser.CodeAdapter
                     var variable = GetVariable(declaration);
                     var defaultValue = string.Empty;
                     if (variable[variable.Length - 1] != ']')
-                        defaultValue = GetDefaultValue(@type);
-                    code = code.Insert(0, String.Format("\n{0} {1} {2};", @typeWithStatic, variable, defaultValue));
+                        defaultValue = GetDefaultValue(type);
+
+                    code = code.Insert(0, String.Format("\n{0} {1} {2};", type, variable, defaultValue));
                 }
             }
             return code;

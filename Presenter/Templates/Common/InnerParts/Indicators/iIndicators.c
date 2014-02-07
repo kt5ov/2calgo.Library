@@ -164,7 +164,7 @@ class Cache<TValue>
 #region iADX
         private Mq4Double iADX(Mq4String symbol, int timeframe, int period, int applied_price, int mode, int shift)
         {
-        	var marketSeries = GetSeries(symbol, timeframe);
+			var marketSeries = GetSeries(symbol, timeframe);
       
             return CalculateAdx(marketSeries, period, mode, shift);
         }      
@@ -877,7 +877,7 @@ class DeMarkerIndicator
     }
 }
 
-private static readonly Cache<DeMarkerIndicator> _demarkerCache = new Cache<DeMarkerIndicator>();
+private readonly Cache<DeMarkerIndicator> _demarkerCache = new Cache<DeMarkerIndicator>();
 
 Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
 {
@@ -982,7 +982,7 @@ class Mq4AlligatorIndicator
     }
 }
 
-private static readonly Cache<Mq4AlligatorIndicator> _alligatorCache = new Cache<Mq4AlligatorIndicator>();
+private readonly Cache<Mq4AlligatorIndicator> _alligatorCache = new Cache<Mq4AlligatorIndicator>();
 
 Mq4Double iAlligator(Mq4String symbol, Mq4Double timeframe, Mq4Double jawPeriod, Mq4Double jawShift, Mq4Double teethPeriod, Mq4Double teethShift, Mq4Double lipsPeriod, Mq4Double lipsShift, Mq4Double ma_method, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
 {
