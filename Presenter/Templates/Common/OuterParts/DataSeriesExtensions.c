@@ -4,4 +4,9 @@
 		{
 			return dataSeries.Count - 1 - index;
 		}
+
+		public static Mq4Double Last(this DataSeries dataSeries, int shift, DataSeries sourceDataSeries)
+		{
+			return dataSeries[sourceDataSeries.Count - 1 - shift];
+		}
 	}

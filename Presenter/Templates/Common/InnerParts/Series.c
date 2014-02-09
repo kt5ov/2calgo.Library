@@ -10,6 +10,9 @@ MarketSeries GetSeries(string symbol, int period)
 	var timeFrame = PeriodToTimeFrame(period);
 	var symbolObject = GetSymbol(symbol);
 
+    if (symbolObject == Symbol && timeFrame == TimeFrame)
+        return MarketSeries;
+
 	return MarketData.GetSeries(symbolObject.Code, timeFrame);
 }
 

@@ -92,7 +92,7 @@ class Cache<TValue>
             var maType = ToMaType(ma_method);            
             var indicator = _cachedStandardIndicators.MovingAverage(dataSeries, period, maType);
 
-            return indicator.Result.Last(shift);
+            return indicator.Result.Last(shift, dataSeries);
         }        
         
         private double CalculateWellesWilderSmoothing(DataSeries dataSeries, int period, int shift)
