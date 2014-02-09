@@ -1,7 +1,9 @@
 Symbol GetSymbol(string symbolCode)
 {
 	if (symbolCode == "0" || string.IsNullOrEmpty(symbolCode))
-		symbolCode = Symbol.Code;
+    {
+		return Symbol;
+    }
 	return MarketData.GetSymbol(symbolCode);
 }
 
