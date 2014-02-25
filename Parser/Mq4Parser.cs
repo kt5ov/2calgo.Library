@@ -12,7 +12,7 @@ namespace _2calgo.Parser
 {
     public class Mq4Parser
     {
-        public ParsingResult Parse(string code, AlgoType algotype)
+        public ParsingResult Parse(string code, AlgoType algotype, File[] includeFiles)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var parsingErrors = new ParsingErrors();
@@ -26,6 +26,7 @@ namespace _2calgo.Parser
 
             code = code
                 .RemoveComments()
+                .IncludeFiles(includeFiles)
                 .HandleParsingErrors(parsingErrors);
 
             if (parsingErrors.Errors.Any(error => error.ErrorType >= ErrorType.NotSupportedCriticalError))
@@ -40,7 +41,6 @@ namespace _2calgo.Parser
                 .AddZeroToDecimalNumbers()
                 .Replace("$", string.Empty)
                 .Replace("?", "_")
-                .RemoveIncludes()
                 .ReplaceMq4RgbColorsToKnownColors()
                 .ReplaceColorToInt()
                 .ReplaceCAlgoKeyWords()

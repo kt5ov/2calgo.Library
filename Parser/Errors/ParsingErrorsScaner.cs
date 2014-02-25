@@ -18,8 +18,6 @@ namespace _2calgo.Parser.Errors
         private static readonly List<ErrorDetector> ErrorDetectors = new List<ErrorDetector>
             {
                 new InvokesNotSupportedMethodsDetector(),
-                new IncludeDetector(),
-                new TwoDimentialArrayErrorDetector(),
                 new FileSeekDetector(),
 
                 new ContainsStringErrorDetector("#import", ErrorType.NotSupportedCriticalError),

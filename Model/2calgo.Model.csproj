@@ -44,6 +44,7 @@
     <Compile Include="AlgoType.cs" />
     <Compile Include="AlgoTypeDetector.cs" />
     <Compile Include="DrawingShapeStyle.cs" />
+    <Compile Include="File.cs" />
     <Compile Include="FunctionParameter.cs" />
     <Compile Include="Code.cs" />
     <Compile Include="MethodCall.cs" />

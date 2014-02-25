@@ -46,7 +46,6 @@
     <Compile Include="cAlgoConverter.cs" />
     <Compile Include="ConvertionResult.cs" />
     <Compile Include="CSharpCompiler.cs" />
-    <Compile Include="IncludeScaner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

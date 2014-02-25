@@ -3,6 +3,7 @@ using System.IO;
 using _2calgo.Model;
 using _2calgo.Parser;
 using _2calgo.Presenter;
+using File = System.IO.File;
 
 namespace _2calgo.Library
 {
@@ -17,11 +18,11 @@ namespace _2calgo.Library
             }
         ";
 
-        public static ConvertionResult Convert(string code, AlgoType algotype)
+        public static ConvertionResult Convert(string code, AlgoType algotype, Model.File[] includeFiles)
         {
             var parser = new Mq4Parser();
             
-            var indicatorParsingResult = parser.Parse(code, algotype);
+            var indicatorParsingResult = parser.Parse(code, algotype, includeFiles);
             var algo = indicatorParsingResult.Algo;
 
             var presenter = CreatePresenter(algotype);

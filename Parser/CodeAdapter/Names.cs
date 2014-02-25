@@ -71,10 +71,5 @@ namespace _2calgo.Parser.CodeAdapter
             }
             return false;
         }
-
-        public static string RemoveIncludes(this string code)
-        {
-            return IncludeRegex.Replace(code, string.Empty);
-        }
     }
 }
