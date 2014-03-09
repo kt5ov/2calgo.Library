@@ -1,25 +1,29 @@
 const int MODE_TRADES = 0;
+const int MODE_HISTORY = 1;
 const int SELECT_BY_POS = 0;
 const int SELECT_BY_TICKET = 1;
 
-T GetPropertyValue<T>(Func<Position, T> getFromPosition, Func<PendingOrder, T> getFromPendingOrder)
+T GetPropertyValue<T>(Func<Position, T> getFromPosition, Func<PendingOrder, T> getFromPendingOrder, Func<HistoricalTrade, T> getFromHistory)
 {
 	if (_currentOrder == null)
 		return default(T);
 
-	return GetPropertyValue<T>(_currentOrder, getFromPosition, getFromPendingOrder);
+	return GetPropertyValue<T>(_currentOrder, getFromPosition, getFromPendingOrder, getFromHistory);
 }
 
-T GetPropertyValue<T>(object obj, Func<Position, T> getFromPosition, Func<PendingOrder, T> getFromPendingOrder)
+T GetPropertyValue<T>(object obj, Func<Position, T> getFromPosition, Func<PendingOrder, T> getFromPendingOrder, Func<HistoricalTrade, T> getFromHistory)
 {
 	if (obj is Position)
 		return getFromPosition((Position) obj);
-	return getFromPendingOrder((PendingOrder) obj);
-}
+	if (obj is PendingOrder)
+		return getFromPendingOrder((PendingOrder) obj);
+
+	return getFromHistory((HistoricalTrade) obj);
+} 
 
 private Mq4Double GetTicket(object trade)
 {
-	return new Mq4Double(GetPropertyValue<int>(trade, _ => _.Id, _ => _.Id) + (int)1e8);
+	return new Mq4Double(GetPropertyValue<int>(trade, _ => _.Id, _ => _.Id, _ => _.ClosingDealId));
 }
 
 [Conditional("OrderTicket", "OrderPrint")]
@@ -33,36 +37,16 @@ Mq4Double OrderTicket()
 
 private int GetMagicNumber(string label)
 {			
-	var magicNumberStr = label;
-	if (string.IsNullOrEmpty(magicNumberStr))
-		return 0;
-
-	var sharpIndex = magicNumberStr.IndexOf("#");
-	if (sharpIndex != -1)
-		magicNumberStr = magicNumberStr.Substring(0, sharpIndex);
-
 	int magicNumber;
-	if (int.TryParse(magicNumberStr, out magicNumber))
+	if (int.TryParse(label, out magicNumber))
 		return magicNumber;
 
 	return 0;
 }
 
-private string GetComment(string label)
-{
-	if (string.IsNullOrEmpty(label))
-		return string.Empty;
-
-	var sharpIndex = label.IndexOf("#");
-	if (sharpIndex == -1)
-		return string.Empty;
-
-	return label.Substring(sharpIndex, label.Length - sharpIndex);
-}
-
 private int GetMagicNumber(object order)
 {	
-	var label = GetPropertyValue<string>(order, _ => _.Label, _ => _.Label);
+	var label = GetPropertyValue<string>(order, _ => _.Label, _ => _.Label, _ => _.Label);
 	return GetMagicNumber(label);
 }
 
@@ -81,13 +65,25 @@ Mq4String OrderComment()
 	if (_currentOrder == null)
 		return string.Empty;
 
-	return GetPropertyValue<string>(_currentOrder, _ => _.Comment, _ => _.Comment);
+	return GetPropertyValue<string>(_currentOrder, _ => _.Comment, _ => _.Comment, _ => _.Comment);
 }
 
 [Conditional("OrdersTotal")]
 Mq4Double OrdersTotal()
 {
 	return Positions.Count + PendingOrders.Count;
+}
+
+[Conditional("HistoryTotal")]
+Mq4Double HistoryTotal()
+{
+	return History.Count;
+}
+
+[Conditional("OrdersHistoryTotal")]
+Mq4Double OrdersHistoryTotal()
+{
+	return History.Count;
 }
 
 object _currentOrder;
@@ -97,30 +93,48 @@ bool OrderSelect(int index, int select, int pool = MODE_TRADES)
 {
 	_currentOrder = null;
 
-	var allOrders = Positions.OfType<object>()
-							.Concat(PendingOrders.OfType<object>())
-							.ToArray();
-
-	switch (select)
+	if (pool == MODE_TRADES)
 	{
-		case SELECT_BY_POS:	
-			if (index < 0 || index >= allOrders.Length)
-				return false;
+		var allOrders = Positions.OfType<object>()
+								.Concat(PendingOrders.OfType<object>())
+								.ToArray();
 
-			_currentOrder = allOrders[index];
-			return true;
-		case SELECT_BY_TICKET:
-			_currentOrder = GetOrderByTicket(index);
-			return _currentOrder != null;
+		switch (select)
+		{
+			case SELECT_BY_POS:	
+				if (index < 0 || index >= allOrders.Length)
+					return false;
+
+				_currentOrder = allOrders[index];
+				return true;
+			case SELECT_BY_TICKET:
+				_currentOrder = GetOrderByTicket(index);
+				return _currentOrder != null;
+		}
 	}	
+	if (pool == MODE_HISTORY)
+	{
+		switch (select)
+		{
+			case SELECT_BY_POS:	
+				if (index < 0 || index >= History.Count)
+					return false;
+
+				_currentOrder = History[index];
+				return true;
+			case SELECT_BY_TICKET:
+				_currentOrder = History.FindLast(index.ToString());
+				return _currentOrder != null;
+		}
+	}
 
 	return false;
 }
 
 double GetLots(object order)
 {
-	var volume = GetPropertyValue<long>(order, _ => _.Volume,  _ => _.Volume);
-	var symbolCode = GetPropertyValue<string>(order, _ => _.SymbolCode, _ => _.SymbolCode);
+	var volume = GetPropertyValue<long>(order, _ => _.Volume,  _ => _.Volume, _ => _.Volume);
+	var symbolCode = GetPropertyValue<string>(order, _ => _.SymbolCode, _ => _.SymbolCode, _ => _.SymbolCode);
 	var symbolObject = MarketData.GetSymbol(symbolCode);
 	
 	return symbolObject.ToLotsVolume(volume);
@@ -155,21 +169,28 @@ Mq4Double OrderType()
 	{
 		return position.TradeType == TradeType.Buy ? OP_BUY : OP_SELL;
 	}
-	var pendingOrder = (PendingOrder)_currentOrder;
-	if (pendingOrder.OrderType == PendingOrderType.Limit)
-		return pendingOrder.TradeType == TradeType.Buy ? OP_BUYLIMIT : OP_SELLLIMIT;
-	return pendingOrder.TradeType == TradeType.Buy ? OP_BUYSTOP : OP_SELLSTOP;
+	var pendingOrder = _currentOrder as PendingOrder;
+	if (pendingOrder != null)
+	{
+		if (pendingOrder.OrderType == PendingOrderType.Limit)
+			return pendingOrder.TradeType == TradeType.Buy ? OP_BUYLIMIT : OP_SELLLIMIT;
+		return pendingOrder.TradeType == TradeType.Buy ? OP_BUYSTOP : OP_SELLSTOP;
+	}
+
+	var historicalTrade = (HistoricalTrade)_currentOrder;
+
+	return historicalTrade.TradeType == TradeType.Buy ? OP_BUY : OP_SELL;
 }
 
 [Conditional("OrderSymbol")]
 Mq4String OrderSymbol()
 {
-	return GetPropertyValue<string>(_ => _.SymbolCode, _ => _.SymbolCode);
+	return GetPropertyValue<string>(_ => _.SymbolCode, _ => _.SymbolCode, _ => _.SymbolCode);
 }
 
 double GetOpenPrice(object order)
 {
-	return GetPropertyValue<double>(order, _ => _.EntryPrice, _ => _.TargetPrice);
+	return GetPropertyValue<double>(order, _ => _.EntryPrice, _ => _.TargetPrice, _ => _.EntryPrice);
 }
 
 [Conditional("OrderOpenPrice", "OrderPrint")]
@@ -177,18 +198,39 @@ Mq4Double OrderOpenPrice()
 {
 	if (_currentOrder == null)
 		return 0;
+
 	return GetOpenPrice(_currentOrder);
+}
+
+[Conditional("OrderClosePrice")]
+Mq4Double OrderClosePrice()
+{
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return historicalTrade.ClosingPrice;
+
+	return 0;
+}
+
+[Conditional("OrderCloseTime")]
+Mq4Double OrderCloseTime()
+{
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return Mq4TimeSeries.ToInteger(historicalTrade.ClosingTime);
+
+	return 0;
 }
 
 private double GetStopLoss(object order)
 {
-	var nullableValue = GetPropertyValue<double?>(order, _ => _.StopLoss, _ => _.StopLoss);
+	var nullableValue = GetPropertyValue<double?>(order, _ => _.StopLoss, _ => _.StopLoss, _ => 0);
 	return nullableValue ?? 0;
 }
 
 private double GetTakeProfit(object order)
 {
-	var nullableValue = GetPropertyValue<double?>(order, _ => _.TakeProfit, _ => _.TakeProfit);
+	var nullableValue = GetPropertyValue<double?>(order, _ => _.TakeProfit, _ => _.TakeProfit, _ => 0);
 	return nullableValue ?? 0;
 }
 
@@ -212,19 +254,28 @@ Mq4Double OrderTakeProfit()
 Mq4Double OrderProfit()
 {
 	var position = _currentOrder as Position;
-	if (position == null)
-		return 0;
-	return position.NetProfit;
+	if (position != null)
+		return position.NetProfit;
+	
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return historicalTrade.NetProfit;
+	
+	return 0;
 }
 
 [Conditional("OrderOpenTime", "OrderPrint")]
 Mq4Double OrderOpenTime()
 {
 	var position = _currentOrder as Position;
-	if (position == null)
-		return 0;
+	if (position != null)
+		return Mq4TimeSeries.ToInteger(position.EntryTime);
 
-	return Mq4TimeSeries.ToInteger(position.EntryTime);
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return Mq4TimeSeries.ToInteger(historicalTrade.EntryTime);
+
+	return 0;
 }
 
 [Conditional("OrderExpiration", "OrderPrint")]
@@ -241,20 +292,28 @@ Mq4Double OrderExpiration()
 Mq4Double OrderSwap()
 {
 	var position = _currentOrder as Position;
-	if (position == null)
-		return 0;
+	if (position != null)
+		return position.Swap;
 
-	return position.Swap;
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return historicalTrade.Swap;
+
+	return 0;
 }
 
 [Conditional("OrderCommission", "OrderPrint")]
 Mq4Double OrderCommission()
 {
 	var position = _currentOrder as Position;
-	if (position == null)
-		return 0;
+	if (position != null)
+		return position.Commissions;
 
-	return position.Commissions;
+	var historicalTrade = _currentOrder as HistoricalTrade;
+	if (historicalTrade != null)
+		return historicalTrade.Commissions;
+
+	return 0;
 }
 
 [Conditional("OrderPrint")]
