@@ -2,7 +2,7 @@
 
 namespace cAlgo.Indicators
 {
-    [Indicator(ScalePrecision = 5, AutoRescale = false, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#)]
+    [Indicator(ScalePrecision = 5, AutoRescale = false, IsOverlay = #IsDrawingOnChartWindow_PLACE_HOLDER#, #AccessRights_PLACE_HOLDER#)]
 	[Levels(#Levels_PLACE_HOLDER#)]
 	public class #AlgoName_PLACE_HOLDER# : Indicator
     {

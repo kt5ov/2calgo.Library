@@ -22,12 +22,14 @@ private int _handleCounter = 1000;
 [Conditional("FileOpen")]
 Mq4Double FileOpen(Mq4String filename, Mq4Double mode)
 {
+    //AccessRights = AccessRights.FileSystem
 	return FileOpen(filename, mode, 59);
 }
 
 [Conditional("FileOpen")]
 Mq4Double FileOpen(Mq4String filename, Mq4Double mode, Mq4Char separator)
 {
+	//AccessRights = AccessRights.FileSystem
 	var fullFileName = Path.Combine(FolderPaths._2calgoDesktopFolder, filename);
 	int handle = 0;
 	try
@@ -72,6 +74,7 @@ Mq4Double FileOpen(Mq4String filename, Mq4Double mode, Mq4Char separator)
 [Conditional("FileWrite")]
 Mq4Double FileWrite(Mq4Double handle, params object[] parameters) 
 {
+	//AccessRights = AccessRights.FileSystem
 	FileInfo fileInfo;
 	if (!_openedFiles.TryGetValue(handle, out fileInfo))
 		return -1;
@@ -92,6 +95,7 @@ Mq4Double FileWrite(Mq4Double handle, params object[] parameters)
 [Conditional("FileReadString")]
 Mq4String FileReadString(Mq4Double handle)
 {
+	//AccessRights = AccessRights.FileSystem
 	try
 	{
 		FileInfo fileInfo;
@@ -119,6 +123,7 @@ Mq4String FileReadString(Mq4Double handle)
 [Conditional("FileClose")]
 void FileClose(Mq4Double handle) 
 {
+	//AccessRights = AccessRights.FileSystem
 	try
 	{
 		FileInfo fileInfo;
@@ -141,6 +146,7 @@ void FileClose(Mq4Double handle)
 [Conditional("FileSeek")]
 Mq4Double FileSeek(Mq4Double handle, Mq4Double offset, Mq4Double origin) 
 {
+	//AccessRights = AccessRights.FileSystem
 	try
 	{
 		FileInfo fileInfo;
@@ -165,6 +171,7 @@ Mq4Double FileSeek(Mq4Double handle, Mq4Double offset, Mq4Double origin)
 [Conditional("FileFlush")]
 void FileFlush(Mq4Double handle)
 {
+	//AccessRights = AccessRights.FileSystem
 	try
 	{
 		FileInfo fileInfo;
@@ -184,6 +191,7 @@ void FileFlush(Mq4Double handle)
 [Conditional("FileDelete")]
 void FileDelete(Mq4String filename) 
 {
+	//AccessRights = AccessRights.FileSystem
 	try
 	{
 		File.Delete(filename);

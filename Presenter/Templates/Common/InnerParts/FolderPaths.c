@@ -24,11 +24,17 @@ class FolderPaths
 
     static string SystemAppData
     {
-        get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); }
+        get 
+        { 
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); 
+        }
     }
 
     static string Desktop
     {
-        get { return Environment.GetFolderPath(Environment.SpecialFolder.Desktop); }
+        get 
+        { 
+            return Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
+        }
     }
 }

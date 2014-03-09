@@ -2,7 +2,7 @@
 
 namespace cAlgo.Robots
 {
-    [Robot()]
+    [Robot(#AccessRights_PLACE_HOLDER#)]
     public class #AlgoName_PLACE_HOLDER# : Robot
     {
 #Mq4Functions_PLACE_HOLDER#

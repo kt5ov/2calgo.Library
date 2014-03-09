@@ -93,6 +93,7 @@ namespace _2calgo.Parser.CodeAdapter
                 "Trade",
                 "PendingOrders",
                 "Positions",
+                "History",
             };
 
         public static string ReplaceCAlgoKeyWords(this string code)

@@ -1,5 +1,6 @@
 	[Conditional("Alert")]
     //{
+    //AccessRights = AccessRights.FullAccess
 	
 	void Alert(params object[] objects)
     {

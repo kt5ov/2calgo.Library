@@ -34,6 +34,7 @@ namespace _2calgo.Presenter
         public string Build()
         {
             var code = TemplateOptimizer.RemoveUnusedCode(_template, new Words(Mq4Code));
+            code = AccessRightsHelper.Add(code);
 
             code = code.Replace("#AlgoName_PLACE_HOLDER#", AlgoName);
             code = code.Replace("#Parameters_PLACE_HOLDER#", Parameters.ToString());
