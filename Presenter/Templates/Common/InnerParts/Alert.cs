@@ -4,6 +4,9 @@
 	
 	void Alert(params object[] objects)
     {
+    	if (IsBacktesting)
+    		return; 
+    		
         var text = string.Join("", objects.Select(o => o.ToString()));      
         _alertWindowWrapper.Value.ShowAlert(text);
         PlayAlertSoundIfNeeded();
