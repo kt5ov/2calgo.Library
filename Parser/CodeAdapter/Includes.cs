@@ -16,8 +16,21 @@ namespace _2calgo.Parser.CodeAdapter
             return IncludeRegex.Matches(code)
                 .OfType<Match>()
                 .Select(m => m.Groups["fileName"].Value)
+                .Where(NotStandard)
                 .Distinct()
                 .ToArray();
+        }
+
+        private static readonly string[] StandardIncludes = new[]
+        {
+            "stdlib.mqh",
+            "stderror.mqh",
+            "include/stdlib.mqh"
+        };
+
+        private static bool NotStandard(string name)
+        {
+            return !StandardIncludes.Contains(name);
         }
 
         public static string IncludeFiles(this string codeWithoutComments, File[] includeFiles)
@@ -26,14 +39,14 @@ namespace _2calgo.Parser.CodeAdapter
             foreach (var match in IncludeRegex.Matches(code).OfType<Match>())
             {
                 var fileName = match.Groups["fileName"].Value;
-                if (fileName == "stdlib.mqh" || fileName == "stderror.mqh" || fileName == "include/stdlib.mqh")
-                {
-                    code = code.Replace(match.Value, string.Empty);
-                }
-                else
+                if (NotStandard(fileName))
                 {
                     var file = includeFiles.First(f => f.Name == fileName);
                     code = code.Replace(match.Value, file.Mq4Code);
+                }
+                else
+                {
+                    code = code.Replace(match.Value, string.Empty);
                 }
             }
             return code;
