@@ -103,3 +103,9 @@ Mq4Double GetTickCount()
 {
 	return Environment.TickCount;
 }
+
+[Conditional("SendNotification")]
+Mq4Double SendNotification(Mq4String message)
+{
+	return true;
+}
