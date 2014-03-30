@@ -91,6 +91,7 @@ namespace _2calgo.Parser.CodeAdapter
                 "Debug",
                 "Stop",
                 "Trade",
+                "Account",
                 "PendingOrders",
                 "Positions",
                 "History",
