@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using _2calgo.Parser.Extensions;
 
@@ -11,7 +10,7 @@ namespace _2calgo.Parser.CodeAdapter
 
         private static readonly Regex Regex =
             new Regex(
-                @"D\s*'((?<datePart>(?<year>\d+)\.(?<month>\d+)\.(?<day>\d+)){0,1}(?<timePart>\s*(?<hour>\d+)(\:(?<min>\d+)(\:(?<sec>\d+)){0,1}){0,1}){0,1}){0,1}'", RegexOptions.Compiled);
+                @"D\s*'((?<datePart>(?<year>\d+)[\.\/\\](?<month>\d+)[\.\/\\](?<day>\d+)){0,1}(?<timePart>\s*(?<hour>\d+)(\:(?<min>\d+)(\:(?<sec>\d+)){0,1}){0,1}){0,1}){0,1}'", RegexOptions.Compiled);
 
         public static string ReplaceDateConstants(this string code)
         {
