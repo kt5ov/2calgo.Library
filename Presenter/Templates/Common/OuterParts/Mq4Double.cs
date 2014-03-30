@@ -36,6 +36,11 @@ struct Mq4Double : IComparable, IComparable<Mq4Double>
       {
         return new Mq4Double(value ? 1 : 0);
       }
+
+      public static implicit operator Mq4Double(Mq4Null value)
+      {
+        return new Mq4Double(0);
+      }
       
       public static Mq4Double operator +(Mq4Double d1, Mq4Double d2) 
       {
