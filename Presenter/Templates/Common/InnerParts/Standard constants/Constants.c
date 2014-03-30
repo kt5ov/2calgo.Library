@@ -279,7 +279,7 @@ const int Green = 32768;
 const int Olive = 32896;
 const int DarkSlateGray = 5197615;
 const int DarkGreen = 25600;
-const int Funchsia = 16711935;
+const int Fuchsia = 16711935;
 const int Black = 0;  
 
 const int SYMBOL_LEFTPRICE = 5;
