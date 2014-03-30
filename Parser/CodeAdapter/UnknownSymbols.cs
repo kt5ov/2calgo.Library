@@ -63,7 +63,7 @@ namespace _2calgo.Parser.CodeAdapter
                 else
                 {
                     var bytes = Encoding.Unicode.GetBytes(code[i].ToString());
-                    var replacement = string.Join("_", bytes.Select(b => b.ToString()));
+                    var replacement = "u" + string.Join("_", bytes.Select(b => b.ToString()));
                     result.Append(replacement);
                 }
             }
