@@ -109,3 +109,9 @@ Mq4Double SendNotification(Mq4String message)
 {
 	return true;
 }
+
+[Conditional("ResetLastError")]
+void ResetLastError()
+{
+	_lastError = ERR_NO_ERROR;
+}
