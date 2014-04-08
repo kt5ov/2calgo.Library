@@ -72,3 +72,9 @@ Mq4Double IsVisualMode()
     return false;
 }
 
+[Conditional("TerminalCompany")]
+Mq4String TerminalCompany()
+{
+    return "Unknown";
+}
+
