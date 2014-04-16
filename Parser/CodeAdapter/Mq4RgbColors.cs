@@ -8,25 +8,40 @@ namespace _2calgo.Parser.CodeAdapter
 {
     public static class Mq4RgbColors
     {
-        private static readonly Regex RgbRegex = new Regex(@"C'(?<red>\d+)\,(?<green>\d+),(?<blue>\d+)\'",
+        private static readonly Regex RgbRegex = new Regex(@"C'(?<red>[\dxABCDEF]+)\,(?<green>[\dxABCDEF]+),(?<blue>[\dxABCDEF]+)\'",
                                                            RegexOptions.Compiled);
 
         public static string ReplaceMq4RgbColorsToKnownColors(this string code)
         {
             foreach (var match in RgbRegex.Matches(code).OfType<Match>().ToArray())
             {
-                var red = match.GetIntValue("red");
-                var green = match.GetIntValue("green");
-                var blue = match.GetIntValue("blue");
-
-                if (red == null || green == null || blue == null)
-                    continue;
-
-                var similarColor = FindSimilarColor(red.Value, green.Value, blue.Value);
+                var red = GetColorValue(match, "red");
+                var green = GetColorValue(match, "green");
+                var blue = GetColorValue(match, "blue");
+                
+                var similarColor = FindSimilarColor(red, green, blue);
 
                 code = code.Replace(match.Value, similarColor);
             }
             return code;
+        }
+
+        private static int GetColorValue(Match match, string groupName)
+        {
+            var stringValue = match.Groups[groupName].Value;
+            if (string.IsNullOrEmpty(stringValue))
+                return 0;
+
+            int value;
+            if (int.TryParse(stringValue, out value))
+                return value;
+
+            if (stringValue.StartsWith("0x"))
+            {
+                var hexString = stringValue.SafeSubstring(2, 2);
+                return Convert.ToInt32(hexString, 16);
+            }
+            return 0;
         }
 
         private static string FindSimilarColor(int red, int green, int blue)

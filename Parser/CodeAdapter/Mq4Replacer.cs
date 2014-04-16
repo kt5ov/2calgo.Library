@@ -91,10 +91,16 @@ namespace _2calgo.Parser.CodeAdapter
                 "Debug",
                 "Stop",
                 "Trade",
+                "TimeSpan",
+                "Math",
                 "Account",
                 "PendingOrders",
                 "Positions",
                 "History",
+                "Server",
+                "MarketSeries",
+                "MarketData",
+                "DateTime",
             };
 
         public static string ReplaceCAlgoKeyWords(this string code)
