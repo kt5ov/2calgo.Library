@@ -245,13 +245,13 @@ class Cache<TValue>
             return CalculateCCI(series, period, shift);
         }       
         
-        private Cache<CciIndicator> _cciIndicators = new Cache<CciIndicator>();
+        private Cache<CciIndicator_> _cciIndicators = new Cache<CciIndicator_>();
         private double CalculateCCI(DataSeries dataSeries, int period, int shift)
         {     
-            CciIndicator indicator = null;
+            CciIndicator_ indicator = null;
             if (!_cciIndicators.TryGetValue(out indicator, dataSeries, period))
 			{
-                indicator = new CciIndicator(dataSeries, period, Indicators);
+                indicator = new CciIndicator_(dataSeries, period, Indicators);
                 _cciIndicators.Add(indicator, dataSeries, period);
 			}
             
@@ -259,13 +259,13 @@ class Cache<TValue>
             return indicator.Calculate(index);
         }
 
-        class CciIndicator
+        class CciIndicator_
         {
             private readonly DataSeries _source;
             private readonly int _period;
             private readonly SimpleMovingAverage _sma;
 
-            public CciIndicator(DataSeries source, int period, IIndicatorsAccessor indicatorsAccessor)
+            public CciIndicator_(DataSeries source, int period, IIndicatorsAccessor indicatorsAccessor)
             {
                 _source = source;
                 _period = period;
@@ -461,12 +461,12 @@ class Cache<TValue>
         }
     }
 
-	private class StochasticValues
+	private class StochasticValues_
 	{
 		public Mq4Double K { get; private set; }
 		public Mq4Double D { get; private set; }
 
-		public StochasticValues(double k, double d)
+		public StochasticValues_(double k, double d)
 		{
 			K = k;
 			D = d;
@@ -479,14 +479,14 @@ class Cache<TValue>
 		CloseClose
 	}
 
-	private class Mq4StochasticIndicator
+	private class StochasticIndicator_
 	{
 		private readonly StochasticParameters _parameters;
 		private IndicatorDataSeries _fastK;
 		private MovingAverage _slowK;
 		private MovingAverage _averageOnSlowK;
 
-		public Mq4StochasticIndicator(
+		public StochasticIndicator_(
 			StochasticParameters stochasticParameters, 
 			IIndicatorsAccessor indicatorAccessor, 
 			Func<IndicatorDataSeries> dataSeriesFactory)
@@ -497,7 +497,7 @@ class Cache<TValue>
 			_averageOnSlowK = indicatorAccessor.MovingAverage(_slowK.Result, _parameters.DPeriods, _parameters.MAType);
 		}
 
-		public StochasticValues Calculate(int index)
+		public StochasticValues_ Calculate(int index)
         {
             for (var i = index - _parameters.KSlowing * _parameters.DPeriods; i <= index; i++)
 				_fastK[i] = GetFastKValue(i);	
@@ -510,7 +510,7 @@ class Cache<TValue>
                 _averageOnSlowK.Calculate(i + 1);    
             var d = _averageOnSlowK.Result[index];
 
-            return new StochasticValues(k, d);
+            return new StochasticValues_(k, d);
         }
 
 		private double GetFastKValue(int index)
@@ -551,9 +551,9 @@ class Cache<TValue>
 		}
 	}
     
-    private Dictionary<StochasticParameters, Mq4StochasticIndicator> _stochasticIndicators = new Dictionary<StochasticParameters, Mq4StochasticIndicator>();
+    private Dictionary<StochasticParameters, StochasticIndicator_> _stochasticIndicators = new Dictionary<StochasticParameters, StochasticIndicator_>();
 
-	private StochasticValues CalculateStochastic(MarketSeries marketSeries, int kPeriod, int dPeriod, int slowing, MovingAverageType maType, StochasticMode stochasticMode, int index)
+	private StochasticValues_ CalculateStochastic(MarketSeries marketSeries, int kPeriod, int dPeriod, int slowing, MovingAverageType maType, StochasticMode stochasticMode, int index)
 	{
 		var parameters = new StochasticParameters
 		{
@@ -565,10 +565,10 @@ class Cache<TValue>
 			MarketSeries = marketSeries,
 		};
 
-		Mq4StochasticIndicator indicator;
+		StochasticIndicator_ indicator;
 		if (!_stochasticIndicators.TryGetValue(parameters, out indicator))
 		{
-			indicator = new Mq4StochasticIndicator(parameters, Indicators, () => CreateDataSeries());
+			indicator = new StochasticIndicator_(parameters, Indicators, () => CreateDataSeries());
 			_stochasticIndicators[parameters] = indicator;
 		}
 
@@ -753,9 +753,9 @@ Mq4Double iCustom<T>(Mq4String symbol, int timeframe, Mq4String name, params obj
 [Conditional("iAD")]
 //{
 
-private readonly Dictionary<MarketSeries, AdIndicator> _adCache = new Dictionary<MarketSeries, AdIndicator>();
+private readonly Dictionary<MarketSeries, AdIndicator_> _adCache = new Dictionary<MarketSeries, AdIndicator_>();
 
-class AdIndicator
+class AdIndicator_
 {
 	private readonly DataSeries _volume;
 	private readonly DataSeries _high;
@@ -763,7 +763,7 @@ class AdIndicator
 	private readonly DataSeries _close;
 	private readonly IndicatorDataSeries _values;
 
-	public AdIndicator(MarketSeries marketSeries, Func<IndicatorDataSeries> dataSeriesFactory)
+	public AdIndicator_(MarketSeries marketSeries, Func<IndicatorDataSeries> dataSeriesFactory)
 	{
 		_volume = marketSeries.TickVolume;
 		_high = marketSeries.High;
@@ -794,10 +794,10 @@ class AdIndicator
 Mq4Double iAD(Mq4String symbol, int timeframe, int shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
-	AdIndicator indicator;
+	AdIndicator_ indicator;
 	if (!_adCache.TryGetValue(marketSeries, out indicator))
 	{	
-		indicator = new AdIndicator(marketSeries, () => CreateDataSeries());
+		indicator = new AdIndicator_(marketSeries, () => CreateDataSeries());
 		_adCache[marketSeries] = indicator;
 	}
 
@@ -842,7 +842,7 @@ Mq4Double iAC(Mq4String symbol, int timeframe, int shift)
 
 [Conditional("iDeMarker")]
 //{
-class DeMarkerIndicator
+class DeMarkerIndicator_
 {
     private readonly IndicatorDataSeries _deMax;
     private readonly IndicatorDataSeries _deMin;
@@ -851,7 +851,7 @@ class DeMarkerIndicator
     private readonly MarketSeries _marketSeries;
     public readonly IndicatorDataSeries Result;
 
-    public DeMarkerIndicator(MarketSeries marketSeries, int period, Func<IndicatorDataSeries> dataSeriesFactory, IIndicatorsAccessor indicatorAccessor)
+    public DeMarkerIndicator_(MarketSeries marketSeries, int period, Func<IndicatorDataSeries> dataSeriesFactory, IIndicatorsAccessor indicatorAccessor)
     {
         _marketSeries = marketSeries;
         _deMax = dataSeriesFactory();
@@ -877,15 +877,15 @@ class DeMarkerIndicator
     }
 }
 
-private readonly Cache<DeMarkerIndicator> _demarkerCache = new Cache<DeMarkerIndicator>();
+private readonly Cache<DeMarkerIndicator_> _demarkerCache = new Cache<DeMarkerIndicator_>();
 
 Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    DeMarkerIndicator indicator;
+    DeMarkerIndicator_ indicator;
     if (!_demarkerCache.TryGetValue(out indicator, period, marketSeries))
     {
-        indicator = new DeMarkerIndicator(marketSeries, period, () => CreateDataSeries(), Indicators);
+        indicator = new DeMarkerIndicator_(marketSeries, period, () => CreateDataSeries(), Indicators);
         _demarkerCache.Add(indicator, period, marketSeries);
     }
     return indicator.Result.Last(shift);
@@ -894,12 +894,12 @@ Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
 [Conditional("iEnvelopes")]
 //{
 
-class Envelopes_Indicator
+class EnvelopesIndicator_
 {
     private readonly MovingAverage _ma;
     private readonly double _deviation;
 
-    public Envelopes_Indicator(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
+    public EnvelopesIndicator_(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
     {
         _ma = indicatorAccessor.MovingAverage(sourceSeries, period, maType);
         _deviation = deviation;
@@ -914,13 +914,13 @@ class Envelopes_Indicator
     }
 }
 
-private readonly Cache<Envelopes_Indicator> _envelopesCache = new Cache<Envelopes_Indicator>();
-private Envelopes_Indicator GetEnvelopes(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
+private readonly Cache<EnvelopesIndicator_> _envelopesCache = new Cache<EnvelopesIndicator_>();
+private EnvelopesIndicator_ GetEnvelopes(DataSeries sourceSeries, int period, MovingAverageType maType, double deviation, IIndicatorsAccessor indicatorAccessor)
 {
-	Envelopes_Indicator indicator;
+	EnvelopesIndicator_ indicator;
 	if (!_envelopesCache.TryGetValue(out indicator, sourceSeries, period, maType, deviation))
     {
-        indicator = new Envelopes_Indicator(sourceSeries, period, maType, deviation, Indicators);
+        indicator = new EnvelopesIndicator_(sourceSeries, period, maType, deviation, Indicators);
         _envelopesCache.Add(indicator, sourceSeries, period, maType, deviation);
     }
 	return indicator;
@@ -946,7 +946,7 @@ Mq4Double iMFI(Mq4String symbol, int timeframe, int period, int shift)
 }
 [Conditional("iAlligator")]
 //{
-class Mq4AlligatorIndicator
+class AlligatorIndicator_
 {
     private readonly MovingAverage _jawMa;
     private readonly MovingAverage _teethMa;
@@ -956,7 +956,7 @@ class Mq4AlligatorIndicator
     private readonly int _lipsShift;
 
 
-    public Mq4AlligatorIndicator(DataSeries sourceSeries, MovingAverageType maType, int jawPeriod, int jawShift, int teethPeriod, int teethShift, int lipsPeriod, int lipsShift, 
+    public AlligatorIndicator_(DataSeries sourceSeries, MovingAverageType maType, int jawPeriod, int jawShift, int teethPeriod, int teethShift, int lipsPeriod, int lipsShift, 
     	Func<IndicatorDataSeries> dataSeriesFactory, IIndicatorsAccessor indicatorAccessor)
     {
     	_lipsShift = lipsShift;
@@ -982,17 +982,17 @@ class Mq4AlligatorIndicator
     }
 }
 
-private readonly Cache<Mq4AlligatorIndicator> _alligatorCache = new Cache<Mq4AlligatorIndicator>();
+private readonly Cache<AlligatorIndicator_> _alligatorCache = new Cache<AlligatorIndicator_>();
 
 Mq4Double iAlligator(Mq4String symbol, Mq4Double timeframe, Mq4Double jawPeriod, Mq4Double jawShift, Mq4Double teethPeriod, Mq4Double teethShift, Mq4Double lipsPeriod, Mq4Double lipsShift, Mq4Double ma_method, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
 {
     var sourceSeries = ToAppliedPrice(symbol, timeframe, applied_price);
     var maType = ToMaType(ma_method);   
 
-    Mq4AlligatorIndicator indicator;
+    AlligatorIndicator_ indicator;
     if (!_alligatorCache.TryGetValue(out indicator, sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift))
     {
-        indicator = new Mq4AlligatorIndicator(sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift, () => CreateDataSeries(), Indicators);
+        indicator = new AlligatorIndicator_(sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift, () => CreateDataSeries(), Indicators);
         _alligatorCache.Add(indicator, sourceSeries, maType, jawPeriod, jawShift, teethPeriod, teethShift, lipsPeriod, lipsShift);
     }
 
