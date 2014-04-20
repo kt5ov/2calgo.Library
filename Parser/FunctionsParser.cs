@@ -60,6 +60,8 @@ namespace _2calgo.Parser
             return parameters.Replace("ref ", string.Empty);
         }
 
+        private static readonly Regex SizeRegex = new Regex(@"[^[]*(?<size>\[[^\}]*\])");
+
         private static FunctionParameter CreateParameter(string parameterAsString, int index)
         {
             var parameterWithoutAmpersand = parameterAsString.Replace("&", string.Empty);
@@ -68,9 +70,10 @@ namespace _2calgo.Parser
             var type = match.Groups["type"].Value;
             var defaultValue = match.Groups["defaultValue"].Value;
 
-            if (name.Contains("[]"))
+            if (SizeRegex.IsMatch(name))
             {
-                name = name.Replace("[]", string.Empty);
+                var size = SizeRegex.Match(name).Groups["size"].Value;
+                name = name.Replace(size, string.Empty);
                 type = type == "Mq4String" || type == "string" ? "Mq4StringArray" : "IMq4DoubleArray";
             }
 

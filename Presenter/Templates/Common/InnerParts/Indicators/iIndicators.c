@@ -69,14 +69,14 @@ class Cache<TValue>
 		[Conditional("iMA", "iMAOnArray", "iBearsPower", "iBullsPower", "iForce")]
 		//{
 #region iMA
-        private double iMA(Mq4String symbol, int timeframe, int period, int ma_shift, int ma_method, int applied_price, int shift)
+        private double iMA(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double ma_shift, Mq4Double ma_method, Mq4Double applied_price, Mq4Double shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateiMA(series, period, ma_method, shift + ma_shift);
         }       
                 
-        private double iMAOnArray(Mq4DoubleArray mq4Array, int total, int period, int ma_shift, int ma_method, int shift) 
+        private double iMAOnArray(Mq4DoubleArray mq4Array, Mq4Double total, Mq4Double period, Mq4Double ma_shift, Mq4Double ma_method, Mq4Double shift) 
         {
 			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateiMA(dataSeries, period, ma_method, shift + ma_shift);
@@ -107,14 +107,14 @@ class Cache<TValue>
 		[Conditional("iRSI", "iRSIOnArray")]
 		//{
 #region iRSI
-        private double iRSI(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
+        private Mq4Double iRSI(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
             return CalculateRsi(series, period, shift);
         }       
                 
-        private double iRSIOnArray(Mq4DoubleArray mq4Array, int total, int period, int shift) 
+        private Mq4Double iRSIOnArray(Mq4DoubleArray mq4Array, Mq4Double total, Mq4Double period, Mq4Double shift) 
         {
 			var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 			return CalculateRsi(dataSeries, period, shift);
@@ -132,7 +132,7 @@ class Cache<TValue>
 		[Conditional("iBands", "iBandsOnArray")]
 		//{
 #region iBands
-        private double iBands(Mq4String symbol, int timeframe, int period, int deviation, int bands_shift, int applied_price, int mode, int shift)
+        private Mq4Double iBands(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double deviation, Mq4Double bands_shift, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
         {            
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
@@ -162,7 +162,7 @@ class Cache<TValue>
 		[Conditional("iADX")]
 		//{
 #region iADX
-        private Mq4Double iADX(Mq4String symbol, int timeframe, int period, int applied_price, int mode, int shift)
+        private Mq4Double iADX(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
         {
 			var marketSeries = GetSeries(symbol, timeframe);
       
@@ -190,7 +190,7 @@ class Cache<TValue>
 		[Conditional("iATR")]
 		//{
 #region iATR
-        private double iATR(Mq4String symbol, int timeframe, int period, int shift)
+        private Mq4Double iATR(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
         {
 			var series = GetSeries(symbol, timeframe);
             return CalculateATR(series, period, shift);
@@ -208,7 +208,7 @@ class Cache<TValue>
 
 [Conditional("iMACD")]
 //{
-        private double iMACD(Mq4String symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int mode, int shift)
+        private Mq4Double iMACD(Mq4String symbol, Mq4Double timeframe, Mq4Double fast_ema_period, Mq4Double slow_ema_period, Mq4Double signal_period, Mq4Double applied_price, Mq4Double mode, Mq4Double shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
@@ -225,7 +225,7 @@ class Cache<TValue>
 //}
 [Conditional("iOsMA")]
 //{
-        private double iOsMA(Mq4String symbol, int timeframe, int fast_ema_period, int slow_ema_period, int signal_period, int applied_price, int shift)
+        private Mq4Double iOsMA(Mq4String symbol, Mq4Double timeframe, Mq4Double fast_ema_period, Mq4Double slow_ema_period, Mq4Double signal_period, Mq4Double applied_price, Mq4Double shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
@@ -238,7 +238,7 @@ class Cache<TValue>
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
 #region iCCI
-        private double iCCI(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
+        private Mq4Double iCCI(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
@@ -291,7 +291,7 @@ class Cache<TValue>
 		[Conditional("iStdDev", "iStdDevOnArray")]
 		//{
 #region iStdDev
-        private double iStdDev(Mq4String symbol, int timeframe, int ma_period, int ma_shift, int ma_method, int applied_price, int shift)
+        private Mq4Double iStdDev(Mq4String symbol, Mq4Double timeframe, Mq4Double ma_period, Mq4Double ma_shift, Mq4Double ma_method, Mq4Double applied_price, Mq4Double shift)
         {
             if (ma_shift != 0)
                 throw new NotImplementedException(NotSupportedMaShift);
@@ -317,7 +317,7 @@ class Cache<TValue>
 		[Conditional("iWPR")]
 		//{
 #region iWPR
-        private double iWPR(Mq4String symbol, int timeframe, int period, int shift)
+        private Mq4Double iWPR(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
         {
 			var marketSeries = GetSeries(symbol, timeframe);
             var indicator = _cachedStandardIndicators.WilliamsPctR(marketSeries, period);
@@ -330,7 +330,7 @@ class Cache<TValue>
 		[Conditional("iSAR")]
 		//{
 #region iSAR
-        private double iSAR(Mq4String symbol, int timeframe, double step, double maximum, int shift)
+        private Mq4Double iSAR(Mq4String symbol, Mq4Double timeframe, Mq4Double step, Mq4Double maximum, Mq4Double shift)
         {
 			var series = GetSeries(symbol, timeframe);
             var indicator = _cachedStandardIndicators.ParabolicSAR(series, step, maximum);
@@ -342,7 +342,7 @@ class Cache<TValue>
 
 [Conditional("iFractals")]
 //{
-	private Mq4Double iFractals(Mq4String symbol, int timeframe, int mode, int shift)
+	private Mq4Double iFractals(Mq4String symbol, Mq4Double timeframe, Mq4Double mode, Mq4Double shift)
 	{
 		var index = _currentIndex - shift;
 		var marketSeries = GetSeries(symbol, timeframe);
@@ -406,7 +406,7 @@ class Cache<TValue>
 [Conditional("iStochastic")]
 //{
 
-	Mq4Double iStochastic(Mq4String symbol, int timeframe, int kperiod, int dperiod, int slowing, int method, int price_field, int mode, int shift)
+	Mq4Double iStochastic(Mq4String symbol, Mq4Double timeframe, Mq4Double kperiod, Mq4Double dperiod, Mq4Double slowing, Mq4Double method, Mq4Double price_field, Mq4Double mode, Mq4Double shift)
 	{
 		var maType = ToMaType(method);   
 		var stochasticMode = method == 0 ? StochasticMode.LowHigh : StochasticMode.CloseClose;		
@@ -576,7 +576,7 @@ class Cache<TValue>
 	}	
 //}
 [Conditional("iBearsPower")]
-Mq4Double iBearsPower(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iBearsPower(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 		
@@ -584,7 +584,7 @@ Mq4Double iBearsPower(Mq4String symbol, int timeframe, int period, int applied_p
 }
 
 [Conditional("iBullsPower")]
-Mq4Double iBullsPower(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iBullsPower(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 		
@@ -593,14 +593,14 @@ Mq4Double iBullsPower(Mq4String symbol, int timeframe, int period, int applied_p
 
 [Conditional("iMomentum", "iMomentumOnArray")]
 //{
-private double iMomentumOnArray(Mq4DoubleArray mq4Array, int total, int period, int shift) 
+private Mq4Double iMomentumOnArray(Mq4DoubleArray mq4Array, Mq4Double total, Mq4Double period, Mq4Double shift) 
 {
     var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 
     return _cachedStandardIndicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
 }
 
-Mq4Double iMomentum(Mq4String symbol, int timeframe, int period, int applied_price, int shift)
+Mq4Double iMomentum(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
 {
 	var dataSeries = ToAppliedPrice(symbol, timeframe, applied_price);
 
@@ -609,7 +609,7 @@ Mq4Double iMomentum(Mq4String symbol, int timeframe, int period, int applied_pri
 //}
 [Conditional("iForce")]
 //{
-Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int applied_price, int shift)
+Mq4Double iForce(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double ma_method, Mq4Double applied_price, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	return marketSeries.TickVolume.Last(shift) * 
@@ -618,7 +618,7 @@ Mq4Double iForce(Mq4String symbol, int timeframe, int period, int ma_method, int
 //}
 [Conditional("iRVI")]
 //{
-Mq4Double CalculateRvi(Mq4String symbol, int timeframe, int period, int shift)
+Mq4Double CalculateRvi(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	var close = marketSeries.Close;
@@ -639,7 +639,7 @@ Mq4Double CalculateRvi(Mq4String symbol, int timeframe, int period, int shift)
 	return v1sum / v2sum;
 }
 
-Mq4Double iRVI(Mq4String symbol, int timeframe, int period, int mode, int shift)
+Mq4Double iRVI(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double mode, Mq4Double shift)
 {
 	if (mode == MODE_MAIN)
 		return CalculateRvi(symbol, timeframe, period, shift);
@@ -730,7 +730,7 @@ private static object[] AddEmailParametersIfNeeded<T>(object[] parameters)
 
 private readonly Dictionary<CustomIndicatorParameters, List<DataSeries>> _customIndicatorsCache = new Dictionary<CustomIndicatorParameters, List<DataSeries>>();
 
-Mq4Double iCustom<T>(Mq4String symbol, int timeframe, Mq4String name, params object[] parameters) where T : Indicator
+Mq4Double iCustom<T>(Mq4String symbol, Mq4Double timeframe, Mq4String name, params object[] parameters) where T : Indicator
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	var indicatorParameters = CastParameters<T>(parameters.Take(parameters.Length - 2).ToArray());	
@@ -791,7 +791,7 @@ class AdIndicator_
 	}
 }
 	
-Mq4Double iAD(Mq4String symbol, int timeframe, int shift)
+Mq4Double iAD(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	AdIndicator_ indicator;
@@ -805,7 +805,7 @@ Mq4Double iAD(Mq4String symbol, int timeframe, int shift)
 }
 //}
 [Conditional("iIchimoku")]
-private Mq4Double iIchimoku(Mq4String symbol, int timeframe, int tenkan_sen, int kijun_sen, int senkou_span_b, int mode, int shift)
+private Mq4Double iIchimoku(Mq4String symbol, Mq4Double timeframe, Mq4Double tenkan_sen, Mq4Double kijun_sen, Mq4Double senkou_span_b, Mq4Double mode, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
        
@@ -827,14 +827,14 @@ private Mq4Double iIchimoku(Mq4String symbol, int timeframe, int tenkan_sen, int
 }
 
 [Conditional("iAO")]
-Mq4Double iAO(Mq4String symbol, int timeframe, int shift)
+Mq4Double iAO(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
     return _cachedStandardIndicators.AwesomeOscillator(marketSeries).Result.Last(shift);   
 }
 
 [Conditional("iAC")]
-Mq4Double iAC(Mq4String symbol, int timeframe, int shift)
+Mq4Double iAC(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
     return _cachedStandardIndicators.AcceleratorOscillator(marketSeries).Result.Last(shift);   
@@ -879,7 +879,7 @@ class DeMarkerIndicator_
 
 private readonly Cache<DeMarkerIndicator_> _demarkerCache = new Cache<DeMarkerIndicator_>();
 
-Mq4Double iDeMarker(Mq4String symbol, int timeframe, int period, int shift)
+Mq4Double iDeMarker(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
     DeMarkerIndicator_ indicator;
@@ -939,7 +939,7 @@ private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma
 }
 //}
 [Conditional("iMFI")]
-Mq4Double iMFI(Mq4String symbol, int timeframe, int period, int shift)
+Mq4Double iMFI(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
 	return _cachedStandardIndicators.MoneyFlowIndex(marketSeries, period).Result.Last(shift); 
