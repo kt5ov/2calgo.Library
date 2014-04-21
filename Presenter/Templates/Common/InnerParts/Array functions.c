@@ -189,3 +189,21 @@ Mq4Double ArrayRange(Mq4DoubleTwoDimensionalArray mq4Array, int index)
 {
 	return mq4Array.Range(index);
 }
+
+[Conditional("ArrayCopyRates")]
+Mq4Double ArrayCopyRates(Mq4DoubleTwoDimensionalArray array, Mq4String symbol = null, int timeframe = 0)
+{
+	var marketSeries = GetSeries(symbol, timeframe);
+
+	for (var i = 0; i < MarketSeries.Open.Count; i++)
+	{
+		array[i][0] = Mq4TimeSeries.ToInteger(marketSeries.OpenTime.Last(i));
+		array[i][1] = marketSeries.Open.Last(i);
+		array[i][2] = marketSeries.Low.Last(i);
+		array[i][3] = marketSeries.High.Last(i);
+		array[i][4] = marketSeries.Close.Last(i);
+		array[i][5] = marketSeries.TickVolume.Last(i);
+	}
+
+	return MarketSeries.Open.Count;
+}
