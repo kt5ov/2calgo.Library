@@ -3,10 +3,11 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
 {
     _lastError = ERR_NO_ERROR;
     if (magic == null)
-        magic = 0;
-    var symbolObject = GetSymbol(symbol);
-    var volumeInUnits = symbolObject.ToUnitsVolume(volume);;    
+        magic = 0;    
     var label = magic.Value.ToString();
+
+    var symbolObject = GetSymbol(symbol);
+    var volumeInUnits = symbolObject.ToUnitsVolume(volume);
 
     switch (cmd)
     {
@@ -24,6 +25,7 @@ Mq4Double OrderSend(Mq4String symbol, int cmd, Mq4Double volume, Mq4Double price
                     takeProfitPips = tradeType == TradeType.Buy ? (takeprofit - symbolObject.Ask) / symbolObject.PipSize : (symbolObject.Bid - takeprofit) / symbolObject.PipSize;
 
                 var marketOrderResult = ExecuteMarketOrder(tradeType, symbolObject, volumeInUnits, label, stopLossPips, takeProfitPips, slippageInPips, comment);
+                
 				if (marketOrderResult.IsSuccessful)
 					return GetTicket(marketOrderResult.Position);
 				else
@@ -133,8 +135,44 @@ bool OrderDelete(int ticket, int Color = CLR_NONE)
 
     CancelPendingOrder(pendingOrder);
 
-	if (!LastResult.IsSuccessful)
-		_lastError = ToMq4ErrorCode(LastResult.Error.Value);
+    if (!LastResult.IsSuccessful)
+        _lastError = ToMq4ErrorCode(LastResult.Error.Value);
     
     return LastResult.IsSuccessful;
 }
+
+[Conditional("OrderCloseBy")]
+bool OrderCloseBy(int ticket, int oppositeTicket, int Color = CLR_NONE)
+{
+    _lastError = ERR_NO_ERROR;
+    
+    var position = GetOrderByTicket(ticket) as Position;    
+    var oppositePosition = GetOrderByTicket(oppositeTicket) as Position;
+    if (position == null || oppositePosition == null || position.SymbolCode != oppositePosition.SymbolCode)
+    {
+        _lastError = ERR_INVALID_TICKET;
+        return false;
+    }
+    Position bigPosition;
+    Position smallPosition;
+    if (position.Volume > oppositePosition.Volume)
+    {
+        bigPosition = position;
+        smallPosition = oppositePosition;
+    }
+    else
+    {
+        bigPosition = oppositePosition;
+        smallPosition = position;
+    }
+    var bigResult = ClosePosition(bigPosition, smallPosition.Volume);
+    var smallResult = ClosePosition(smallPosition);
+
+	if (!bigResult.IsSuccessful)
+		_lastError = ToMq4ErrorCode(bigResult.Error.Value);
+    if (!smallResult.IsSuccessful)
+        _lastError = ToMq4ErrorCode(smallResult.Error.Value);
+    
+    return bigResult.IsSuccessful && smallResult.IsSuccessful;
+}
+
