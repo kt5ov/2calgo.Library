@@ -34,34 +34,39 @@ Mq4Double FileOpen(Mq4String filename, Mq4Double mode, Mq4Char separator)
 	int handle = 0;
 	try
 	{
-		var intMode = (int)mode;
-		if ((intMode & FILE_WRITE) > 0)
-		{
-			var streamWriter = File.CreateText(fullFileName);
-			handle = _handleCounter++;
-			var fileInfo = new FileInfo
-			{
-				Handle = handle,
-				Mode = mode,
-				FileName = filename,
-				StreamWriter = streamWriter,
-				Separator = separator,
-			};
-			_openedFiles.Add(handle, fileInfo);
-		} else if ((intMode & FILE_READ) > 0)
-		{
-			var streamReader = new StreamReader(fullFileName);
-			handle = _handleCounter++;
-			var fileInfo = new FileInfo
-			{
-				Handle = handle,
-				Mode = mode,
-				FileName = filename,
-				StreamReader = streamReader,
-				Separator = separator
-			};
-			_openedFiles.Add(handle, fileInfo);
-		}
+		var directoryPath = Path.GetDirectoryName(fullFileName);
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
+
+        var intMode = (int)mode;
+        if ((intMode & FILE_WRITE) > 0)
+        {
+            var streamWriter = File.CreateText(fullFileName);
+            handle = _handleCounter++;
+            var fileInfo = new FileInfo 
+            {
+                Handle = handle,
+                Mode = mode,
+                FileName = fullFileName,
+                StreamWriter = streamWriter,
+                Separator = separator
+            };
+            _openedFiles.Add(handle, fileInfo);
+        }
+        else if ((intMode & FILE_READ) > 0)
+        {
+            var streamReader = new StreamReader(fullFileName);
+            handle = _handleCounter++;
+            var fileInfo = new FileInfo 
+            {
+                Handle = handle,
+                Mode = mode,
+                FileName = fullFileName,
+                StreamReader = streamReader,
+                Separator = separator
+            };
+            _openedFiles.Add(handle, fileInfo);
+        }
 	}
 	catch (Exception e)
 	{
