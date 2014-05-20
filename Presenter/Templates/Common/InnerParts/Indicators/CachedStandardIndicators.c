@@ -82,26 +82,6 @@
 #endregion //iCCI
 		//}
 
-		[Conditional("iStdDev", "iStdDevOnArray")]
-		//{
-#region iStdDev
-    
-        private Cache<StandardDeviation> _stdDevIndicators = new Cache<StandardDeviation>();
-
-        public StandardDeviation StandardDeviation(DataSeries source, int periods, MovingAverageType movingAverageType)
-        {
-			StandardDeviation indicator;
-            if (_stdDevIndicators.TryGetValue(out indicator, source, periods, movingAverageType))
-                return indicator;
-
-            indicator = _indicatorsAccessor.StandardDeviation(source, periods, movingAverageType);
-            _stdDevIndicators.Add(indicator, source, periods, movingAverageType);
-
-            return indicator;
-        }
-#endregion //iStdDev
-		//}
-
 		[Conditional("iWPR")]
 		//{
 #region iWPR

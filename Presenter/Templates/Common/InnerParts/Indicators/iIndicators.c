@@ -307,7 +307,7 @@ class Cache<TValue>
                 throw new Exception(NotSupportedMaShift);
 
             var maType = ToMaType(ma_method);            
-            var indicator = _cachedStandardIndicators.StandardDeviation(dataSeries, ma_period, maType);
+            var indicator = Indicators.StandardDeviation(dataSeries, ma_period, maType);
 
             return indicator.Result.Last(shift);
         }        
