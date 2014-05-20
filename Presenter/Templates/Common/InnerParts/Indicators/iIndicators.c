@@ -320,7 +320,7 @@ class Cache<TValue>
         private Mq4Double iWPR(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
         {
 			var marketSeries = GetSeries(symbol, timeframe);
-            var indicator = _cachedStandardIndicators.WilliamsPctR(marketSeries, period);
+            var indicator = Indicators.WilliamsPctR(marketSeries, period);
 
             return indicator.Result.Last(shift);
         }        
@@ -333,7 +333,7 @@ class Cache<TValue>
         private Mq4Double iSAR(Mq4String symbol, Mq4Double timeframe, Mq4Double step, Mq4Double maximum, Mq4Double shift)
         {
 			var series = GetSeries(symbol, timeframe);
-            var indicator = _cachedStandardIndicators.ParabolicSAR(series, step, maximum);
+            var indicator = Indicators.ParabolicSAR(series, step, maximum);
 
             return indicator.Result.Last(shift);
         }        
@@ -597,14 +597,14 @@ private Mq4Double iMomentumOnArray(Mq4DoubleArray mq4Array, Mq4Double total, Mq4
 {
     var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 
-    return _cachedStandardIndicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
+    return Indicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
 }
 
 Mq4Double iMomentum(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
 {
 	var dataSeries = ToAppliedPrice(symbol, timeframe, applied_price);
 
-	return _cachedStandardIndicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
+	return Indicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
 }
 //}
 [Conditional("iForce")]
