@@ -809,7 +809,7 @@ private Mq4Double iIchimoku(Mq4String symbol, Mq4Double timeframe, Mq4Double ten
 {
     var marketSeries = GetSeries(symbol, timeframe);
        
-    var indicator = _cachedStandardIndicators.IchimokuKinkoHyo(marketSeries, tenkan_sen, kijun_sen, senkou_span_b);            
+    var indicator = Indicators.IchimokuKinkoHyo(marketSeries, tenkan_sen, kijun_sen, senkou_span_b);            
     switch (mode)
     {
       case MODE_TENKANSEN:
@@ -830,14 +830,14 @@ private Mq4Double iIchimoku(Mq4String symbol, Mq4Double timeframe, Mq4Double ten
 Mq4Double iAO(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    return _cachedStandardIndicators.AwesomeOscillator(marketSeries).Result.Last(shift);   
+    return Indicators.AwesomeOscillator(marketSeries).Result.Last(shift);   
 }
 
 [Conditional("iAC")]
 Mq4Double iAC(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    return _cachedStandardIndicators.AcceleratorOscillator(marketSeries).Result.Last(shift);   
+    return Indicators.AcceleratorOscillator(marketSeries).Result.Last(shift);   
 }
 
 [Conditional("iDeMarker")]
@@ -942,7 +942,7 @@ private Mq4Double iEnvelopes(Mq4String symbol, Mq4Double timeframe, Mq4Double ma
 Mq4Double iMFI(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double shift)
 {
 	var marketSeries = GetSeries(symbol, timeframe);
-	return _cachedStandardIndicators.MoneyFlowIndex(marketSeries, period).Result.Last(shift); 
+	return Indicators.MoneyFlowIndex(marketSeries, period).Result.Last(shift); 
 }
 [Conditional("iAlligator")]
 //{
