@@ -42,26 +42,6 @@
 #endregion //iMA
 		//}
 
-		[Conditional("iADX")]
-		//{
-#region iADX
-    
-        private Cache<DirectionalMovementSystem> _adxIndicators = new Cache<DirectionalMovementSystem>();
-
-        public DirectionalMovementSystem DirectionalMovementSystem(MarketSeries marketSeries, int periods)
-        {
-			DirectionalMovementSystem indicator;
-            if (_adxIndicators.TryGetValue(out indicator, periods, marketSeries))
-                return indicator;
-
-            indicator = _indicatorsAccessor.DirectionalMovementSystem(marketSeries, periods);
-            _adxIndicators.Add(indicator, periods, marketSeries);
-
-            return indicator;
-        }
-#endregion //iADX
-		//}
-
 		[Conditional("iATR")]
 		//{
 #region iATR

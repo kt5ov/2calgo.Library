@@ -171,7 +171,7 @@ class Cache<TValue>
         
         private Mq4Double CalculateAdx(MarketSeries marketSeries, int period, int mode, int shift)
         {     
-            var indicator = _cachedStandardIndicators.DirectionalMovementSystem(marketSeries, period);            
+            var indicator = Indicators.DirectionalMovementSystem(marketSeries, period);            
             switch (mode)
             {
               case MODE_MAIN:
