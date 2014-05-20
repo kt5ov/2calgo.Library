@@ -63,26 +63,6 @@
 #endregion //iATR
 		//}
 
-		[Conditional("iMACD", "iOsMA")]
-		//{
-#region iMACD
-    
-        private Cache<MacdCrossOver> _macdIndicators = new Cache<MacdCrossOver>();
-        
-        public MacdCrossOver MacdCrossOver(DataSeries series, int shortPeriod, int longPeriod, int periods)
-        {
-			MacdCrossOver indicator;
-            if (_macdIndicators.TryGetValue(out indicator, series, shortPeriod, longPeriod, periods))
-                return indicator;
-
-            indicator = _indicatorsAccessor.MacdCrossOver(series, longPeriod, shortPeriod, periods);
-            _macdIndicators.Add(indicator, series, shortPeriod, longPeriod, periods);
-
-            return indicator;
-        }
-#endregion //iMACD
-		//}
-
 		[Conditional("iCCI", "iCCIOnArray")]
 		//{
 #region iCCI

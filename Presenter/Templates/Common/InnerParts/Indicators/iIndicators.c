@@ -212,7 +212,7 @@ class Cache<TValue>
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
-            var indicator = _cachedStandardIndicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
+            var indicator = Indicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
 
             switch (mode)
             {
@@ -229,7 +229,7 @@ class Cache<TValue>
         {
             var series = ToAppliedPrice(symbol, timeframe, applied_price);
       
-            var indicator = _cachedStandardIndicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
+            var indicator = Indicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
 
             return indicator.Histogram.Last(shift);
         }       
