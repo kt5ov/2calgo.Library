@@ -42,46 +42,6 @@
 #endregion //iMA
 		//}
 
-		[Conditional("iRSI", "iRSIOnArray")]
-		//{
-#region iRSI
-    
-        private Cache<RelativeStrengthIndex> _rsiIndicators = new Cache<RelativeStrengthIndex>();
-
-        public RelativeStrengthIndex RelativeStrengthIndex(DataSeries source, int periods)
-        {
-			RelativeStrengthIndex indicator;
-            if (_rsiIndicators.TryGetValue(out indicator, periods, source))
-                return indicator;
-
-            indicator = _indicatorsAccessor.RelativeStrengthIndex(source, periods);
-            _rsiIndicators.Add(indicator, periods, source);
-
-            return indicator;
-        }
-#endregion //iRSI
-		//}
-
-		[Conditional("iBands", "iBandsOnArray")]
-		//{
-#region iBands    
-        private Cache<BollingerBands> _bandsIndicators = new Cache<BollingerBands>();
-
-        public BollingerBands BollingerBands(DataSeries source, int periods, int deviation, MovingAverageType maType)
-        {
-			BollingerBands indicator;
-
-            if (_bandsIndicators.TryGetValue(out indicator, periods, source, deviation, maType))
-                return indicator;
-
-            indicator = _indicatorsAccessor.BollingerBands(source, periods, deviation, maType);
-            _bandsIndicators.Add(indicator, periods, source, deviation, maType);
-
-            return indicator;
-        }
-#endregion //iBands
-		//}
-
 		[Conditional("iADX")]
 		//{
 #region iADX

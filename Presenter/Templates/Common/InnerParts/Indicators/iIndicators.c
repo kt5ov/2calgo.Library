@@ -122,7 +122,7 @@ class Cache<TValue>
         
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
         {     
-            var indicator = _cachedStandardIndicators.RelativeStrengthIndex(dataSeries, period);
+            var indicator = Indicators.RelativeStrengthIndex(dataSeries, period);
             return indicator.Result.Last(shift);
         }
 
@@ -141,7 +141,7 @@ class Cache<TValue>
         
         private double CalculateBands(DataSeries dataSeries, int period, int deviation, int mode, int shift)
         {     
-            var indicator = _cachedStandardIndicators.BollingerBands(dataSeries, period, deviation, MovingAverageType.Simple);
+            var indicator = Indicators.BollingerBands(dataSeries, period, deviation, MovingAverageType.Simple);
 
             switch (mode)
             {
