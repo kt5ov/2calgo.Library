@@ -40,8 +40,6 @@ namespace _2calgo.Parser
                 .RemoveDotsFromNames()
                 .AddZeroToDecimalNumbers()
                 .ReplaceUnknownSymbols()
-//                .Replace("$", string.Empty)
-//                .Replace("?", "_")
                 .ReplaceMq4RgbColorsToKnownColors()
                 .ReplaceColorToInt()
                 .ReplaceCAlgoKeyWords()

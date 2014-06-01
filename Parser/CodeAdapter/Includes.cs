@@ -42,7 +42,9 @@ namespace _2calgo.Parser.CodeAdapter
                 if (NotStandard(fileName))
                 {
                     var file = includeFiles.First(f => f.Name == fileName);
-                    code = code.Replace(match.Value, file.Mq4Code);
+                    var adaptedCode = file.Mq4Code.RemoveComments();
+                    
+                    code = code.Replace(match.Value, adaptedCode);
                 }
                 else
                 {
