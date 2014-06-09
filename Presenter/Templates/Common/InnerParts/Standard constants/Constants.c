@@ -134,6 +134,7 @@ const int TIME_MINUTES = 2;
 const int TIME_SECONDS = 4;
 
 const int MODE_MAIN = 0;
+const int MODE_BASE = 0;
 const int MODE_PLUSDI = 1;
 const int MODE_MINUSDI = 2;
 const int MODE_SIGNAL = 1;

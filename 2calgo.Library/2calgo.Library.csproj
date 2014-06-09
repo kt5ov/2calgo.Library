@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cAlgoConverter.cs" />
+    <Compile Include="CodeBaseDetectors\CSharpCodeDetector.cs" />
+    <Compile Include="CodeBaseDetectors\MqCodeBaseDetector.cs" />
     <Compile Include="ConvertionResult.cs" />
     <Compile Include="CSharpCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

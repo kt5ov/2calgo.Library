@@ -40,7 +40,7 @@ namespace _2calgo.Presenter
                     
                 }
 
-                if (conditionalWords.Any(words.Contains))
+                if (IsRequired(words, conditionalWords))
                 {
                     var partToCopy = template.SubstringFromTo(match.Index + match.Length, currentIndex);
                     partToCopy = RemoveUnusedCode(partToCopy, words);
@@ -50,6 +50,14 @@ namespace _2calgo.Presenter
             }
             result.AppendLine(template.SubstringFromTo(lastIndex, template.Length - 1).Trim());
             return result.ToString();
+        }
+
+        private static bool IsRequired(Words words, string[] conditionalWords)
+        {
+#if DEBUG
+            return true;
+#endif
+            return conditionalWords.Any(words.Contains);
         }
     }
 }

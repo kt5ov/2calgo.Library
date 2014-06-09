@@ -1,7 +1,11 @@
 ﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using _2calgo.Library.CodeBaseDetectors;
 using _2calgo.Model;
 using _2calgo.Parser;
+using _2calgo.Parser.Errors;
 using _2calgo.Presenter;
 using File = System.IO.File;
 
@@ -20,33 +24,51 @@ namespace _2calgo.Library
 
         public static ConvertionResult Convert(string code, AlgoType algotype, Model.File[] includeFiles)
         {
-            var parser = new Mq4Parser();
-            
-            var indicatorParsingResult = parser.Parse(code, algotype, includeFiles);
-            var algo = indicatorParsingResult.Algo;
+            string calgoCode = null;
+            IEnumerable<ParsingError> parsingErrors = new ParsingError[0];
+            var compilerErrors = new CompilerError[0];
 
-            var presenter = CreatePresenter(algotype);
-            var calgoCode = presenter.GenerateCodeFrom(algo);
-
-            var compiler = new CSharpCompiler();
-            var fileName = Path.GetTempFileName();
-            CompilerError[] compilerErrors;
-            try
+            var codeBase = CodeBase.Mq4;
+            if (CSharpCodeDetector.IsCSharpCode(code))
             {
-                var codeToCompile = calgoCode;
-                var indexToInsert = codeToCompile.IndexOf("//Custom Indicators Place Holder");
-                foreach (var customIndicatorName in algo.CustomIndicators)
+                codeBase = CodeBase.CSharp;
+            }
+            else
+            {
+                var parser = new Mq4Parser();
+
+                var indicatorParsingResult = parser.Parse(code, algotype, includeFiles);
+                var algo = indicatorParsingResult.Algo;
+                parsingErrors = indicatorParsingResult.ParsingErrors;
+                if (parsingErrors.All(e => e.ErrorType < ErrorType.Error))
                 {
-                    codeToCompile = codeToCompile.Insert(indexToInsert, CustomIndicatorTemplate.Replace("CustomIndicatorName", customIndicatorName));
+                    var presenter = CreatePresenter(algotype);
+                    calgoCode = presenter.GenerateCodeFrom(algo);
+
+                    var compiler = new CSharpCompiler();
+                    var fileName = Path.GetTempFileName();
+                    try
+                    {
+                        var codeToCompile = calgoCode;
+                        var indexToInsert = codeToCompile.IndexOf("//Custom Indicators Place Holder");
+                        foreach (var customIndicatorName in algo.CustomIndicators)
+                        {
+                            codeToCompile = codeToCompile.Insert(indexToInsert,
+                                                                 CustomIndicatorTemplate.Replace("CustomIndicatorName",
+                                                                                                 customIndicatorName));
+                        }
+                        compilerErrors = compiler.Compile(codeToCompile, fileName);
+
+                        codeBase = MqCodeBaseDetector.GetCodeBaseFromErrors(compilerErrors);
+                    }
+                    finally
+                    {
+                        File.Delete(fileName);
+                    }
                 }
-                compilerErrors = compiler.Compile(codeToCompile, fileName);
-            }
-            finally 
-            {
-                File.Delete(fileName);
             }
 
-            return new ConvertionResult(calgoCode, indicatorParsingResult.ParsingErrors, compilerErrors);
+            return new ConvertionResult(calgoCode, parsingErrors, compilerErrors, codeBase);
         }
 
         private static AlgoPresenter CreatePresenter(AlgoType algotype)
