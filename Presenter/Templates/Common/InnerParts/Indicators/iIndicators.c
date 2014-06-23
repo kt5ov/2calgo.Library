@@ -92,14 +92,14 @@ class Cache<TValue>
             var maType = ToMaType(ma_method);            
             var indicator = _cachedStandardIndicators.MovingAverage(dataSeries, period, maType);
 
-            return indicator.Result.Last(shift, dataSeries);
+            return indicator.Result[dataSeries.Count - 1 - shift];
         }        
         
         private double CalculateWellesWilderSmoothing(DataSeries dataSeries, int period, int shift)
         {
             var indicator = _cachedStandardIndicators.WellesWilderSmoothing(dataSeries, period);
             
-            return indicator.Result.Last(shift);
+            return indicator.Result[dataSeries.Count - 1 - shift];
         }
 #endregion //iMA
 		//}
@@ -123,7 +123,7 @@ class Cache<TValue>
         private double CalculateRsi(DataSeries dataSeries, int period, int shift)
         {     
             var indicator = Indicators.RelativeStrengthIndex(dataSeries, period);
-            return indicator.Result.Last(shift);
+            return indicator.Result[dataSeries.Count - 1 - shift];
         }
 
 #endregion //iRSI    
@@ -146,11 +146,11 @@ class Cache<TValue>
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.Main.Last(shift);
+                return indicator.Main[dataSeries.Count - 1 - shift];
               case MODE_UPPER:
-                return indicator.Top.Last(shift);
+                return indicator.Top[dataSeries.Count - 1 - shift];
               case MODE_LOWER:
-                return indicator.Bottom.Last(shift);
+                return indicator.Bottom[dataSeries.Count - 1 - shift];
             }
 
             return 0;
@@ -171,15 +171,16 @@ class Cache<TValue>
         
         private Mq4Double CalculateAdx(MarketSeries marketSeries, int period, int mode, int shift)
         {     
-            var indicator = Indicators.DirectionalMovementSystem(marketSeries, period);            
+            var indicator = Indicators.DirectionalMovementSystem(marketSeries, period);     
+            var index = marketSeries.Close.Count - 1 - shift;       
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.ADX.Last(shift);
+                return indicator.ADX[index];
               case MODE_PLUSDI:
-                return indicator.DIPlus.Last(shift);
+                return indicator.DIPlus[index];
               case MODE_MINUSDI:
-                return indicator.DIMinus.Last(shift);
+                return indicator.DIMinus[index];
             }
             return 0;
         }
@@ -200,7 +201,7 @@ class Cache<TValue>
         {     
             var indicator = _cachedStandardIndicators.ATR(series, period);
 
-            return indicator.Result.Last(shift);            
+            return indicator.Result[series.Close.Count - 1 - shift];            
         }
 
 #endregion //iATR   
@@ -217,9 +218,9 @@ class Cache<TValue>
             switch (mode)
             {
               case MODE_MAIN:
-                return indicator.MACD.Last(shift);
+                return indicator.MACD[series.Count - 1 - shift];
               default:
-                return indicator.Signal.Last(shift);
+                return indicator.Signal[series.Count - 1 - shift];
             }
         }       
 //}
@@ -231,7 +232,7 @@ class Cache<TValue>
       
             var indicator = Indicators.MacdCrossOver(series, fast_ema_period, slow_ema_period, signal_period);
 
-            return indicator.Histogram.Last(shift);
+            return indicator.Histogram[series.Count - 1 - shift];
         }       
 //}
 
@@ -309,7 +310,7 @@ class Cache<TValue>
             var maType = ToMaType(ma_method);            
             var indicator = Indicators.StandardDeviation(dataSeries, ma_period, maType);
 
-            return indicator.Result.Last(shift);
+            return indicator.Result[dataSeries.Count - 1 - shift];
         }        
 #endregion //iStdDev		
 		//}
@@ -322,7 +323,7 @@ class Cache<TValue>
 			var marketSeries = GetSeries(symbol, timeframe);
             var indicator = Indicators.WilliamsPctR(marketSeries, period);
 
-            return indicator.Result.Last(shift);
+            return indicator.Result[marketSeries.Close.Count - 1 - shift];
         }        
 #endregion //iWPR		
 		//}
@@ -335,7 +336,7 @@ class Cache<TValue>
 			var series = GetSeries(symbol, timeframe);
             var indicator = Indicators.ParabolicSAR(series, step, maximum);
 
-            return indicator.Result.Last(shift);
+            return indicator.Result[series.Close.Count - 1 - shift];
         }        
 #endregion //iSAR
 		//}
@@ -597,14 +598,14 @@ private Mq4Double iMomentumOnArray(Mq4DoubleArray mq4Array, Mq4Double total, Mq4
 {
     var dataSeries = _mq4ArrayToDataSeriesConverterFactory.Create(mq4Array);
 
-    return Indicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
+    return Indicators.MomentumOscillator(dataSeries, period).Result[dataSeries.Count - 1 - shift];
 }
 
 Mq4Double iMomentum(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4Double applied_price, Mq4Double shift)
 {
 	var dataSeries = ToAppliedPrice(symbol, timeframe, applied_price);
 
-	return Indicators.MomentumOscillator(dataSeries, period).Result.Last(shift);
+	return Indicators.MomentumOscillator(dataSeries, period).Result[dataSeries.Count - 1 - shift];
 }
 //}
 [Conditional("iForce")]
@@ -809,19 +810,20 @@ private Mq4Double iIchimoku(Mq4String symbol, Mq4Double timeframe, Mq4Double ten
 {
     var marketSeries = GetSeries(symbol, timeframe);
        
-    var indicator = Indicators.IchimokuKinkoHyo(marketSeries, tenkan_sen, kijun_sen, senkou_span_b);            
+    var indicator = Indicators.IchimokuKinkoHyo(marketSeries, tenkan_sen, kijun_sen, senkou_span_b); 
+    var index = marketSeries.Close.Count - 1 - shift;           
     switch (mode)
     {
       case MODE_TENKANSEN:
-        return indicator.TenkanSen.Last(shift);
+        return indicator.TenkanSen[index];
       case MODE_KIJUNSEN:
-        return indicator.KijunSen.Last(shift);
+        return indicator.KijunSen[index];
       case MODE_SENKOUSPANA:
-        return indicator.SenkouSpanA.Last(shift);
+        return indicator.SenkouSpanA[index];
       case MODE_SENKOUSPANB:
-        return indicator.SenkouSpanB.Last(shift);
+        return indicator.SenkouSpanB[index];
       case MODE_CHINKOUSPAN:
-        return indicator.ChikouSpan.Last(shift);
+        return indicator.ChikouSpan[index];
     }
     return 0;
 }
@@ -830,14 +832,14 @@ private Mq4Double iIchimoku(Mq4String symbol, Mq4Double timeframe, Mq4Double ten
 Mq4Double iAO(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    return Indicators.AwesomeOscillator(marketSeries).Result.Last(shift);   
+    return Indicators.AwesomeOscillator(marketSeries).Result[marketSeries.Close.Count - 1 - shift];   
 }
 
 [Conditional("iAC")]
 Mq4Double iAC(Mq4String symbol, Mq4Double timeframe, Mq4Double shift)
 {
     var marketSeries = GetSeries(symbol, timeframe);
-    return Indicators.AcceleratorOscillator(marketSeries).Result.Last(shift);   
+    return Indicators.AcceleratorOscillator(marketSeries).Result[marketSeries.Close.Count - 1 - shift];   
 }
 
 [Conditional("iDeMarker")]
@@ -888,7 +890,7 @@ Mq4Double iDeMarker(Mq4String symbol, Mq4Double timeframe, Mq4Double period, Mq4
         indicator = new DeMarkerIndicator_(marketSeries, period, () => CreateDataSeries(), Indicators);
         _demarkerCache.Add(indicator, period, marketSeries);
     }
-    return indicator.Result.Last(shift);
+    return indicator.Result[marketSeries.Close.Count - 1 - shift];
 }
 //}
 [Conditional("iEnvelopes")]
