@@ -94,6 +94,11 @@
                 "using System;"
             };
 
+        public static string[] Mq5Methods = new[]
+            {
+                "OnCalculate", "OnInit", "OnDeinit", "OnTick", "OnTimer", "OnTester", "OnChartEvent",
+            };
+
         public static string[] Mq5 = new[]
             {
                 "__DATE__", "__DATETIME__", "__FILE__", "__FUNCSIG__", "__FUNCTION__", "__LINE__", "__MQL4BUILD__",

@@ -31,5 +31,16 @@ namespace _2calgo.Library.CodeBaseDetectors
             }
             return CodeBase.Mq4;
         }
+
+        public static bool IsMq5Code(string code)
+        {
+            var mq5Method = NotSupportedNames.Mq5Methods.FirstOrDefault(code.Contains);
+            return mq5Method != null;
+        }
+
+        public static bool IsValidMq4Code(string code)
+        {
+            return code.Contains("start");
+        }
     }
 }

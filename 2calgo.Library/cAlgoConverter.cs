@@ -33,6 +33,14 @@ namespace _2calgo.Library
             {
                 codeBase = CodeBase.CSharp;
             }
+            else if (MqCodeBaseDetector.IsMq5Code(code))
+            {
+                codeBase = CodeBase.Mq5;
+            }
+            else if (!MqCodeBaseDetector.IsValidMq4Code(code))
+            {
+                codeBase = CodeBase.Invalid;
+            }
             else
             {
                 var parser = new Mq4Parser();
