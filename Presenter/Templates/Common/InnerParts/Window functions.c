@@ -17,6 +17,7 @@ void ObjectsRedraw()
 [Conditional("RefreshRates")]
 Mq4Double RefreshRates()
 {
+	RefreshData();
 	return true;
 }
 
