@@ -24,6 +24,9 @@ class Mq4String
 	
 	public static implicit operator string(Mq4String mq4String)
 	{
+		if ((object)mq4String == null)
+                return null;
+
 		return mq4String._value;
 	}
 			
@@ -93,6 +96,9 @@ class Mq4String
 		
 	public override string ToString()
 	{
+		if ((object)mq4String == null)
+            return string.Empty;
+
 		return _value.ToString();
 	}
 	
