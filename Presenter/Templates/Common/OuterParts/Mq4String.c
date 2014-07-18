@@ -96,7 +96,7 @@ class Mq4String
 		
 	public override string ToString()
 	{
-		if ((object)mq4String == null)
+		if ((object)this == null)
             return string.Empty;
 
 		return _value.ToString();

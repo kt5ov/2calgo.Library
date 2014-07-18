@@ -35,11 +35,6 @@ namespace _2calgo.Presenter
                     .Select(s => s.Replace("\"", string.Empty))
                     .ToArray();
                 
-                if (conditionalWords.Any() && conditionalWords.First() == "OBJ_LABEL")
-                {
-                    
-                }
-
                 if (IsRequired(words, conditionalWords))
                 {
                     var partToCopy = template.SubstringFromTo(match.Index + match.Length, currentIndex);
