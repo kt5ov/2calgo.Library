@@ -103,4 +103,22 @@ class Mq4String
 	}
 	
 	public static readonly Mq4String Empty = new Mq4String(string.Empty);
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((Mq4String) obj);
+    }
+
+	protected bool Equals(Mq4String other)
+    {
+        return this == other;
+    }
+
+    public override int GetHashCode()
+    {
+        return (_value != null ? _value.GetHashCode() : 0);
+    }
 }

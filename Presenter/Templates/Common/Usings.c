@@ -18,7 +18,6 @@ using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using System.Threading;
 using cAlgo.API.Requests;
 // ---------------------------------------------------------------------------                   
 // Converted from MQ4 to cAlgo with http://2calgo.com
